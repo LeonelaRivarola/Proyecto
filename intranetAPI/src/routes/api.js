@@ -1,10 +1,13 @@
 const express = requite('express');
 const route = express.Router()
+const authController = require('../controllers/authController');
 
-Router.get('/users', (req, res) => {
+
+router.get('/users', (req, res) => {
     res.send('Lista de usuarios');
 });
 
+router.post('/login', authController.login);
 
 //controladores importados
 const dashboardController = require('../controllers/dashboardController');
@@ -71,4 +74,4 @@ router.get('/tecnica/obrasElectricas/presupuestos/mostrar/:presupuesto', authMid
 
 
 
-module.exports = routes;
+module.exports = router;
