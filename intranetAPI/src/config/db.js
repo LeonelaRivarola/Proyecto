@@ -26,4 +26,4 @@ async function connectToDb() {
 }
 
 // Exportá la función correctamente
-module.exports = { connectToDb };
+module.exports = { connectToDb, sql };
