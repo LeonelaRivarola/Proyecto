@@ -34,9 +34,8 @@ exports.login = async (req, res) => {
         // }
 
     } catch (err) {
-        console.error(error);
+        console.error(err);
         res.status(500).json({ error: 'Error en el login', details: err.message });
     }
 };
 
-module.exports = { login };

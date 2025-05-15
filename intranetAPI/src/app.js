@@ -3,7 +3,7 @@ const { connectToGeaCorpico,
     connectToGeaSeguridad,
     connectToAlum,
     sql } = require('./config/db.js');
-const authRoutes = require('./routes/api');
+const authRoutes = require('./routes/auth');
 
 const app = express();
 

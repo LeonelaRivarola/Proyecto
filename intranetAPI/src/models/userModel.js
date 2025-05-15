@@ -1,6 +1,5 @@
 const { connectToGeaSeguridad, sql } = require('../config/db');
 
-const { connectToGeaSeguridad, sql } = require('../config/db');
 
 async function findUserByUsername(username) {
     const pool = await connectToGeaSeguridad();
