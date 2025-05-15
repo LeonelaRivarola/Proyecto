@@ -2,7 +2,8 @@ const express = require('express');
 const { connectToDb } = require("./config/db");
 
 const app = express();
-const PORT = 3000;
+const PORT = 18000;
+const HOST = "172.16.14.26";
 
 connectToDb().then(pool => {
     app.get("/", async (req, res) => {
@@ -17,5 +18,5 @@ connectToDb().then(pool => {
 
 
 app.listen(PORT, () => {
-    console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
+    console.log(`🚀 Servidor corriendo en http://${HOST}:${PORT}`);
 });
