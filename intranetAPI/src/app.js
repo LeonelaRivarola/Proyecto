@@ -1,12 +1,18 @@
 const express = require('express');
-const {  connectToGeaCorpico,
+const { connectToGeaCorpico,
     connectToGeaSeguridad,
     connectToAlum,
     sql } = require('./config/db.js');
+const authRoutes = require('./routes/api');
 
 const app = express();
+
+app.use(express.json());
+app.use('/api', authRoutes);
+
 const PORT = 18001;
 const HOST = "172.16.14.210"; //26 es la otra pc
+
 
 //Pueba
 connectToAlum().then(pool => {
