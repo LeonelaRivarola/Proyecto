@@ -1,11 +1,14 @@
 const express = require('express');
-const { connectToDb, sql } = require('./config/db.js');
+const {  connectToGeaCorpico,
+    connectToGeaSeguridad,
+    connectToAlum,
+    sql } = require('./config/db.js');
 
 const app = express();
 const PORT = 18001;
 const HOST = "172.16.14.210"; //26 es la otra pc
 
-connectToDb().then(pool => {
+connectToAlum().then(pool => {
     app.get('/', async (req, res) => {
         try {
             const result = await pool.request().query('SELECT TOP 5 * FROM dbo.USUARIOS');

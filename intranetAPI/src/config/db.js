@@ -1,29 +1,35 @@
 require('dotenv').config();
 const sql = require('mssql');
 
-// Configuración correcta para SQL Server
-const config = {
-    user: process.env.DB_USERNAME,
-    password: process.env.DB_PASSWORD,
-    server: process.env.DB_HOST, // 👈 Este es el valor correcto, no `host`
-    database: process.env.DB_DATABASE,
+const createConfig = (database) => ({
+    user: process.env.SRV_USERNAME,
+    password: process.env.SRV_PASSWORD,
+    server: process.env.SRV_HOST,
+    database: database,
     options: {
-        encrypt: false,               // O `true` si usás SSL
-        trustServerCertificate: true  // Necesario si es un server local
+        encrypt: process.env.SRV_ENCRYPT === 'yes',
+        trustServerCertificate: true
     }
-};
+});
 
-// Función para conectar
-async function connectToDb() {
-    try {
-        const pool = await sql.connect(config);
-        console.log('🔵 Conectado a SQL Server');
-        return pool;
-    } catch (err) {
-        console.error('Error conectando a SQL Server:', err);
-        throw err;
-    }
+console.log('Host:', process.env.SRV_HOST);
+console.log('Base Alum:', process.env.SRV_ALUM);
+
+async function connectToGeaCorpico() {
+    return sql.connect(createConfig(process.env.SRV_GeaCorpico));
 }
 
-// Exportá la función correctamente
-module.exports = { connectToDb, sql };
+async function connectToGeaSeguridad() {
+    return sql.connect(createConfig(process.env.SRV_GeaSeguridad));
+}
+
+async function connectToAlum() {
+    return sql.connect(createConfig(process.env.SRV_ALUM));
+}
+
+module.exports = {
+    connectToGeaCorpico,
+    connectToGeaSeguridad,
+    connectToAlum,
+    sql
+};
