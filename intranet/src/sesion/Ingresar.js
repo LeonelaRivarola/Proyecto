@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
@@ -6,6 +6,7 @@ import Container from '@mui/material/Container';
 import { useNavigate } from 'react-router-dom';
 import '../css/tecnica.css'
 import Footer from "../componentes/footer/Footer";
+import { API_URL } from "../config";
 
 const estiloFondo = {
     backgroundImage: 'url(/assets/corpico_central.jpg)',
@@ -19,9 +20,39 @@ const estiloFondo = {
 const Ingresar = () => {
 
     const navigate = useNavigate();
+    const [usuario, setUsuario] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
 
-    const handleClick = () => {
-        navigate('/Home');
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        if (!usuario || !password) {
+            setError("Todos los campos son obligatorios.");
+            return;
+        }
+
+        try {
+            const response = await fetch(`${API_URL}/login`, {
+                method: POST,
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ usuario, password })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                //localStorage.setItem('token', data.token);
+                navigate('/Home');
+            } else {
+                setError(data.message || 'Error al inciar sesión');
+            }
+
+        } catch (err) {
+            setError('Error de conexion al servidor');
+        }
+
+
     };
 
     return (
@@ -43,7 +74,9 @@ const Ingresar = () => {
                                     fullWidth
                                     id="usuario"
                                     label="Usuario"
+                                    value={usuario}
                                     autoFocus
+                                    onChange={(e) => setUsuario(e.target.value)}
                                 />
                                 <TextField
                                     variant="outlined"
@@ -54,14 +87,20 @@ const Ingresar = () => {
                                     type="password"
                                     label="Contraseña"
                                     id="password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
                                 />
+                                {error && (
+                                    <Typography color="error" variant="body2">
+                                        {error}
+                                    </Typography>
+                                )}
                                 <Button
                                     type="submit"
                                     fullWidth
                                     variant="contained"
                                     color="primary"
                                     className='btnIngresar'
-                                    onClick={handleClick}
                                 >
                                     Ingresar
                                 </Button>
@@ -69,7 +108,7 @@ const Ingresar = () => {
                         </div>
                     </div>
                 </Container>
-                <Footer style={{ backgroundColor: "#96e65c", color: "black" }}/>
+                <Footer style={{ backgroundColor: "#96e65c", color: "black" }} />
             </div>
         </div>
     )
@@ -77,10 +116,3 @@ const Ingresar = () => {
 
 export default Ingresar
 
-/* 
-   BOTON MAS ALEJADO
-   CAMPOS QUE SEAN OBLIGATORIOS
-
-   STYLE DEL FOOTER Q CAMBIA SEGUN EN Q PAG ESTÁ
-   
-*/
