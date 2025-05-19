@@ -1,12 +1,16 @@
 const express = require('express');
-const { connectToGeaCorpico,
-    connectToGeaSeguridad,
-    connectToAlum,
-    sql } = require('./config/db.js');
+const cors = require('cors');
+const {
+  connectToGeaCorpico,
+  connectToGeaSeguridad,
+  connectToAlum,
+  sql
+} = require('./config/db.js');
 const authRoutes = require('./routes/auth');
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 app.use('/api', authRoutes);
 
