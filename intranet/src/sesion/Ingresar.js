@@ -20,23 +20,23 @@ const estiloFondo = {
 const Ingresar = () => {
 
     const navigate = useNavigate();
-    const [usuario, setUsuario] = useState('');
+    const [username, setusername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!usuario || !password) {
+        if (!username || !password) {
             setError("Todos los campos son obligatorios.");
             return;
         }
 
         try {
-            const response = await fetch(`${API_URL}/api/login`, {
+            const response = await fetch(`${API_URL}/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ usuario, password })
+                body: JSON.stringify({ username, password })
             });
 
             const data = await response.json();
@@ -72,11 +72,11 @@ const Ingresar = () => {
                                     margin="normal"
                                     required
                                     fullWidth
-                                    id="usuario"
-                                    label="Usuario"
-                                    value={usuario}
+                                    id="username"
+                                    label="username"
+                                    value={username}
                                     autoFocus
-                                    onChange={(e) => setUsuario(e.target.value)}
+                                    onChange={(e) => setusername(e.target.value)}
                                 />
                                 <TextField
                                     variant="outlined"
