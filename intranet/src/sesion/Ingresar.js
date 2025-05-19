@@ -33,8 +33,8 @@ const Ingresar = () => {
         }
 
         try {
-            const response = await fetch(`${API_URL}/login`, {
-                method: POST,
+            const response = await fetch(`${API_URL}/api/login`, {
+                method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ usuario, password })
             });
@@ -66,7 +66,7 @@ const Ingresar = () => {
                                     Iniciar Sesión
                                 </Typography>
                             </div>
-                            <form className='sessionForm'>
+                            <form className='sessionForm' onSubmit={handleSubmit}>
                                 <TextField
                                     variant="outlined"
                                     margin="normal"
