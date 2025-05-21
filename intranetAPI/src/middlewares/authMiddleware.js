@@ -1,14 +1,21 @@
 const jwt = require('jsonwebtoken');
+const SECRET_KEY = 'Co23pi08cO';
 
-const authMiddleware = (req, res, next) => {
-    const token = req.header('Authorization');
-    if(!token) return res.status(401).send('Acceso denegaod');
+const verificarToken = (req, res, next) => {
+    const authHeader = req.headers['authorization'];
 
-    try{
-        const verified = jwt.verify(token, process.env.JWT_SECRET);
-        req.user = verified;
-        next();
-    } catch (err) {
-        res.status(400).send('Token no válido');
+    if(!authHeader){
+        return res.status(403).json({message: 'Token requerido'});
     }
-}
+
+    const token = authHeader.split(' ')[1];
+
+    jwt.verify(token, SECRET_KEY, (err, user) => {
+        if(err) return res.status(401).json({message: 'Token inválido'});
+
+        req.user = user;
+        next();
+    });
+};
+
+module.exports = verificarToken;

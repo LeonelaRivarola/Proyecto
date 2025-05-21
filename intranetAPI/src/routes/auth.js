@@ -1,13 +1,14 @@
 const express = require('express');
 const router = express.Router()
 const authController = require('../controllers/authController');
-
-
-router.get('/users', (req, res) => {
-    res.send('Lista de usuarios');
-});
+const verificarToken = require('../middlewares/authMiddleware');
 
 router.post('/login', authController.login);
+
+//ruta protegida
+router.get('/usuarios-protegidos', verificarToken, (req, res) => {
+    res.json({message: `Hola ${req.user.username}, accediste a una ruta protegida`});
+});
 
 //controladores importados
 // const dashboardController = require('../controllers/dashboardController');
