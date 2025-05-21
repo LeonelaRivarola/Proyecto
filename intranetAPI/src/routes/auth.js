@@ -2,13 +2,19 @@ const express = require('express');
 const router = express.Router()
 const authController = require('../controllers/authController');
 const verificarToken = require('../middlewares/authMiddleware');
+const { connectToGeaSeguridad } = require('../config/db');
 
 router.post('/login', authController.login);
 
-//ruta protegida
+//ruta protegida - esto para probar si el token esta bien  armado 
 router.get('/usuarios-protegidos', verificarToken, (req, res) => {
     res.json({message: `Hola ${req.user.username}, accediste a una ruta protegida`});
 });
+
+// router.get('/tecnica/obrasElectricas/solicitudes', authMiddleware, solicitudController.index);
+router.get('/tecnica/obrasElectricas/solicitudes', authMiddleware, authController.solicitudes);
+
+
 
 //controladores importados
 // const dashboardController = require('../controllers/dashboardController');
@@ -31,7 +37,6 @@ router.get('/usuarios-protegidos', verificarToken, (req, res) => {
 // // Route:: post('tecnica/obrasElectricas/solicitudes/path', [SolicitudController:: class, 'path']) -> name('path');
 
 // // Solicitudes
-// router.get('/tecnica/obrasElectricas/solicitudes', authMiddleware, solicitudController.index);
 // router.post('/tecnica/obrasElectricas/solicitudes/guardar', authMiddleware, solicitudController.store);
 // router.get('/tecnica/obrasElectricas/solicitudes/mostrar/:solicitud', authMiddleware, solicitudController.show);
 // router.delete('/tecnica/obrasElectricas/solicitudes/eliminar/:solicitud', authMiddleware, solicitudController.destroy);
