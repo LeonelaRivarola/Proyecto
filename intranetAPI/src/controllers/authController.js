@@ -1,5 +1,5 @@
-// const bcrypt = require('bcrypt'); // asegurate de instalarlo
-const { findUserByUsername } = require('../models/userModel');
+const bcrypt = require('bcrypt');
+// const { findUserByUsername } = require('../models/userModel');
 const { connectToGeaSeguridad, sql } = require('../config/db');
 const jwt = require('jsonwebtoken');
 
@@ -7,10 +7,6 @@ const SECRET_KEY = 'Co23pi08cO';
 
 exports.login = async (req, res) => {
     const { username, password } = req.body;
-
-    if (!username || !password) {
-        return res.status(400).json({ error: 'Faltan datos' });
-    }
 
     try {
         const pool = await connectToGeaSeguridad();
@@ -23,29 +19,41 @@ exports.login = async (req, res) => {
         }
 
         const user = result.recordset[0];
+        console.log('Password desde la BD:', user.USU_PASSWORD);
+        console.log('Password enviado:', password);
+        
         // si las contraseñas está en texto plano (me parece)
-        if (user && user.USU_PASSWORD.trim() === password) {
+        if (user.USU_PASSWORD.trim() === password) {
             const token = jwt.sign(
                 {
                     username: user.USU_CODIGO
                 },
                 SECRET_KEY,
-                { expresIn: '1h' }
+                { expiresIn: '1h' }
             );
-            res.json({ token });
+            return res.json({ token });
         } else {
-            res.status(401).json({ error: 'Contraseña incorrecta' });
+           return  res.status(401).json({ error: 'Contraseña incorrecta' });
         }
 
-        // Login exitoso (podría crear un token JWT)
+        //contraseña hasheada
+        // const passwHash = user.USU_PASSWORD;
+        // console.log('Hash recuperado de BD:', passwHash);
 
-        // const passwordValid = await bcrypt.compare(password, user.USU_PASSWORD);
-        // if (!passwordValid) {
-        //     return res.status(401).json({ error: 'Contraseña incorrecta' });
+        // const passwordValida = await bcrypt.compare(password, passwHash);
+
+        // if (!passwordValida) {
+        //     return res.status(401).json({ message: "Contraseña incorrecta" });
         // }
 
+        // const token = jwt.sign({ username: user.USU_CODIGO },
+        //     SECRET_KEY,
+        //     { expiresIn: '1h' });
+
+        // return res.json({ token });
+
     } catch (err) {
-        console.error('Error en login:', error);
+        console.error('Error en login:', err);
         res.status(500).json({ message: 'Error en el servidor' });
     }
 };
