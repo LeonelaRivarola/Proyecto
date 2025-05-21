@@ -67,14 +67,15 @@ exports.solicitudes = async (req, res) => {
 
 const result = await pool.request().query(`
     SELECT 
-        SOE.SOE_ID,
-        SOE.SOE_FECHA,
-        TOE.TOE_DESCRIPCION AS Tipo,
-        CONCAT(SOE.SOE_APELLIDO, ' ', SOE.SOE_NOMBRE) AS Usuario,
+        SOE.SOE_ID as Número,
+        SOE.SOE_FECHA AS Fecha_Solicitud,
         ESO.ESO_DESCRIPCION AS Estado,
-        SOE.SOE_UPDATE,
-        SOE.SOE_USUARIO,
-        SOE.SOE_CUIT
+        SOE.SOE_UPDATE AS Fecha_Estado,
+        SOE.SOE_USUARIO AS Usuario,
+        TOE.TOE_DESCRIPCION AS Tipo,
+        SOE.SOE_CUIT AS DNI_CUIT,
+        SOE.SOE_APELLIDO AS Apellido, 
+        SOE.SOE_NOMBRE AS Nombre
     FROM SOLICITUD_OBRA_ELECTRICA AS SOE
     INNER JOIN TIPO_OBRA_ELECTRICA AS TOE ON SOE.SOE_TIPO_ID = TOE.TOE_ID
     INNER JOIN SOLICITUD_ESTADO AS SES ON SES.SES_SOLICITUD_ID = SOE.SOE_ID
