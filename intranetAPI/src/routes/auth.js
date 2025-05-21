@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router()
 const authController = require('../controllers/authController');
 const verificarToken = require('../middlewares/authMiddleware');
-const { connectToGeaSeguridad } = require('../config/db');
+const { connectToGeaSeguridad, connectToAlum } = require('../config/db');
 
 router.post('/login', authController.login);
 
@@ -12,7 +12,7 @@ router.get('/usuarios-protegidos', verificarToken, (req, res) => {
 });
 
 // router.get('/tecnica/obrasElectricas/solicitudes', authMiddleware, solicitudController.index);
-router.get('/tecnica/obrasElectricas/solicitudes', authMiddleware, authController.solicitudes);
+router.get('/tecnica/obrasElectricas/solicitudes', verificarToken, authController.solicitudes);
 
 
 

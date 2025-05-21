@@ -16,15 +16,18 @@ console.log('Host:', process.env.SRV_HOST);
 console.log('Base Alum:', process.env.SRV_ALUM);
 
 async function connectToGeaCorpico() {
-    return sql.connect(createConfig(process.env.SRV_GeaCorpico));
+    const pool = new sql.ConnectionPool(createConfig(process.env.SRV_GeaCorpico));
+    return pool.connect();
 }
 
 async function connectToGeaSeguridad() {
-    return sql.connect(createConfig(process.env.SRV_GeaSeguridad));
+    const pool = new sql.ConnectionPool(createConfig(process.env.SRV_GeaSeguridad));
+    return pool.connect();
 }
 
 async function connectToAlum() {
-    return sql.connect(createConfig(process.env.SRV_ALUM));
+    const pool = new sql.ConnectionPool(createConfig(process.env.SRV_ALUM));
+    return pool.connect();
 }
 
 module.exports = {

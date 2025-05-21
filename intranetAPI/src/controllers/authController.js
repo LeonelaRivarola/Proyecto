@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 // const { findUserByUsername } = require('../models/userModel');
-const { connectToGeaSeguridad, sql } = require('../config/db');
+const { connectToGeaSeguridad, sql, connectToAlum } = require('../config/db');
 const jwt = require('jsonwebtoken');
 
 const SECRET_KEY = 'Co23pi08cO';
@@ -60,7 +60,11 @@ exports.login = async (req, res) => {
 
 exports.solicitudes = async (req, res) => {
     try {
-        const pool = await connectToGeaSeguridad();
+        const pool = await connectToAlum();
+
+        const base = await pool.request().query('SELECT DB_NAME() AS base_actual');
+        console.log('Conectado a la base:', base.recordset[0].base_actual); // Debería decir: alum
+
 const result = await pool.request().query(`
     SELECT 
         SOE.SOE_ID,
