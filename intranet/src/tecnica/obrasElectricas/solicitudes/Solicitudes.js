@@ -1,10 +1,25 @@
 import React, { useEffect, useState } from 'react'
+import { Upload, UploadFile } from '@mui/icons-material';
+import { IconButton } from '@mui/material';
+import { Delete } from '@mui/icons-material';
 import { API_URL } from '../../../config';
 
 const Solicitudes = () => {
   const [solicitudes, setSolicitudes] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [estadoFiltro, setEstadoFiltro] = useState('');
   const [error, setError] = useState(null);
+
+  const handleDocumentar = (id) => {
+    console.log("Documentar solicitud:", id);
+  };
+
+  const handleEliminar = (id) => {
+    if (window.confirm("¿Estás seguro que querés eliminar esta solicitud?")) {
+      console.log("Eliminar solicitud:", id);
+    }
+  };
+
 
   useEffect(() => {
     const fetchSolicitudes = async () => {
@@ -59,8 +74,27 @@ const Solicitudes = () => {
 
   return (
     <div className="container mx-auto p-6 bg-white shadow-lg rounded-lg my-8">
+      <div className="mb-4 flex justify-center">
+        <label htmlFor="estado" className="mr-2 font-semibold">Estado:</label>
+        <select
+          id="estado"
+          value={estadoFiltro}
+          onChange={(e) => setEstadoFiltro(e.target.value)}
+          className="border border-gray-300 rounded px-3 py-1"
+        >
+          <option value="">Todos</option>
+          <option value="Aceptada">Aceptada</option>
+          <option value="Actualizar">Actualizar</option>
+          <option value="Cerrada">Cerrada</option>
+          <option value="Iniciada">Iniciada</option>
+          <option value="Pendiente">Pendiente</option>
+          <option value="Presupuestada">Presupuestada</option>
+
+        </select>
+      </div>
+
       <h1 className="text-3xl font-extrabold mb-8 text-gray-900 text-center">
-        Solicitudes 
+        Solicitudes
       </h1>
 
       <div className="overflow-x-auto">
@@ -79,19 +113,40 @@ const Solicitudes = () => {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
-            {solicitudes.map((solicitud) => (
-              <tr key={solicitud.id} className="hover:bg-gray-50 transition duration-150 ease-in-out">
-                <td className="py-3 px-4 text-sm text-gray-800 font-medium">{solicitud.Número}</td>
-                <td className="py-3 px-4 text-sm text-gray-800">{solicitud.Estado}</td>
-                <td className="py-3 px-4 text-sm text-gray-800">{solicitud.Fecha_Solicitud}</td>
-                <td className="py-3 px-4 text-sm text-gray-800">{solicitud.Usuario}</td>
-                <td className="py-3 px-4 text-sm text-gray-800">{solicitud.Tipo}</td>
-                <td className="py-3 px-4 text-sm text-gray-800">{solicitud.DNI_CUIT}</td>
-                <td className="py-3 px-4 text-sm text-gray-800">{solicitud.Apellido}</td>
-                <td className="py-3 px-4 text-sm text-gray-800">{solicitud.Nombre}</td>
-                <td className="py-3 px-4 text-sm text-gray-800">Botones proximamente</td>
-              </tr>
-            ))}
+            {solicitudes
+              .filter(s => estadoFiltro === '' || s.Estado === estadoFiltro)
+              .map((solicitud) => (
+                <tr key={solicitud.id} className="hover:bg-gray-50 transition duration-150 ease-in-out">
+                  <td className="py-3 px-4 text-sm text-gray-800 font-medium">{solicitud.Número}</td>
+                  <td className="py-3 px-4 text-sm text-gray-800">{solicitud.Estado}</td>
+                  <td className="py-3 px-4 text-sm text-gray-800">{solicitud.Fecha_Solicitud}</td>
+                  <td className="py-3 px-4 text-sm text-gray-800">{solicitud.Usuario}</td>
+                  <td className="py-3 px-4 text-sm text-gray-800">{solicitud.Tipo}</td>
+                  <td className="py-3 px-4 text-sm text-gray-800">{solicitud.DNI_CUIT}</td>
+                  <td className="py-3 px-4 text-sm text-gray-800">{solicitud.Apellido}</td>
+                  <td className="py-3 px-4 text-sm text-gray-800">{solicitud.Nombre}</td>
+
+                  <td className="py-3 px-4 text-sm text-gray-800">
+                    <div className="flex gap-2">
+                      <IconButton
+                        aria-label="Documentar"
+                        color="primary"
+                        onClick={() => handleDocumentar(solicitud.Número)}
+                      >
+                        <Upload />
+                      </IconButton>
+                      <IconButton
+                        aria-label="Eliminar"
+                        color="error"
+                        onClick={() => handleEliminar(solicitud.Número)}
+                      >
+                        <Delete />
+                      </IconButton>
+                    </div>
+                  </td>
+
+                </tr>
+              ))}
           </tbody>
         </table>
       </div>
