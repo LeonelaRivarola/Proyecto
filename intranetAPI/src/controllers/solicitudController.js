@@ -138,3 +138,24 @@ exports.crearSolicitud = async (req, res) => {
         res.status(500).json({ error: 'Error al crear solicitud.' });
     }
 };
+
+exports.eliminar = async (req, res) => {
+
+    try{
+        const { id } = req.params;
+
+        const pool = await connectToAlum();
+        const result = await pool.request()
+            .input('id', sql.Int, id)
+            .query('DELETE FROM SOLICITUD_OBRA_ELECTRICA WHERE SOE_ID = @id');
+
+        if (result.rowsAffected[0] === 0) {
+            return res.status(404).json({ error: 'Solicitud no encontrada.' });
+        }
+
+        res.json({ message: 'Solicitud eliminada correctamente.' });
+    }catch(error) {
+        console.error('Error al eliminar la solicitud:', error);
+        res.status(500).json({ error: 'Error al eliminar la solicitud.' });
+    }
+}
