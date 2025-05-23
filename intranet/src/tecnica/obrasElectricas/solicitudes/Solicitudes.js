@@ -3,7 +3,7 @@ import React from 'react'
 const Solicitudes = () => {
   return (
     <div>
-      
+      sector solicitudes
     </div>
   )
 }

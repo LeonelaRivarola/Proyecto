@@ -32,6 +32,11 @@ const Ingresar = () => {
             return;
         }
 
+        /* COMENTAR DESPUÉS */
+        navigate('/Home');
+        return;
+
+        /*
         try {
             const response = await fetch(`${API_URL}/api/login`, {
                 method: 'POST',
@@ -51,7 +56,7 @@ const Ingresar = () => {
         } catch (err) {
             setError('Error de conexion al servidor');
         }
-
+        */
 
     };
 
