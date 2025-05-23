@@ -1,18 +1,15 @@
 const express = require('express');
 const router = express.Router()
 const authController = require('../controllers/authController');
-const SolController = require('../controllers/solicitudController');
+const solicitudController = require('../controllers/solicitudController');
 const verificarToken = require('../middlewares/authMiddleware');
 
+//
 router.post('/login', authController.login);
 
-//ruta protegida - esto para probar si el token esta bien  armado 
-router.get('/usuarios-protegidos', verificarToken, (req, res) => {
-    res.json({message: `Hola ${req.user.username}, accediste a una ruta protegida`});
-});
-
-// router.get('/tecnica/obrasElectricas/solicitudes', authMiddleware, solicitudController.index);
-router.get('/tecnica/obrasElectricas/solicitudes', verificarToken, SolController.solicitudes);
+//Solicitudes
+router.get('/tecnica/obrasElectricas/solicitudes', verificarToken, solicitudController.solicitudes);
+router.post('/tecnica/obrasElectricas/nueva-solicitud',verificarToken, solicitudController.crearSolicitud);
 
 
 
@@ -24,8 +21,7 @@ router.get('/tecnica/obrasElectricas/solicitudes', verificarToken, SolController
 // const presupuestoController = require('../controllers/presupuestoController');
 
 
-//middleware de autenticacion
-// const authMiddleware = require('../middlewares/authMiddleware')
+
 
 // router.get('/', authMiddleware, dashboardController);
 // router.get('sign-up', registerController.create);

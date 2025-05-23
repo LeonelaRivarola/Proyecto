@@ -18,7 +18,7 @@ const PORT = 18001;
 const HOST = "172.16.14.210"; //26 es la otra pc
 
 
-//Pueba
+//Prueba
 connectToGeaSeguridad().then(pool => {
     app.get('/', async (req, res) => {
         try {
