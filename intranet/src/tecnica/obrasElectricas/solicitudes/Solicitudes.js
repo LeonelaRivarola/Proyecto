@@ -1,9 +1,30 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { API_URL } from '../../../config';
 
 const Solicitudes = () => {
+  const [solicitudes, setSolicitudes] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    async function fetchSolicitudes() {
+      try {
+        const data = await fetch(`${API_URL}/api/tecnica/obrasElectricas/solicitudes`);
+        console.log(data);
+        setSolicitudes(data);
+        setLoading(false);
+      } catch (error) {
+        setError(error);
+        setLoading(false);
+      }
+    }
+
+    fetchSolicitudes();
+  }, []);
+
   return (
     <div>
-      sector solicitudes
+      Solicitudes conectadas al back ¿?
     </div>
   )
 }
