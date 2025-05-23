@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router()
 const authController = require('../controllers/authController');
+const SolController = require('../controllers/solicitudController');
 const verificarToken = require('../middlewares/authMiddleware');
-const { connectToGeaSeguridad } = require('../config/db');
 
 router.post('/login', authController.login);
 
@@ -12,7 +12,7 @@ router.get('/usuarios-protegidos', verificarToken, (req, res) => {
 });
 
 // router.get('/tecnica/obrasElectricas/solicitudes', authMiddleware, solicitudController.index);
-router.get('/tecnica/obrasElectricas/solicitudes', authMiddleware, authController.solicitudes);
+router.get('/tecnica/obrasElectricas/solicitudes', verificarToken, SolController.solicitudes);
 
 
 

@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Emails = () => {
+const Logout = () => {
   return (
     <div>
       
@@ -8,4 +8,4 @@ const Emails = () => {
   )
 }
 
-export default Emails
+export default Logout
