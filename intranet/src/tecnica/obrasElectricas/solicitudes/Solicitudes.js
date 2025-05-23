@@ -5,19 +5,17 @@ import { Delete } from '@mui/icons-material';
 import { API_URL } from '../../../config';
 
 const Solicitudes = () => {
-  const [solicitudes, setSolicitudes] = useState(null);
+  const [solicitudes, setSolicitudes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [estadoFiltro, setEstadoFiltro] = useState('');
   const [error, setError] = useState(null);
 
   const handleDocumentar = (id) => {
-    console.log("Documentar solicitud:", id);
+   // console.log("Documentar solicitud:", id);
   };
 
   const handleEliminar = (id) => {
-    if (window.confirm("¿Estás seguro que querés eliminar esta solicitud?")) {
-      console.log("Eliminar solicitud:", id);
-    }
+    // modal
   };
 
 
@@ -74,6 +72,11 @@ const Solicitudes = () => {
 
   return (
     <div className="container mx-auto p-6 bg-white shadow-lg rounded-lg my-8">
+
+      <h1 className="text-3xl font-extrabold mb-8 text-gray-900 text-center">
+        Solicitudes
+      </h1>
+
       <div className="mb-4 flex justify-center">
         <label htmlFor="estado" className="mr-2 font-semibold">Estado:</label>
         <select
@@ -92,10 +95,6 @@ const Solicitudes = () => {
 
         </select>
       </div>
-
-      <h1 className="text-3xl font-extrabold mb-8 text-gray-900 text-center">
-        Solicitudes
-      </h1>
 
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white border border-gray-200 rounded-lg">
