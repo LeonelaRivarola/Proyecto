@@ -10,7 +10,7 @@ router.post('/login', authController.login);
 //Solicitudes
 router.get('/tecnica/obrasElectricas/solicitudes', verificarToken, solicitudController.solicitudes);
 router.post('/tecnica/obrasElectricas/nueva-solicitud',verificarToken, solicitudController.crearSolicitud);
-router.delete('/tecnica/obrasElectricas/solicitudes/eliminar/:solicitud', verificarToken, solicitudController.eliminar);
+router.delete('/tecnica/obrasElectricas/eliminar/:id', verificarToken, solicitudController.eliminar);
 
 
 
