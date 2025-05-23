@@ -37,7 +37,6 @@ const Home = () => {
             flexGrow: 1,
             overflowY: 'auto',
             padding: 2,
-            backgroundColor: '#f5f5f5',
           }}
         >
           <Outlet />
