@@ -1,16 +1,20 @@
 const express = require('express');
 const cors = require('cors');
 const {
-  connectToGeaCorpico,
-  connectToGeaSeguridad,
-  connectToAlum,
-  sql
+    connectToGeaCorpico,
+    connectToGeaSeguridad,
+    connectToAlum,
+    sql
 } = require('./config/db.js');
 const authRoutes = require('./routes/auth');
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:3000',  // o '*' para permitir todos (no recomendado en producción)
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    credentials: true // si usas cookies o autenticación basada en sesión
+}));
 app.use(express.json());
 app.use('/api', authRoutes);
 
