@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import '../css/tecnica.css'
 import Footer from "../componentes/footer/Footer";
 import { API_URL } from "../config";
+import axios from "axios";
 
 const estiloFondo = {
     backgroundImage: 'url(/assets/corpico_central.jpg)',
@@ -32,33 +33,19 @@ const Ingresar = () => {
             return;
         }
 
-        //navigate('/Home');
-        //return;
-        //
-
         try {
-            const response = await fetch(`/api/login`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, password })
-            });
+            const response = await axios.post(`/api/login`, { username, password });
 
-            const data = await response.json();
-
-            if (response.ok) {
-                localStorage.setItem('token', data.token);
-                navigate('/Home');
-            } else {
-                setError(data.message || 'Error al inciar sesión');
-            }
+            localStorage.setItem('token', response.data.token);
+            navigate('/Home');
 
         } catch (err) {
-            setError('Error de conexion al servidor');
+            if (err.response) {
+                setError(err.response.data.message || 'Error al iniciar sesión');
+            } else {
+                setError('Error de conexión al servidor');
+            }
         }
-
-        //
-
-
     };
 
     return (
