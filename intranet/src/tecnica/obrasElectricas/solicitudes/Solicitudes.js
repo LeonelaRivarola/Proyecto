@@ -9,7 +9,7 @@ const Solicitudes = () => {
   useEffect(() => {
     const fetchSolicitudes = async () => {
       try {
-        const respuesta = await fetch(`${API_URL}/tecnica/obrasElectricas/solicitudes`);
+        const respuesta = await fetch(`${API_URL}/api/tecnica/obrasElectricas/solicitudes`);
         const data = await respuesta.json();
         console.log(data);
         setSolicitudes(data);
