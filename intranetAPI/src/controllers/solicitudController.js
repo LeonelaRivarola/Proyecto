@@ -1,6 +1,4 @@
-// CRUD de solicitudes
 const { connectToAlum } = require('../config/db');
-
 
 exports.solicitudes = async (req, res) => {
     try {
@@ -57,4 +55,3 @@ exports.solicitudes = async (req, res) => {
         res.status(500).json({ error: 'Error al obtener solicitudes' });
     }
 }
-
