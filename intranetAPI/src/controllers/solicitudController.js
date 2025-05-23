@@ -1,5 +1,6 @@
 // CRUD de solicitudes
-const { connectToGeaSeguridad, sql } = require('../config/db');
+const { connectToAlum } = require('../config/db');
+
 
 exports.solicitudes = async (req, res) => {
     try {
