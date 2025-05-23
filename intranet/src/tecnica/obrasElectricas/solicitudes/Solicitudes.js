@@ -7,13 +7,10 @@ const Solicitudes = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    async function fetchSolicitudes() {
+    const fetchSolicitudes = async () => {
       try {
-        const data = await fetch(`${API_URL}/tecnica/obrasElectricas/solicitudes`, {
-          method: 'GET',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify()
-        });
+        const respuesta = await fetch(`${API_URL}/tecnica/obrasElectricas/solicitudes`);
+        const data = await respuesta.json();
         console.log(data);
         setSolicitudes(data);
         setLoading(false);
