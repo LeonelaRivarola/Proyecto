@@ -9,7 +9,14 @@ const Solicitudes = () => {
   useEffect(() => {
     const fetchSolicitudes = async () => {
       try {
-        const respuesta = await fetch(`${API_URL}/api/tecnica/obrasElectricas/solicitudes`);
+        const token = localStorage.getItem('token');
+        const respuesta = await fetch(`${API_URL}/api/tecnica/obrasElectricas/solicitudes`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}` 
+          }
+        });
         const data = await respuesta.json();
         console.log(data);
         setSolicitudes(data);

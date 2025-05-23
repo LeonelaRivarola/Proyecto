@@ -32,11 +32,10 @@ const Ingresar = () => {
             return;
         }
 
-        /* COMENTAR DESPUÉS */
         //navigate('/Home');
         //return;
-
         //
+
         try {
             const response = await fetch(`${API_URL}/api/login`, {
                 method: 'POST',
@@ -47,7 +46,7 @@ const Ingresar = () => {
             const data = await response.json();
 
             if (response.ok) {
-                //localStorage.setItem('token', data.token);
+                localStorage.setItem('token', data.token);
                 navigate('/Home');
             } else {
                 setError(data.message || 'Error al inciar sesión');
@@ -56,7 +55,9 @@ const Ingresar = () => {
         } catch (err) {
             setError('Error de conexion al servidor');
         }
+
         //
+
 
     };
 
