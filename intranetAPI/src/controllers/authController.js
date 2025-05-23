@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 // const { findUserByUsername } = require('../models/userModel');
-const { connectToGeaSeguridad, sql, connectToAlum } = require('../config/db');
+const { connectToGeaSeguridad, sql } = require('../config/db');
 const jwt = require('jsonwebtoken');
 
 const SECRET_KEY = 'Co23pi08cO';
