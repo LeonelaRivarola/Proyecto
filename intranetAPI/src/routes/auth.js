@@ -1,13 +1,18 @@
 const express = require('express');
 const router = express.Router()
 const authController = require('../controllers/authController');
+const solicitudController = require('../controllers/solicitudController');
+const verificarToken = require('../middlewares/authMiddleware');
 
-
-router.get('/users', (req, res) => {
-    res.send('Lista de usuarios');
-});
-
+//
 router.post('/login', authController.login);
+
+//Solicitudes
+router.get('/tecnica/obrasElectricas/solicitudes', verificarToken, solicitudController.solicitudes);
+router.post('/tecnica/obrasElectricas/nueva-solicitud',verificarToken, solicitudController.crearSolicitud);
+router.delete('/tecnica/obrasElectricas/eliminar/:id', verificarToken, solicitudController.eliminar);
+
+
 
 //controladores importados
 // const dashboardController = require('../controllers/dashboardController');
@@ -17,8 +22,7 @@ router.post('/login', authController.login);
 // const presupuestoController = require('../controllers/presupuestoController');
 
 
-//middleware de autenticacion
-// const authMiddleware = require('../middlewares/authMiddleware')
+
 
 // router.get('/', authMiddleware, dashboardController);
 // router.get('sign-up', registerController.create);
@@ -30,7 +34,6 @@ router.post('/login', authController.login);
 // // Route:: post('tecnica/obrasElectricas/solicitudes/path', [SolicitudController:: class, 'path']) -> name('path');
 
 // // Solicitudes
-// router.get('/tecnica/obrasElectricas/solicitudes', authMiddleware, solicitudController.index);
 // router.post('/tecnica/obrasElectricas/solicitudes/guardar', authMiddleware, solicitudController.store);
 // router.get('/tecnica/obrasElectricas/solicitudes/mostrar/:solicitud', authMiddleware, solicitudController.show);
 // router.delete('/tecnica/obrasElectricas/solicitudes/eliminar/:solicitud', authMiddleware, solicitudController.destroy);
