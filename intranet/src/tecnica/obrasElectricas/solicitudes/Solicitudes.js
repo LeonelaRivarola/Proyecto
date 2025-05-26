@@ -1,11 +1,27 @@
-import React, { useEffect, useState } from 'react'
-import { Upload, UploadFile } from '@mui/icons-material';
-import { IconButton } from '@mui/material';
-import { Delete } from '@mui/icons-material';
+import React, { useEffect, useState } from 'react';
+import {
+  Container,
+  Typography,
+  CircularProgress,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+  Paper,
+  IconButton,
+  Select,
+  MenuItem,
+  InputLabel,
+  FormControl,
+  Alert,
+  Box,
+} from '@mui/material';
+import { UploadFile, Delete, Upload } from '@mui/icons-material';
 import { API_URL } from '../../../config';
 
 const Solicitudes = () => {
-  const [solicitudes, setSolicitudes] = useState(null);
+  const [solicitudes, setSolicitudes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [estadoFiltro, setEstadoFiltro] = useState('');
   const [error, setError] = useState(null);
@@ -20,138 +36,123 @@ const Solicitudes = () => {
     }
   };
 
-
   useEffect(() => {
     const fetchSolicitudes = async () => {
       try {
         const token = localStorage.getItem('token');
         const respuesta = await fetch(`${API_URL}/api/tecnica/obrasElectricas/solicitudes`, {
-          method: 'GET',
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
           }
         });
         const data = await respuesta.json();
-        console.log(data);
         setSolicitudes(data);
-        setLoading(false);
-      } catch (error) {
-        setError(error);
+      } catch (err) {
+        setError(err);
+      } finally {
         setLoading(false);
       }
-    }
+    };
 
     fetchSolicitudes();
   }, []);
 
-
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-screen bg-gray-100">
-        <p className="text-lg text-gray-700">Cargando solicitudes...</p>
-      </div>
+      <Box display="flex" justifyContent="center" alignItems="center" height="80vh">
+        <CircularProgress />
+      </Box>
     );
   }
 
   if (error) {
     return (
-      <div className="flex flex-col justify-center items-center h-screen bg-red-100 text-red-800 p-6 rounded-lg shadow-md">
-        <p className="text-xl font-bold mb-3">¡Error al cargar los datos!</p>
-        <p className="text-md">{error.message}</p>
-        <p className="mt-4 text-sm text-red-600">Por favor, intente de nuevo más tarde o contacte a soporte si el problema persiste.</p>
-      </div>
+      <Container maxWidth="md" sx={{ mt: 8 }}>
+        <Alert severity="error">
+          <Typography variant="h6" gutterBottom>¡Error al cargar los datos!</Typography>
+          <Typography>{error.message}</Typography>
+          <Typography variant="body2" mt={2}>Por favor, intente más tarde o contacte soporte.</Typography>
+        </Alert>
+      </Container>
     );
   }
 
   if (!solicitudes || solicitudes.length === 0) {
     return (
-      <div className="flex justify-center items-center h-screen bg-yellow-100 text-yellow-800 p-6 rounded-lg shadow-md">
-        <p className="text-lg">No hay solicitudes para mostrar en este momento.</p>
-      </div>
+      <Container maxWidth="md" sx={{ mt: 8 }}>
+        <Alert severity="info">
+          No hay solicitudes para mostrar en este momento.
+        </Alert>
+      </Container>
     );
   }
 
   return (
-    <div className="container mx-auto p-6 bg-white shadow-lg rounded-lg my-8">
-      <div className="mb-4 flex justify-center">
-        <label htmlFor="estado" className="mr-2 font-semibold">Estado:</label>
-        <select
-          id="estado"
-          value={estadoFiltro}
-          onChange={(e) => setEstadoFiltro(e.target.value)}
-          className="border border-gray-300 rounded px-3 py-1"
-        >
-          <option value="">Todos</option>
-          <option value="Aceptada">Aceptada</option>
-          <option value="Actualizar">Actualizar</option>
-          <option value="Cerrada">Cerrada</option>
-          <option value="Iniciada">Iniciada</option>
-          <option value="Pendiente">Pendiente</option>
-          <option value="Presupuestada">Presupuestada</option>
-
-        </select>
-      </div>
-
-      <h1 className="text-3xl font-extrabold mb-8 text-gray-900 text-center">
+    <Container maxWidth="lg" sx={{ mt: 6 }}>
+      <Typography variant="h4" align="center" fontWeight="bold" gutterBottom>
         Solicitudes
-      </h1>
+      </Typography>
 
-      <div className="overflow-x-auto">
-        <table className="min-w-full bg-white border border-gray-200 rounded-lg">
-          <thead className="bg-blue-600 text-white">
-            <tr>
-              <th className="py-3 px-4 text-left text-sm font-semibold uppercase tracking-wider rounded-tl-lg">NÚMERO</th>
-              <th className="py-3 px-4 text-left text-sm font-semibold uppercase tracking-wider">ESTADO</th>
-              <th className="py-3 px-4 text-left text-sm font-semibold uppercase tracking-wider">FECHA SOLICITUD</th>
-              <th className="py-3 px-4 text-left text-sm font-semibold uppercase tracking-wider">USUARIO</th>
-              <th className="py-3 px-4 text-left text-sm font-semibold uppercase tracking-wider">TIPO</th>
-              <th className="py-3 px-4 text-left text-sm font-semibold uppercase tracking-wider rounded-tr-lg">DNI/CUIT</th>
-              <th className="py-3 px-4 text-left text-sm font-semibold uppercase tracking-wider rounded-tr-lg">APELLIDO</th>
-              <th className="py-3 px-4 text-left text-sm font-semibold uppercase tracking-wider rounded-tr-lg">NOMBRE</th>
-              <th className="py-3 px-4 text-left text-sm font-semibold uppercase tracking-wider rounded-tr-lg">ACCIONES</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-200">
+      <Box display="flex" justifyContent="center" mb={4}>
+        <FormControl variant="outlined" size="small" sx={{ minWidth: 200 }}>
+          <InputLabel id="estado-label">Estado</InputLabel>
+          <Select
+            labelId="estado-label"
+            value={estadoFiltro}
+            onChange={(e) => setEstadoFiltro(e.target.value)}
+            label="Estado"
+          >
+            <MenuItem value="">Todos</MenuItem>
+            <MenuItem value="Aceptada">Aceptada</MenuItem>
+            <MenuItem value="Actualizar">Actualizar</MenuItem>
+            <MenuItem value="Cerrada">Cerrada</MenuItem>
+            <MenuItem value="Iniciada">Iniciada</MenuItem>
+            <MenuItem value="Pendiente">Pendiente</MenuItem>
+            <MenuItem value="Presupuestada">Presupuestada</MenuItem>
+          </Select>
+        </FormControl>
+      </Box>
+
+      <Paper elevation={3}>
+        <Table>
+          <TableHead sx={{ backgroundColor: 'primary.main' }}>
+            <TableRow>
+              {['Número', 'Estado', 'Fecha Solicitud', 'Usuario', 'Tipo', 'DNI/CUIT', 'Apellido', 'Nombre', 'Acciones'].map(header => (
+                <TableCell key={header} sx={{ color: 'white', fontWeight: 'bold' }}>{header}</TableCell>
+              ))}
+            </TableRow>
+          </TableHead>
+          <TableBody>
             {solicitudes
               .filter(s => estadoFiltro === '' || s.Estado === estadoFiltro)
               .map((solicitud) => (
-                <tr key={solicitud.id} className="hover:bg-gray-50 transition duration-150 ease-in-out">
-                  <td className="py-3 px-4 text-sm text-gray-800 font-medium">{solicitud.Número}</td>
-                  <td className="py-3 px-4 text-sm text-gray-800">{solicitud.Estado}</td>
-                  <td className="py-3 px-4 text-sm text-gray-800">{solicitud.Fecha_Solicitud}</td>
-                  <td className="py-3 px-4 text-sm text-gray-800">{solicitud.Usuario}</td>
-                  <td className="py-3 px-4 text-sm text-gray-800">{solicitud.Tipo}</td>
-                  <td className="py-3 px-4 text-sm text-gray-800">{solicitud.DNI_CUIT}</td>
-                  <td className="py-3 px-4 text-sm text-gray-800">{solicitud.Apellido}</td>
-                  <td className="py-3 px-4 text-sm text-gray-800">{solicitud.Nombre}</td>
-
-                  <td className="py-3 px-4 text-sm text-gray-800">
-                    <div className="flex gap-2">
-                      <IconButton
-                        aria-label="Documentar"
-                        color="primary"
-                        onClick={() => handleDocumentar(solicitud.Número)}
-                      >
-                        <Upload />
+                <TableRow key={solicitud.id} hover>
+                  <TableCell>{solicitud.Número}</TableCell>
+                  <TableCell>{solicitud.Estado}</TableCell>
+                  <TableCell>{solicitud.Fecha_Solicitud}</TableCell>
+                  <TableCell>{solicitud.Usuario}</TableCell>
+                  <TableCell>{solicitud.Tipo}</TableCell>
+                  <TableCell>{solicitud.DNI_CUIT}</TableCell>
+                  <TableCell>{solicitud.Apellido}</TableCell>
+                  <TableCell>{solicitud.Nombre}</TableCell>
+                  <TableCell>
+                    <Box display="flex" gap={1}>
+                      <IconButton color="primary" onClick={() => handleDocumentar(solicitud.Número)}>
+                        <UploadFile/>
                       </IconButton>
-                      <IconButton
-                        aria-label="Eliminar"
-                        color="error"
-                        onClick={() => handleEliminar(solicitud.Número)}
-                      >
+                      <IconButton color="error" onClick={() => handleEliminar(solicitud.Número)}>
                         <Delete />
                       </IconButton>
-                    </div>
-                  </td>
-
-                </tr>
+                    </Box>
+                  </TableCell>
+                </TableRow>
               ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
+          </TableBody>
+        </Table>
+      </Paper>
+    </Container>
   );
-}
+};
 
-export default Solicitudes
+export default Solicitudes;

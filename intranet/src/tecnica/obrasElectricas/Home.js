@@ -3,6 +3,7 @@ import { Grid } from '@mui/material'
 import HeaderUsu from '../../componentes/headerUsu/HeaderUsu'
 import SideBar from '../../componentes/sideBar/SideBar'
 import { Outlet } from 'react-router-dom'
+import '../../css/tecnica.css';
 
 const Home = () => {
 
