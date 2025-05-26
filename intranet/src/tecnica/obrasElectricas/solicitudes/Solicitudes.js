@@ -8,6 +8,7 @@ import {
   TableRow,
   TableCell,
   TableBody,
+  TableContainer,
   Paper,
   IconButton,
   Select,
@@ -68,7 +69,7 @@ const Solicitudes = () => {
 
   if (error) {
     return (
-      <Container maxWidth="md" sx={{ mt: 8 }}>
+      <Container maxWidth="md" sx={{ }}>
         <Alert severity="error">
           <Typography variant="h6" gutterBottom>¡Error al cargar los datos!</Typography>
           <Typography>{error.message}</Typography>
@@ -80,7 +81,7 @@ const Solicitudes = () => {
 
   if (!solicitudes || solicitudes.length === 0) {
     return (
-      <Container maxWidth="md" sx={{ mt: 8 }}>
+      <Container maxWidth="md" sx={{ }}>
         <Alert severity="info">
           No hay solicitudes para mostrar en este momento.
         </Alert>
@@ -89,12 +90,12 @@ const Solicitudes = () => {
   }
 
   return (
-    <Container maxWidth="lg" sx={{ mt: 6 }}>
-      <Typography variant="h4" align="center" fontWeight="bold" gutterBottom>
+    <Container maxWidth="lg" sx={{  }}>
+      <Typography variant="h4" align="left" fontWeight="bold" gutterBottom>
         Solicitudes
       </Typography>
 
-      <Box display="flex" justifyContent="center" mb={4}>
+      <Box display="flex" justifyContent="left" mb={4}>
         <FormControl variant="outlined" size="small" sx={{ minWidth: 200 }}>
           <InputLabel id="estado-label">Estado</InputLabel>
           <Select
@@ -114,9 +115,9 @@ const Solicitudes = () => {
         </FormControl>
       </Box>
 
-      <Paper elevation={3}>
+      <TableContainer component={Paper} sx={{ borderRadius: 5 }}>
         <Table>
-          <TableHead sx={{ backgroundColor: 'primary.main' }}>
+          <TableHead sx={{ backgroundColor: 'green' }}>
             <TableRow>
               {['Número', 'Estado', 'Fecha Solicitud', 'Usuario', 'Tipo', 'DNI/CUIT', 'Apellido', 'Nombre', 'Acciones'].map(header => (
                 <TableCell key={header} sx={{ color: 'white', fontWeight: 'bold' }}>{header}</TableCell>
@@ -138,10 +139,26 @@ const Solicitudes = () => {
                   <TableCell>{solicitud.Nombre}</TableCell>
                   <TableCell>
                     <Box display="flex" gap={1}>
-                      <IconButton color="primary" onClick={() => handleDocumentar(solicitud.Número)}>
+                      <IconButton color="primary" onClick={() => handleDocumentar(solicitud.Número)}
+                          sx={{
+                            backgroundColor: '#1976d2', 
+                            color: 'white',
+                            '&:hover': {
+                              backgroundColor: '#1565c0', 
+                            },
+                            borderRadius: 3
+                          }}>
                         <UploadFile/>
                       </IconButton>
-                      <IconButton color="error" onClick={() => handleEliminar(solicitud.Número)}>
+                      <IconButton color="error" onClick={() => handleEliminar(solicitud.Número)}
+                          sx={{
+                            backgroundColor: '#d32f2f', 
+                            color: 'white',
+                            '&:hover': {
+                              backgroundColor: '#b71c1c',
+                            },
+                            borderRadius: 3
+                          }}>
                         <Delete />
                       </IconButton>
                     </Box>
@@ -150,7 +167,7 @@ const Solicitudes = () => {
               ))}
           </TableBody>
         </Table>
-      </Paper>
+        </TableContainer>
     </Container>
   );
 };
