@@ -86,7 +86,7 @@ const NuevaSolicitud = () => {
         const data = await respuesta.json();
         setTipo(data);
       } catch (err) {
-        setError(err);
+        console.log(err);
       }
     }
     fetchTiposOE();
