@@ -14,10 +14,10 @@ router.post('/tecnica/obrasElectricas/nueva-solicitud',verificarToken, solicitud
 router.delete('/tecnica/obrasElectricas/eliminar/:id', verificarToken, solicitudController.eliminar);
 
 //Tipo de obras
-// router.get('/tecnica/obrasElectricas/tipoObras', verificarToken, tipoObraController.index);
-// router.post('/tecnica/obrasElectricas/tipoObras', verificarToken, tipoObraController.store);
-// router.put('/tecnica/obrasElectricas/tipoObras/:id', verificarToken, tipoObraController.update);
-// router.delete('/tecnica/obrasElectricas/tipoObra/:id', verificarToken, tipoObraController.destroy);
+router.get('/tecnica/obrasElectricas/tipoObras', verificarToken, tipoObraController.index);
+router.post('/tecnica/obrasElectricas/tipoObras', verificarToken, tipoObraController.store);
+router.put('/tecnica/obrasElectricas/tipoObras/:id', verificarToken, tipoObraController.update);
+router.delete('/tecnica/obrasElectricas/tipoObra/:id', verificarToken, tipoObraController.destroy);
 
 //controladores importados
 // const dashboardController = require('../controllers/dashboardController');
