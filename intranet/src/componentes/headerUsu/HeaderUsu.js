@@ -12,7 +12,7 @@ const HeaderUsu = () => {
         localStorage.removeItem('username');
         navigate('/Home');
     }
-    
+
     return (
         <div>
             <AppBar
@@ -35,6 +35,7 @@ const HeaderUsu = () => {
                 >
                     <Typography variant="body1">
                         Hola, {nombreUsuario}.
+                        console.log(nombreUsuario);
                     </Typography>
                     <Button sx={{ color: 'black', fontWeight: 'bold' }} onClick={CerrarSesion}>
                         <PersonIcon />
