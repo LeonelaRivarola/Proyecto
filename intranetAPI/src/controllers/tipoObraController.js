@@ -4,7 +4,7 @@ const tipoObraModel = require('../models/tipoObraModel');
 module.exports = {
     async index(req, res) {
         try {
-            const tipos = await tipoObraModel.findAll();
+            const tipos = await tipoObraModel.getAll();
             res.json(tipos);
         } catch (err) {
             console.error('Error al listar tipos de obra:', err);
