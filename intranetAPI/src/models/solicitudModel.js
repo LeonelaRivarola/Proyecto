@@ -1,6 +1,6 @@
 const { connectToAlum, sql } = require('../config/db');
 
-exports.obtenerSolicitudes = async () => {
+exports.getAll = async () => { //obtiene la solicitud
     const pool = await connectToAlum();
 
     const result = await pool.request().query(`
@@ -29,7 +29,7 @@ exports.obtenerSolicitudes = async () => {
     return result.recordset;
 };
 
-exports.crearSolicitud = async (data) => {
+exports.create = async (data) => {
     const {
         cuit, apellido, nombre, calle, altura, piso, dpto,
         localidad, celular, email, tipo, usuario
@@ -92,7 +92,7 @@ exports.crearSolicitud = async (data) => {
     return solicitudId;
 };
 
-exports.eliminarSolicitud = async (id) => {
+exports.remove = async (id) => {
     const pool = await connectToAlum();
     const result = await pool.request()
         .input('id', sql.Int, id)
