@@ -1,4 +1,5 @@
 const { connectToAlum, sql } = require('../config/db');
+const { connectToGeaCorpico, sql} = require('../config/db');
 
 exports.solicitudes = async (req, res) => {
     try {
@@ -177,5 +178,23 @@ exports.tiposOE = async (req, res) => {
         console.error('Error al obtener solicitudes:', err);
         res.status(500).json({ error: 'Error al obtener solicitudes' });
     }
+}
 
+exports.localidades = async (req, res) => {
+
+    try {
+        const pool = await connectToGeaCorpico();
+
+        const base = await pool.request().query('SELECT DB_NAME() AS base_actual');
+        console.log('Conectado a la base:', base.recordset[0].base_actual); // Debería decir: alum
+
+        const result = await pool.request().query(`
+                SELECT * FROM LOCALIDAD
+        `);
+
+        res.json(result.recordset);
+    } catch (error) {
+        console.error('Error al obtener localidades:', err);
+        res.status(500).json({ error: 'Error al obtener localidades' });
+    }
 }

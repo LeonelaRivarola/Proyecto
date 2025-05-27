@@ -12,7 +12,7 @@ router.get('/tecnica/obrasElectricas/solicitudes', verificarToken, solicitudCont
 router.post('/tecnica/obrasElectricas/nueva-solicitud',verificarToken, solicitudController.crearSolicitud);
 router.delete('/tecnica/obrasElectricas/eliminar/:id', verificarToken, solicitudController.eliminar);
 router.get('/tecnica/obrasElectricas/tiposOE',verificarToken, solicitudController.tiposOE);
-
+router.get('/tecnica/obrasElectricas/localidades', verificarToken, solicitudController.localidades);
 
 //controladores importados
 // const dashboardController = require('../controllers/dashboardController');
