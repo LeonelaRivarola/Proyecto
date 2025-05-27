@@ -102,15 +102,14 @@ const NuevaSolicitud = () => {
   }, []);
 
   return (
-    <Container maxWidth="false" sx={{ mt: 4 }}>
+    <Container maxWidth="true" sx={{  }}>
+      <Typography variant="h5" align="left" fontWeight="bold" gutterBottom sx={{paddingBottom: 2}}>
+        Nueva Solicitud 
+      </Typography>
       <Card>
         <CardContent>
-          <Typography variant="h4" gutterBottom color="black">
-            Nueva Solicitud
-          </Typography>
-
           {/* Sección: Conexión */}
-          <Paper variant="outlined" sx={{ p: 2, mb: 3 }}>
+          <Paper variant="outlined" sx={{ p: 1, mb: 1 }}>
             <Typography variant="h6" gutterBottom>Conexión</Typography>
             <Grid container spacing={2}>
               <Grid item xs={12} md={6}>
