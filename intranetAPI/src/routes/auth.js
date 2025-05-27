@@ -3,6 +3,7 @@ const router = express.Router()
 const authController = require('../controllers/authController');
 const solicitudController = require('../controllers/solicitudController');
 const verificarToken = require('../middlewares/authMiddleware');
+const tipoObraController = require('../controllers/tipoObraController');
 
 //
 router.post('/login', authController.login);
@@ -12,7 +13,11 @@ router.get('/tecnica/obrasElectricas/solicitudes', verificarToken, solicitudCont
 router.post('/tecnica/obrasElectricas/nueva-solicitud',verificarToken, solicitudController.crearSolicitud);
 router.delete('/tecnica/obrasElectricas/eliminar/:id', verificarToken, solicitudController.eliminar);
 
-
+//Tipo de obras
+router.get('/tecnica/obrasElectricas/tipoObras', verificarToken, tipoObraController.index);
+router.post('/tecnica/obrasElectricas/tipoObras', verificarToken, tipoObraController.store);
+router.put('/tecnica/obrasElectricas/tipoObras/:id', verificarToken, tipoObraController.update);
+router.delete('/tecnica/obrasElectricas/tipoObra/:id', verificarToken, tipoObraController.destroy);
 
 //controladores importados
 // const dashboardController = require('../controllers/dashboardController');
