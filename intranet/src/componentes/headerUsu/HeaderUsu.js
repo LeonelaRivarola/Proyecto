@@ -37,7 +37,7 @@ const HeaderUsu = () => {
                         Hola, {nombreUsuario}.
                         console.log(nombreUsuario);
                     </Typography>
-                    <Button sx={{ color: 'black', fontWeight: 'bold' }} onClick={CerrarSesion}>
+                    <Button sx={{ color: 'black' }} onClick={CerrarSesion}>
                         <PersonIcon />
                         Salir
                     </Button>
