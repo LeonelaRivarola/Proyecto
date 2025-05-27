@@ -31,7 +31,7 @@ exports.login = async (req, res) => {
                 { expiresIn: '1h' }
             );
             console.log("result: ", result);
-            return res.json({ token, username: user.USU_CODIGO }); //fijarme si anda
+            return res.json({ token, username: user.USU_CODIGO }); 
         } else {
             return res.status(401).json({ error: 'Contraseña incorrecta' });
         }
