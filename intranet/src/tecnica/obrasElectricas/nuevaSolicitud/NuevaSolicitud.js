@@ -82,26 +82,6 @@ const NuevaSolicitud = () => {
       });
 
       const data = await response.json();
-      console.log("Solicitud enviada correctamente:", data);
-      alert("Solicitud guardada exitosamente");
-
-      // Limpiar el formulario 
-      setFormData({
-        cuit: "",
-        apellido: "",
-        nombre: "",
-        calle: "",
-        altura: "",
-        piso: "",
-        dpto: "",
-        localidad: "",
-        celular: "",
-        email: "",
-        tipo: "",
-      });
-
-      setTipos([]);
-
       navigate('/home/solicitudes');
 
     } catch (err) {
