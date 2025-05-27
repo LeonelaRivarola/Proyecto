@@ -13,6 +13,7 @@ import {
   FormControl,
   Alert,
 } from "@mui/material";
+import { useNavigate } from 'react-router-dom';
 import { API_URL } from '../../../config';
 
 const NuevaSolicitud = () => {
@@ -281,7 +282,7 @@ const NuevaSolicitud = () => {
                 variant="contained"
                 color="error"
                 sx={{ mx: 2 }}
-                onClick={() => (window.location.href = "/solicitudes")}
+                onClick={() => (navigate('/solicitudes'))}
               >
                 Cancelar
               </Button>
