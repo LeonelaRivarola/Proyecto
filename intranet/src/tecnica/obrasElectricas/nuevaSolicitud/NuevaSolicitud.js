@@ -29,15 +29,17 @@ const NuevaSolicitud = () => {
 
   const [formData, setFormData] = useState({
     cuit: "",
-    nombre: "",
     apellido: "",
-    email: "",
+    nombre: "",
     calle: "",
-    localidad: "",
     altura: "",
     piso: "",
     dpto: "",
+    localidad: "",
     celular: "",
+    email: "",
+    tipo: "",
+    usuario: localStorage.getItem('username')
   });
 
   const defaultValues = {
@@ -66,9 +68,37 @@ const NuevaSolicitud = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`${API_URL}/api/tecnica/obrasElectricas/nueva-solicitud`, {
+        method: POST,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+      console.log("Solicitud enviada correctamente:", data);
+      alert("Solicitud guardada exitosamente");
+
+      // Limpiar el formulario 
+      setFormData({
+        cuit: "",
+        nombre: "",
+        direccion: "",
+        localidad: "",
+        telefono: "",
+        correo: "",
+      });
+
+    } catch (err) {
+      console.err("Error al enviar la solicitud:", err);
+      alert("Error al guardar la solicitud");
+    }
   };
 
   useEffect(() => {
@@ -102,9 +132,9 @@ const NuevaSolicitud = () => {
   }, []);
 
   return (
-    <Container maxWidth="true" sx={{  }}>
-      <Typography variant="h5" align="left" fontWeight="bold" gutterBottom sx={{paddingBottom: 2}}>
-        Nueva Solicitud 
+    <Container maxWidth="true" sx={{}}>
+      <Typography variant="h5" align="left" fontWeight="bold" gutterBottom sx={{ paddingBottom: 2 }}>
+        Nueva Solicitud
       </Typography>
       <Card>
         <CardContent>
@@ -196,6 +226,7 @@ const NuevaSolicitud = () => {
                     label="Calle"
                     name="calle"
                     value={formData.calle}
+                    required
                     onChange={handleChange}
                     fullWidth
                   />
@@ -223,6 +254,7 @@ const NuevaSolicitud = () => {
                     label="Altura"
                     name="altura"
                     type="number"
+                    required
                     value={formData.altura}
                     onChange={handleChange}
                     fullWidth
@@ -233,6 +265,7 @@ const NuevaSolicitud = () => {
                     label="Piso"
                     name="piso"
                     value={formData.piso}
+                    required
                     onChange={handleChange}
                     fullWidth
                   />
@@ -241,6 +274,7 @@ const NuevaSolicitud = () => {
                   <TextField
                     label="Dpto"
                     name="dpto"
+                    required
                     value={formData.dpto}
                     onChange={handleChange}
                     fullWidth
@@ -256,6 +290,7 @@ const NuevaSolicitud = () => {
                 <Grid item xs={12} md={4}>
                   <TextField
                     label="Celular"
+                    required
                     name="celular"
                     value={formData.celular}
                     onChange={handleChange}
@@ -267,6 +302,7 @@ const NuevaSolicitud = () => {
                     label="Email"
                     name="email"
                     type="email"
+                    required
                     value={formData.email}
                     onChange={handleChange}
                     fullWidth
