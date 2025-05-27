@@ -1,5 +1,4 @@
-const { connectToAlum, sql } = require('../config/db');
-const { connectToGeaCorpico, sql} = require('../config/db');
+const { connectToAlum, sql, connectToGeaCorpico } = require('../config/db');
 
 exports.solicitudes = async (req, res) => {
     try {
