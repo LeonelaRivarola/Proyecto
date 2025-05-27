@@ -90,11 +90,22 @@ const NuevaSolicitud = () => {
     fetchTiposOE();
   }, []);
 
+  useEffect(() => {
+    setLocalidades([
+      { LOC_ID: 9966, LOC_DESCRIPCION: "Dorila" },
+      { LOC_ID: 10041, LOC_DESCRIPCION: "Gral Pico" },
+      { LOC_ID: 10303, LOC_DESCRIPCION: "Metileo" },
+      { LOC_ID: 10341, LOC_DESCRIPCION: "Speluzzi" },
+      { LOC_ID: 10349, LOC_DESCRIPCION: "Trebolares" },
+      { LOC_ID: 10366, LOC_DESCRIPCION: "Vertiz" },
+    ]);
+  }, []);
+
   return (
-    <Container maxWidth="md" sx={{ mt: 4 }}>
+    <Container maxWidth="false" sx={{ mt: 4 }}>
       <Card>
         <CardContent>
-          <Typography variant="h4" gutterBottom color="primary">
+          <Typography variant="h4" gutterBottom color="black">
             Nueva Solicitud
           </Typography>
 
@@ -102,7 +113,7 @@ const NuevaSolicitud = () => {
           <Paper variant="outlined" sx={{ p: 2, mb: 3 }}>
             <Typography variant="h6" gutterBottom>Conexión</Typography>
             <Grid container spacing={2}>
-              <Grid item xs={12} md={4}>
+              <Grid item xs={12} md={6}>
                 <FormControl fullWidth>
                   <InputLabel>Tipo</InputLabel>
                   <Select
