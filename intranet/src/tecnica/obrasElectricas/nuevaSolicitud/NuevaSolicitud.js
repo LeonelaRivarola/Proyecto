@@ -283,7 +283,7 @@ const NuevaSolicitud = () => {
                   variant="outlined"
                   color="error"
                   startIcon={<Cancel />}
-                  onClick={() => navigate('/solicitudes')}
+                  onClick={() => navigate('/home/solicitudes')}
                 >
                   Cancelar
                 </Button>
