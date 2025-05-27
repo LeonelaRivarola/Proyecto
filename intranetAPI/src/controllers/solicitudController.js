@@ -28,7 +28,7 @@ module.exports = {
             const { id } = req.params;
             const rowsAffected = await solicitudModel.remove(id);
 
-            if (result.rowsAffected[0] === 0) {
+            if (rowsAffected === 0) {
                 return res.status(404).json({ error: 'Solicitud no encontrada.' });
             }
 

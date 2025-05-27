@@ -21,9 +21,9 @@ router.delete('/tecnica/obrasElectricas/eliminar-tipoObra/:id', verificarToken, 
 
 
 // Presupuestos
-router.get('/tecnica/obrasElectricas/presupuestos', verificarToken, presupuestoController.index);
-router.post('/tecnica/obrasElectricas/presupuestos/guardar', verificarToken, presupuestoController.store);
-router.get('/tecnica/obrasElectricas/presupuestos/mostrar/:presupuesto', verificarToken, presupuestoController.show);
+// router.get('/tecnica/obrasElectricas/presupuestos', verificarToken, presupuestoController.index);
+// router.post('/tecnica/obrasElectricas/presupuestos/guardar', verificarToken, presupuestoController.store);
+// router.get('/tecnica/obrasElectricas/presupuestos/mostrar/:presupuesto', verificarToken, presupuestoController.show);
 
 // // Route:: get('tecnica/obrasElectricas/presupuestos/crear/{solicitud}', [PresupuestoController:: class, 'create']) -> name('presupuestar-solicitud');
 // // Route:: get('tecnica/obrasElectricas/presupuestos/documento/{solicitud}', [PresupuestoController:: class, 'abrirPresupuesto']) -> name('abrir-presupuesto');
