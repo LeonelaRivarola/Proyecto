@@ -73,7 +73,7 @@ const NuevaSolicitud = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await fetch(`${API_URL}/api/tecnica/obrasElectricas/nueva-solicitud`, {
-        method: POST,
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
