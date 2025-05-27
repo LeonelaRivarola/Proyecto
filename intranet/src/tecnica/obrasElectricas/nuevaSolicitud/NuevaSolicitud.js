@@ -84,7 +84,7 @@ const NuevaSolicitud = () => {
           }
         });
         const data = await respuesta.json();
-        setTipo(data);
+        setTipos(data);
       } catch (err) {
         console.log(err);
       }
