@@ -11,10 +11,12 @@ import {
   Button,
   InputLabel,
   FormControl,
-  Alert,
+  Box,
+  Paper,
 } from "@mui/material";
 import { useNavigate } from 'react-router-dom';
 import { API_URL } from '../../../config';
+import { Send, Cancel } from '@mui/icons-material';
 
 const NuevaSolicitud = () => {
   const navigate = useNavigate();
@@ -24,6 +26,7 @@ const NuevaSolicitud = () => {
   const [descripcion, setDescripcion] = useState("");
   const [interno, setInterno] = useState(false);
   const [formEnabled, setFormEnabled] = useState(false);
+
   const [formData, setFormData] = useState({
     cuit: "",
     nombre: "",
@@ -52,17 +55,10 @@ const NuevaSolicitud = () => {
     setInterno(esInterno);
     setFormEnabled(true);
 
-    if (esInterno) {
-      setFormData((prev) => ({ ...prev, ...defaultValues }));
-    } else {
-      setFormData((prev) => ({
-        ...prev,
-        cuit: "",
-        nombre: "",
-        apellido: "",
-        email: "",
-      }));
-    }
+    setFormData(prev => ({
+      ...prev,
+      ...(esInterno ? defaultValues : { cuit: "", nombre: "", apellido: "", email: "" })
+    }));
   };
 
   const handleChange = (e) => {
@@ -95,204 +91,209 @@ const NuevaSolicitud = () => {
   }, []);
 
   return (
-    <Container maxWidth="xl" sx={{ mt: 4 }}>
+    <Container maxWidth="md" sx={{ mt: 4 }}>
       <Card>
         <CardContent>
-          <Typography variant="h5">Nueva Solicitud</Typography>
+          <Typography variant="h4" gutterBottom color="primary">
+            Nueva Solicitud
+          </Typography>
 
-          {/* Conexión */}
-          <Grid container spacing={2} sx={{ mt: 2 }}>
-            <Grid item xs={12}>
-              <Typography variant="h6">Conexión</Typography>
-            </Grid>
-            <Grid item xs={12} md={2}>
-              <FormControl fullWidth>
-                <InputLabel>Tipos</InputLabel>
-                <Select
-                  value={tipo}
-                  onChange={handleTipoChange}
-                  label="Tipos"
-                  required
-                >
-                  <MenuItem value="" disabled>
-                    Seleccione
-                  </MenuItem>
-                  {tipos.map((tipoItem) => (
-                    <MenuItem key={tipoItem.TOE_ID} value={tipoItem.TOE_ID}>
-                      {tipoItem.TOE_ABREVIATURA}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={12} md={10}>
-              <TextField
-                label="Descripción"
-                value={descripcion}
-                fullWidth
-                InputProps={{ readOnly: true }}
-              />
-            </Grid>
-          </Grid>
-
-          {/* Titular */}
-          <form onSubmit={handleSubmit}>
-            <Grid
-              container
-              spacing={2}
-              sx={{
-                mt: 2,
-                pointerEvents: formEnabled ? "auto" : "none",
-                opacity: formEnabled ? 1 : 0.5,
-              }}
-            >
-              <Grid item xs={12}>
-                <Typography variant="h6">Titular</Typography>
-              </Grid>
-              <Grid item xs={12} md={2}>
-                <TextField
-                  label="DNI/CUIT"
-                  name="cuit"
-                  value={formData.cuit}
-                  onChange={handleChange}
-                  fullWidth
-                  InputProps={{ readOnly: interno }}
-                />
-              </Grid>
-              <Grid item xs={12} md={5}>
-                <TextField
-                  label="Nombre"
-                  name="nombre"
-                  value={formData.nombre}
-                  onChange={handleChange}
-                  fullWidth
-                  InputProps={{ readOnly: interno }}
-                />
-              </Grid>
-              <Grid item xs={12} md={5}>
-                <TextField
-                  label="Apellido"
-                  name="apellido"
-                  value={formData.apellido}
-                  onChange={handleChange}
-                  fullWidth
-                  InputProps={{ readOnly: interno }}
-                />
-              </Grid>
-
-              {/* Dirección */}
-              <Grid item xs={12}>
-                <Typography variant="h6">Dirección</Typography>
-              </Grid>
-              <Grid item xs={12} md={8}>
-                <TextField
-                  label="Calle"
-                  name="calle"
-                  value={formData.calle}
-                  onChange={handleChange}
-                  fullWidth
-                />
-              </Grid>
+          {/* Sección: Conexión */}
+          <Paper variant="outlined" sx={{ p: 2, mb: 3 }}>
+            <Typography variant="h6" gutterBottom>Conexión</Typography>
+            <Grid container spacing={2}>
               <Grid item xs={12} md={4}>
                 <FormControl fullWidth>
-                  <InputLabel>Localidad</InputLabel>
+                  <InputLabel>Tipo</InputLabel>
                   <Select
-                    name="localidad"
-                    value={formData.localidad}
-                    onChange={handleChange}
+                    value={tipo}
+                    onChange={handleTipoChange}
+                    label="Tipo"
                     required
                   >
-                    <MenuItem value="" disabled>
-                      Seleccione localidad
-                    </MenuItem>
-                    {localidades.map((loc) => (
-                      <MenuItem key={loc.LOC_ID} value={loc.LOC_ID}>
-                        {loc.LOC_DESCRIPCION}
+                    <MenuItem value="" disabled>Seleccione</MenuItem>
+                    {tipos.map((tipoItem) => (
+                      <MenuItem key={tipoItem.TOE_ID} value={tipoItem.TOE_ID}>
+                        {tipoItem.TOE_ABREVIATURA}
                       </MenuItem>
                     ))}
                   </Select>
                 </FormControl>
               </Grid>
-              <Grid item xs={12} md={4}>
-                <TextField
-                  label="Altura"
-                  name="altura"
-                  type="number"
-                  value={formData.altura}
-                  onChange={handleChange}
-                  fullWidth
-                />
-              </Grid>
-              <Grid item xs={12} md={4}>
-                <TextField
-                  label="Piso"
-                  name="piso"
-                  value={formData.piso}
-                  onChange={handleChange}
-                  fullWidth
-                />
-              </Grid>
-              <Grid item xs={12} md={4}>
-                <TextField
-                  label="Dpto"
-                  name="dpto"
-                  value={formData.dpto}
-                  onChange={handleChange}
-                  fullWidth
-                />
-              </Grid>
-
-              {/* Contacto */}
-              <Grid item xs={12}>
-                <Typography variant="h6">Contacto</Typography>
-              </Grid>
-              <Grid item xs={12} md={4}>
-                <TextField
-                  label="Celular"
-                  name="celular"
-                  value={formData.celular}
-                  onChange={handleChange}
-                  fullWidth
-                />
-              </Grid>
               <Grid item xs={12} md={8}>
                 <TextField
-                  label="Email"
-                  name="email"
-                  type="email"
-                  value={formData.email}
-                  onChange={handleChange}
+                  label="Descripción"
+                  value={descripcion}
                   fullWidth
-                  InputProps={{ readOnly: interno }}
+                  slotProps={{ input: { readOnly: true } }}
                 />
               </Grid>
             </Grid>
+          </Paper>
+
+          {/* Sección: Formulario */}
+          <Box
+            component="form"
+            onSubmit={handleSubmit}
+            sx={{
+              pointerEvents: formEnabled ? "auto" : "none",
+              opacity: formEnabled ? 1 : 0.5,
+            }}
+          >
+            {/* Titular */}
+            <Paper variant="outlined" sx={{ p: 2, mb: 3 }}>
+              <Typography variant="h6" gutterBottom>Titular</Typography>
+              <Grid container spacing={2}>
+                <Grid item xs={12} md={3}>
+                  <TextField
+                    label="DNI/CUIT"
+                    name="cuit"
+                    value={formData.cuit}
+                    onChange={handleChange}
+                    fullWidth
+                    slotProps={{ input: { readOnly: true } }}
+                  />
+                </Grid>
+                <Grid item xs={12} md={4.5}>
+                  <TextField
+                    label="Nombre"
+                    name="nombre"
+                    value={formData.nombre}
+                    onChange={handleChange}
+                    fullWidth
+                    slotProps={{ input: { readOnly: true } }}
+                  />
+                </Grid>
+                <Grid item xs={12} md={4.5}>
+                  <TextField
+                    label="Apellido"
+                    name="apellido"
+                    value={formData.apellido}
+                    onChange={handleChange}
+                    fullWidth
+                    slotProps={{ input: { readOnly: true } }}
+                  />
+                </Grid>
+              </Grid>
+            </Paper>
+
+            {/* Dirección */}
+            <Paper variant="outlined" sx={{ p: 2, mb: 3 }}>
+              <Typography variant="h6" gutterBottom>Dirección</Typography>
+              <Grid container spacing={2}>
+                <Grid item xs={12} md={8}>
+                  <TextField
+                    label="Calle"
+                    name="calle"
+                    value={formData.calle}
+                    onChange={handleChange}
+                    fullWidth
+                  />
+                </Grid>
+                <Grid item xs={12} md={4}>
+                  <FormControl fullWidth>
+                    <InputLabel>Localidad</InputLabel>
+                    <Select
+                      name="localidad"
+                      value={formData.localidad}
+                      onChange={handleChange}
+                      required
+                    >
+                      <MenuItem value="" disabled>Seleccione</MenuItem>
+                      {localidades.map((loc) => (
+                        <MenuItem key={loc.LOC_ID} value={loc.LOC_ID}>
+                          {loc.LOC_DESCRIPCION}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12} md={4}>
+                  <TextField
+                    label="Altura"
+                    name="altura"
+                    type="number"
+                    value={formData.altura}
+                    onChange={handleChange}
+                    fullWidth
+                  />
+                </Grid>
+                <Grid item xs={6} md={4}>
+                  <TextField
+                    label="Piso"
+                    name="piso"
+                    value={formData.piso}
+                    onChange={handleChange}
+                    fullWidth
+                  />
+                </Grid>
+                <Grid item xs={6} md={4}>
+                  <TextField
+                    label="Dpto"
+                    name="dpto"
+                    value={formData.dpto}
+                    onChange={handleChange}
+                    fullWidth
+                  />
+                </Grid>
+              </Grid>
+            </Paper>
+
+            {/* Contacto */}
+            <Paper variant="outlined" sx={{ p: 2, mb: 3 }}>
+              <Typography variant="h6" gutterBottom>Contacto</Typography>
+              <Grid container spacing={2}>
+                <Grid item xs={12} md={4}>
+                  <TextField
+                    label="Celular"
+                    name="celular"
+                    value={formData.celular}
+                    onChange={handleChange}
+                    fullWidth
+                  />
+                </Grid>
+                <Grid item xs={12} md={8}>
+                  <TextField
+                    label="Email"
+                    name="email"
+                    type="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    fullWidth
+                    slotProps={{ input: { readOnly: true } }}
+                  />
+                </Grid>
+              </Grid>
+            </Paper>
 
             {/* Botones */}
-            <Grid container justifyContent="center" sx={{ mt: 3 }}>
-              <Button
-                type="submit"
-                variant="contained"
-                color="warning"
-                sx={{ mx: 2 }}
-              >
-                Crear
-              </Button>
-              <Button
-                type="button"
-                variant="contained"
-                color="error"
-                sx={{ mx: 2 }}
-                onClick={() => (navigate('/solicitudes'))}
-              >
-                Cancelar
-              </Button>
+            <Grid container justifyContent="center" spacing={2}>
+              <Grid item>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="success"
+                  startIcon={<Send />}
+                >
+                  Crear
+                </Button>
+              </Grid>
+              <Grid item>
+                <Button
+                  variant="outlined"
+                  color="error"
+                  startIcon={<Cancel />}
+                  onClick={() => navigate('/solicitudes')}
+                >
+                  Cancelar
+                </Button>
+              </Grid>
             </Grid>
-          </form>
+          </Box>
         </CardContent>
       </Card>
     </Container>
-  )
-}
+  );
+};
 
-export default NuevaSolicitud
+export default NuevaSolicitud;
