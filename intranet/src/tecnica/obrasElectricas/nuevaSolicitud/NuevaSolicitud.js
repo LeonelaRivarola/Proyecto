@@ -17,6 +17,7 @@ import { useNavigate } from 'react-router-dom';
 import { API_URL } from '../../../config';
 
 const NuevaSolicitud = () => {
+  const navigate = useNavigate();
   const [localidades, setLocalidades] = useState([]);
   const [tipos, setTipos] = useState([]);
   const [tipo, setTipo] = useState([]);
@@ -118,7 +119,7 @@ const NuevaSolicitud = () => {
                   </MenuItem>
                   {tipos.map((tipoItem) => (
                     <MenuItem key={tipoItem.TOE_ID} value={tipoItem.TOE_ID}>
-                      {tipoItem.TOE_ABREVIATURA} - {tipoItem.TOE_DESCRIPCION}
+                      {tipoItem.TOE_ABREVIATURA}
                     </MenuItem>
                   ))}
                 </Select>
