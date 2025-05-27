@@ -10,7 +10,7 @@ const HeaderUsu = () => {
     const CerrarSesion = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('username');
-        navigate('/Home');
+        navigate('/');
     }
 
     return (
@@ -34,11 +34,11 @@ const HeaderUsu = () => {
                     }}
                 >
                     <Typography variant="body1">
-                        Hola, {nombreUsuario}.
-                        console.log(nombreUsuario);
+                        Hola, {nombreUsuario}
+                       
                     </Typography>
                     <Button sx={{ color: 'black' }} onClick={CerrarSesion}>
-                        <PersonIcon />
+                        <PersonIcon sx={{paddingRight: 1}} />
                         Salir
                     </Button>
                 </Box>
