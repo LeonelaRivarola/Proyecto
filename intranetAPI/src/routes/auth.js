@@ -11,7 +11,7 @@ router.post('/login', authController.login);
 router.get('/tecnica/obrasElectricas/solicitudes', verificarToken, solicitudController.solicitudes);
 router.post('/tecnica/obrasElectricas/nueva-solicitud',verificarToken, solicitudController.crearSolicitud);
 router.delete('/tecnica/obrasElectricas/eliminar/:id', verificarToken, solicitudController.eliminar);
-
+router.get('/tecnica/obrasElectricas/tiposOE',verificarToken, solicitudController.tiposOE);
 
 
 //controladores importados

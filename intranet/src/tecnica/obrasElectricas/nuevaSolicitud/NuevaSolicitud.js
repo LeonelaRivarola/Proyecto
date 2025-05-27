@@ -1,4 +1,3 @@
-import React from 'react'
 import React, { useEffect, useState } from 'react'
 import {
   Container,
@@ -14,9 +13,12 @@ import {
   FormControl,
   Alert,
 } from "@mui/material";
+import { API_URL } from '../../../config';
 
 const NuevaSolicitud = () => {
-  const [tipo, setTipo] = useState("");
+  const [localidades, setLocalidades] = useState([]);
+  const [tipos, setTipos] = useState([]);
+  const [tipo, setTipo] = useState([]);
   const [descripcion, setDescripcion] = useState("");
   const [interno, setInterno] = useState(false);
   const [formEnabled, setFormEnabled] = useState(false);
@@ -43,8 +45,8 @@ const NuevaSolicitud = () => {
   const handleTipoChange = (e) => {
     const selectedTipo = tipos.find((t) => t.TOE_ID === e.target.value);
     setTipo(e.target.value);
-    setDescripcion(selectedTipo.TOE_DESCRIPCION || "");
-    const esInterno = selectedTipo.TOE_INTERNO === "S";
+    setDescripcion(selectedTipo?.TOE_DESCRIPCION || "");
+    const esInterno = selectedTipo?.TOE_INTERNO === "S";
     setInterno(esInterno);
     setFormEnabled(true);
 
@@ -71,6 +73,25 @@ const NuevaSolicitud = () => {
     console.log(formData);
   };
 
+  useEffect(() => {
+    const fetchTiposOE = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const respuesta = await fetch(`${API_URL}/api/tecnica/obrasElectricas/tiposOE`, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        const data = await respuesta.json();
+        setTipo(data);
+      } catch (err) {
+        setError(err);
+      }
+    }
+    fetchTiposOE();
+  }, []);
+
   return (
     <Container maxWidth="xl" sx={{ mt: 4 }}>
       <Card>
@@ -94,12 +115,9 @@ const NuevaSolicitud = () => {
                   <MenuItem value="" disabled>
                     Seleccione
                   </MenuItem>
-                  {tipos.map((tipo) => (
-                    <MenuItem
-                      key={tipo.TOE_ID}
-                      value={tipo.TOE_ID}
-                    >
-                      {tipo.TOE_ABREVIATURA}
+                  {tipos.map((tipoItem) => (
+                    <MenuItem key={tipoItem.TOE_ID} value={tipoItem.TOE_ID}>
+                      {tipoItem.TOE_ABREVIATURA} - {tipoItem.TOE_DESCRIPCION}
                     </MenuItem>
                   ))}
                 </Select>

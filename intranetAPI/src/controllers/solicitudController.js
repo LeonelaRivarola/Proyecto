@@ -106,13 +106,13 @@ exports.crearSolicitud = async (req, res) => {
                 )
             `);
 
-            const solicitudId = result.recordset[0].SOE_ID;
+        const solicitudId = result.recordset[0].SOE_ID;
 
-            const tipoObra = await pool.request()
-                .input('tipo', sql.Int, tipo)
-                .query('SELECT TOE_INTERNO FROM TIPO_OBRA_ELECTRICA WHERE TOE_ID = @tipo');
+        const tipoObra = await pool.request()
+            .input('tipo', sql.Int, tipo)
+            .query('SELECT TOE_INTERNO FROM TIPO_OBRA_ELECTRICA WHERE TOE_ID = @tipo');
 
-            const esInterno = tipoObra.recordset[0]?.TOE_INTERNO === 'S';
+        const esInterno = tipoObra.recordset[0]?.TOE_INTERNO === 'S';
 
         // Determinar estado
         const estadoId = (cuit === '30545719386' && esInterno) ? 5 : 4;
@@ -141,7 +141,7 @@ exports.crearSolicitud = async (req, res) => {
 
 exports.eliminar = async (req, res) => {
 
-    try{
+    try {
         const { id } = req.params;
 
         const pool = await connectToAlum();
@@ -154,8 +154,28 @@ exports.eliminar = async (req, res) => {
         }
 
         res.json({ message: 'Solicitud eliminada correctamente.' });
-    }catch(error) {
+    } catch (error) {
         console.error('Error al eliminar la solicitud:', error);
         res.status(500).json({ error: 'Error al eliminar la solicitud.' });
     }
+}
+
+exports.tiposOE = async (req, res) => {
+
+    try {
+        const pool = await connectToAlum();
+
+        const base = await pool.request().query('SELECT DB_NAME() AS base_actual');
+        console.log('Conectado a la base:', base.recordset[0].base_actual); // Debería decir: alum
+
+        const result = await pool.request().query(`
+                SELECT * FROM TIPO_OBRA_ELECTRICA
+        `);
+
+        res.json(result.recordset);
+    } catch (error) {
+        console.error('Error al obtener solicitudes:', err);
+        res.status(500).json({ error: 'Error al obtener solicitudes' });
+    }
+
 }
