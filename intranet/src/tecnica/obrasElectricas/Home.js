@@ -38,6 +38,7 @@ const Home = () => {
             flexGrow: 1,
             overflowY: 'auto',
             padding: 2,
+            backgroundColo: 'grey'
           }}
         >
           <Outlet />

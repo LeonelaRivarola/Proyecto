@@ -1,7 +1,18 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { AppBar, Toolbar, Box, Typography, Button } from '@mui/material'
+import PersonIcon from '@mui/icons-material/Person';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 const HeaderUsu = () => {
+    const nombreUsuario = localStorage.getItem('username');
+    const navigate = useNavigate();
+
+    const CerrarSesion = () => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('username');
+        navigate('/Home');
+    }
+    
     return (
         <div>
             <AppBar
@@ -11,7 +22,7 @@ const HeaderUsu = () => {
                 sx={{
                     boxShadow: 'none',
                     border: 'none',
-                    padding: '8px 16px', 
+                    padding: '8px 16px',
                 }}
             >
                 <Box
@@ -23,9 +34,10 @@ const HeaderUsu = () => {
                     }}
                 >
                     <Typography variant="body1">
-                        Hola, username.
+                        Hola, {nombreUsuario}.
                     </Typography>
-                    <Button sx={{ color: 'black' }}>
+                    <Button sx={{ color: 'black', fontWeight: 'bold' }} onClick={CerrarSesion}>
+                        <PersonIcon />
                         Salir
                     </Button>
                 </Box>
