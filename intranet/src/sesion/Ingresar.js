@@ -37,7 +37,7 @@ const Ingresar = () => {
             const response = await axios.post(`${API_URL}/api/login`, { username, password });
 
             localStorage.setItem('token', response.data.token);
-            console.log(response.data);
+            console.log("USERNAME:" + response.data.username);
             navigate('/Home');
 
         } catch (err) {

@@ -37,6 +37,8 @@ const Solicitudes = () => {
     }
   };
 
+  
+
   useEffect(() => {
     const fetchSolicitudes = async () => {
       try {
