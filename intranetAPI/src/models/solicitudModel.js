@@ -73,8 +73,7 @@ exports.create = async (data) => {
         .input('tipo', sql.Int, tipo)
         .query('SELECT TOE_INTERNO FROM TIPO_OBRA_ELECTRICA WHERE TOE_ID = @tipo');
 
-    const esInterno = tipoObra.recordset[0]?.TOE_INTERNO === 'S';
-    const estadoId = (cuit === '30545719386' && esInterno) ? 5 : 4;
+    const estadoId = 4; // Siempre inicia en estado "Iniciada"
 
     await pool.request()
         .input('solicitudId', sql.Int, solicitudId)
