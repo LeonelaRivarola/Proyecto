@@ -88,12 +88,21 @@ const NuevaSolicitud = () => {
       // Limpiar el formulario 
       setFormData({
         cuit: "",
+        apellido: "",
         nombre: "",
-        direccion: "",
+        calle: "",
+        altura: "",
+        piso: "",
+        dpto: "",
         localidad: "",
-        telefono: "",
-        correo: "",
+        celular: "",
+        email: "",
+        tipo: "",
       });
+
+      setTipos([]);
+
+      navigate('/home/solicitudes');
 
     } catch (err) {
       console.err("Error al enviar la solicitud:", err);
