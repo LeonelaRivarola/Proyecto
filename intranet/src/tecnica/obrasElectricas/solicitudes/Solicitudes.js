@@ -92,7 +92,7 @@ const Solicitudes = () => {
   }
 
   return (
-    <Container maxWidth="lg" sx={{  }}>
+    <Container maxWidth="md" sx={{  }}>
       <Typography variant="h4" align="left" fontWeight="bold" gutterBottom>
         Solicitudes
       </Typography>
@@ -117,7 +117,7 @@ const Solicitudes = () => {
         </FormControl>
       </Box>
 
-      <TableContainer component={Paper} sx={{ borderRadius: 5 }}>
+      <TableContainer component={Paper} sx={{ borderRadius: 5, minWidth: 1200 }}>
         <Table>
           <TableHead sx={{ backgroundColor: 'green' }}>
             <TableRow>
