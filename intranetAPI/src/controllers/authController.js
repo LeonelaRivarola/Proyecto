@@ -30,7 +30,7 @@ exports.login = async (req, res) => {
                 SECRET_KEY,
                 { expiresIn: '1h' }
             );
-            return res.json({ token, username: user.USU_CODIGO }); 
+            return res.json({ token, username }); 
         } else {
             return res.status(401).json({ error: 'Contraseña incorrecta' });
         }

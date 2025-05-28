@@ -11,9 +11,10 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material';
+import { API_URL } from '../../../config';
 
 
-const tipoDeObras = () => {
+const TipoDeObras = () => {
   const [tipoObras, setTipoObras] = useState([]);
 
   useEffect(() => {
@@ -33,6 +34,8 @@ const tipoDeObras = () => {
         console.log(err);
       }
     }
+
+    fetchTiposOE();
   }, [])
 
   return (
@@ -84,10 +87,10 @@ const tipoDeObras = () => {
           </TableHead>
           <TableBody>
             {tipoObras.map((fila) => (
-              <TableRow key={fila.id}>
-                <TableCell>{fila.abreviatura}</TableCell>
-                <TableCell>{fila.descripcion}</TableCell>
-                <TableCell>{fila.interno}</TableCell>
+              <TableRow key={fila.TOE_ID}>
+                <TableCell>{fila.TOE_ABREVIATURA}</TableCell>
+                <TableCell>{fila.TOE_DESCRIPCION}</TableCell>
+                <TableCell>{fila.TOE_INTERNO}</TableCell>
                 <TableCell>
                   <Button variant="outlined" size="small">Editar</Button>
                 </TableCell>
@@ -100,4 +103,4 @@ const tipoDeObras = () => {
   )
 }
 
-export default tipoDeObras
+export default TipoDeObras

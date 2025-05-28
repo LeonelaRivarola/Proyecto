@@ -9,10 +9,9 @@ import {
 import Ingresar from "./sesion/Ingresar";
 import Home from './tecnica/obrasElectricas/Home'
 import EmailsTec from './tecnica/obrasElectricas/emails/EmailSolicitudes'
-import Observaciones from './tecnica/obrasElectricas/observaciones/Observaciones'
 import Presupuestos from './tecnica/obrasElectricas/presupuestos/Presupuestos'
 import Solicitudes from './tecnica/obrasElectricas/solicitudes/Solicitudes'
-import TiposDeObra from './tecnica/obrasElectricas/tiposDeObras/tipoDeObras'
+import TiposDeObra from './tecnica/obrasElectricas/tiposDeObras/TipoDeObras'
 import NuevaSolicitud from "./tecnica/obrasElectricas/nuevaSolicitud/NuevaSolicitud";
 import EmailSolicitudes from "./tecnica/obrasElectricas/emails/EmailSolicitudes";
 import SesionProtegida from "./sesion/SesionProtegida";
