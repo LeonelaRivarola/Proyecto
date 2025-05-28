@@ -94,7 +94,8 @@ const NuevaSolicitud = () => {
     const fetchTiposOE = async () => {
       try {
         const token = localStorage.getItem('token');
-        const respuesta = await fetch(`${API_URL}/api/tecnica/obrasElectricas/tiposOE`, {
+        const respuesta = await fetch(`${API_URL}/api/tecnica/obrasElectricas/tipoObras`, {
+          method: 'GET',
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
