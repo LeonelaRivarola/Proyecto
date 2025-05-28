@@ -18,7 +18,7 @@ import {
   Alert,
   Box,
 } from '@mui/material';
-import { UploadFile, Delete, Upload } from '@mui/icons-material';
+import { UploadFile, Delete } from '@mui/icons-material';
 import { API_URL } from '../../../config';
 
 const Solicitudes = () => {
@@ -36,8 +36,6 @@ const Solicitudes = () => {
       console.log("Eliminar solicitud:", id);
     }
   };
-
-  
 
   useEffect(() => {
     const fetchSolicitudes = async () => {
@@ -71,7 +69,7 @@ const Solicitudes = () => {
 
   if (error) {
     return (
-      <Container maxWidth="md" sx={{ }}>
+      <Container maxWidth="md">
         <Alert severity="error">
           <Typography variant="h6" gutterBottom>¡Error al cargar los datos!</Typography>
           <Typography>{error.message}</Typography>
@@ -83,7 +81,7 @@ const Solicitudes = () => {
 
   if (!solicitudes || solicitudes.length === 0) {
     return (
-      <Container maxWidth="md" sx={{ }}>
+      <Container maxWidth="md">
         <Alert severity="info">
           No hay solicitudes para mostrar en este momento.
         </Alert>
@@ -92,10 +90,19 @@ const Solicitudes = () => {
   }
 
   return (
-    <Container maxWidth="md" sx={{  }}>
-      <Typography variant="h4" align="left" fontWeight="bold" gutterBottom>
-        Solicitudes
-      </Typography>
+    <Container maxWidth="xl">
+      <Box
+        sx={{
+          background: 'linear-gradient(to right, #4caf50, #81c784)',
+          p: 3,
+          borderRadius: 4,
+          mb: 4,
+        }}
+      >
+        <Typography variant="h4" fontWeight="bold" color="white">
+          Solicitudes
+        </Typography>
+      </Box>
 
       <Box display="flex" justifyContent="left" mb={4}>
         <FormControl variant="outlined" size="small" sx={{ minWidth: 200 }}>
@@ -119,9 +126,9 @@ const Solicitudes = () => {
 
       <TableContainer component={Paper} sx={{ borderRadius: 5, minWidth: 1200 }}>
         <Table>
-          <TableHead sx={{ backgroundColor: 'green' }}>
+          <TableHead sx={{ background: 'linear-gradient(to right, #388e3c, #66bb6a)' }}>
             <TableRow>
-              {['Número', 'Estado', 'Fecha Solicitud', 'Usuario', 'Tipo', 'DNI/CUIT', 'Apellido', 'Nombre', 'Acciones'].map(header => (
+              {['NÚMERO', 'ESTADO', 'FECHA SOLICITUD', 'USUARIO', 'TIPO', 'DNI/CUIT', 'APELLIDO', 'NOMBRE', 'ACCIONES'].map(header => (
                 <TableCell key={header} sx={{ color: 'white', fontWeight: 'bold' }}>{header}</TableCell>
               ))}
             </TableRow>
@@ -141,26 +148,26 @@ const Solicitudes = () => {
                   <TableCell>{solicitud.Nombre}</TableCell>
                   <TableCell>
                     <Box display="flex" gap={1}>
-                      <IconButton color="primary" onClick={() => handleDocumentar(solicitud.Número)}
-                          sx={{
-                            backgroundColor: '#1976d2', 
-                            color: 'white',
-                            '&:hover': {
-                              backgroundColor: '#1565c0', 
-                            },
-                            borderRadius: 3
-                          }}>
-                        <UploadFile/>
+                      <IconButton onClick={() => handleDocumentar(solicitud.Número)}
+                        sx={{
+                          backgroundColor: '#388e3c',
+                          color: 'white',
+                          '&:hover': {
+                            backgroundColor: '#2e7d32',
+                          },
+                          borderRadius: 3
+                        }}>
+                        <UploadFile />
                       </IconButton>
                       <IconButton color="error" onClick={() => handleEliminar(solicitud.Número)}
-                          sx={{
-                            backgroundColor: '#d32f2f', 
-                            color: 'white',
-                            '&:hover': {
-                              backgroundColor: '#b71c1c',
-                            },
-                            borderRadius: 3
-                          }}>
+                        sx={{
+                          backgroundColor: '#d32f2f',
+                          color: 'white',
+                          '&:hover': {
+                            backgroundColor: '#b71c1c',
+                          },
+                          borderRadius: 3
+                        }}>
                         <Delete />
                       </IconButton>
                     </Box>
@@ -169,7 +176,7 @@ const Solicitudes = () => {
               ))}
           </TableBody>
         </Table>
-        </TableContainer>
+      </TableContainer>
     </Container>
   );
 };
