@@ -3,16 +3,32 @@ const router = express.Router()
 const authController = require('../controllers/authController');
 const solicitudController = require('../controllers/solicitudController');
 const verificarToken = require('../middlewares/authMiddleware');
+const tipoObraController = require('../controllers/tipoObraController');
 
 //
 router.post('/login', authController.login);
 
 //Solicitudes
-router.get('/tecnica/obrasElectricas/solicitudes', verificarToken, solicitudController.solicitudes);
-router.post('/tecnica/obrasElectricas/nueva-solicitud',verificarToken, solicitudController.crearSolicitud);
-router.delete('/tecnica/obrasElectricas/eliminar/:id', verificarToken, solicitudController.eliminar);
-router.get('/tecnica/obrasElectricas/tiposOE',verificarToken, solicitudController.tiposOE);
-router.get('/tecnica/obrasElectricas/localidades', verificarToken, solicitudController.localidades);
+router.get('/tecnica/obrasElectricas/solicitudes', verificarToken, solicitudController.index);
+router.post('/tecnica/obrasElectricas/nueva-solicitud',verificarToken, solicitudController.store);
+router.delete('/tecnica/obrasElectricas/eliminar/:id', verificarToken, solicitudController.destroy);
+
+//Tipo de obras
+router.get('/tecnica/obrasElectricas/tipoObras', verificarToken, tipoObraController.index);
+router.post('/tecnica/obrasElectricas/nuevo-tipoObras', verificarToken, tipoObraController.store);
+router.put('/tecnica/obrasElectricas/editar-tipoObras/:id', verificarToken, tipoObraController.update);
+router.delete('/tecnica/obrasElectricas/eliminar-tipoObra/:id', verificarToken, tipoObraController.destroy);
+
+
+// Presupuestos
+// router.get('/tecnica/obrasElectricas/presupuestos', verificarToken, presupuestoController.index);
+// router.post('/tecnica/obrasElectricas/presupuestos/guardar', verificarToken, presupuestoController.store);
+// router.get('/tecnica/obrasElectricas/presupuestos/mostrar/:presupuesto', verificarToken, presupuestoController.show);
+
+// // Route:: get('tecnica/obrasElectricas/presupuestos/crear/{solicitud}', [PresupuestoController:: class, 'create']) -> name('presupuestar-solicitud');
+// // Route:: get('tecnica/obrasElectricas/presupuestos/documento/{solicitud}', [PresupuestoController:: class, 'abrirPresupuesto']) -> name('abrir-presupuesto');
+// // Route:: post('tecnica/obrasElectricas/presupuestos/actualizar/{solicitud}', [PresupuestoController:: class, 'update']) -> name('procesar-presupuesto');
+// // Route:: post('tecnica/obrasElectricas/solicitud/notificar-email/{solicitud}', [PresupuestoController:: class, 'notificarEmail']) -> name('notificar-presupuesto');
 
 //controladores importados
 // const dashboardController = require('../controllers/dashboardController');
