@@ -59,6 +59,7 @@ const NuevaSolicitud = () => {
 
     setFormData(prev => ({
       ...prev,
+      tipo: e.target.value,
       ...(esInterno ? defaultValues : { cuit: "", nombre: "", apellido: "", email: "" })
     }));
   };
@@ -72,6 +73,7 @@ const NuevaSolicitud = () => {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
+      console.log("Datos enviados:", formData);
       const response = await fetch(`${API_URL}/api/tecnica/obrasElectricas/nueva-solicitud`, {
         method: 'POST',
         headers: {
@@ -81,11 +83,17 @@ const NuevaSolicitud = () => {
         body: JSON.stringify(formData),
       });
 
-      const data = await response.json();
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Error en respuesta del servidor:", errorText);
+        alert("Error del servidor: " + errorText);
+        return;
+      }
+      
       navigate('/home/solicitudes');
 
     } catch (err) {
-      console.err("Error al enviar la solicitud:", err);
+      console.error("Error al enviar la solicitud:", err);
       alert("Error al guardar la solicitud");
     }
   };
