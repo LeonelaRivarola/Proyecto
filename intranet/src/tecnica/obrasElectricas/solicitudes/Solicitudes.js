@@ -14,15 +14,21 @@ import {
   Button,
   Alert,
   Box,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select
 } from '@mui/material';
 import { UploadFile, Delete } from '@mui/icons-material';
 import { API_URL } from '../../../config';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 const Solicitudes = () => {
   const [solicitudes, setSolicitudes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [estadoFiltro, setEstadoFiltro] = useState('');
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   const handleDocumentar = (id) => {
     console.log("Documentar solicitud:", id);
@@ -87,7 +93,24 @@ const Solicitudes = () => {
   }
 
   return (
-    <Box sx={{ maxWidth: '1100px', overflowX: 'auto', mx: 'auto', mt: '1' }}>
+    <Box>
+        <FormControl variant="outlined" size="small" sx={{ minWidth: 200, mb: 2 }}>
+          <InputLabel id="estado-label">Filtrar por Estado</InputLabel>
+          <Select
+            labelId="estado-label"
+            value={estadoFiltro}
+            onChange={(e) => setEstadoFiltro(e.target.value)}
+            label="Filtrar por Estado"
+          >
+            <MenuItem value="">Todos</MenuItem>
+            <MenuItem value="Aceptada">Aceptada</MenuItem>
+            <MenuItem value="Actualizar">Actualizar</MenuItem>
+            <MenuItem value="Cerrada">Cerrada</MenuItem>
+            <MenuItem value="Iniciada">Iniciada</MenuItem>
+            <MenuItem value="Pendiente">Pendiente</MenuItem>
+            <MenuItem value="Presupuestada">Presupuestada</MenuItem>
+          </Select>
+        </FormControl>
       <Paper
         elevation={4}
         sx={{
@@ -116,26 +139,32 @@ const Solicitudes = () => {
             fontWeight: 'bold',
             textTransform: 'none',
           }}
+          onClick={() => navigate('/home/nueva-solicitud')}
         >
           NUEVA SOLICITUD
         </Button>
       </Paper>
 
-      <Box sx={{ maxWidth: '98%', mx: 'auto', overflowX: 'hidden', mt: 1 }}>
+      <Box sx={{ maxWidth: '100%', mx: 'auto',  mt: 4 }}>
        <TableContainer component={Paper} elevation={2}>
-        <Table size="small" sx={{ minWidth: '100%', tableLayout: 'fixed' }}>
-          <TableHead sx={{ fontWeight: 'bold', color: '#5f6368' }}>
+       <Table size="small" sx={{ minWidth: '100%', tableLayout: 'auto' }}>
+        <TableHead>
           <TableRow>
             {['NÚMERO', 'ESTADO', 'FECHA SOLICITUD', 'USUARIO', 'TIPO', 'DNI/CUIT', 'APELLIDO', 'NOMBRE', 'ACCIONES'].map(header => (
               <TableCell
                 key={header}
                 sx={{
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  fontWeight: 'bold',
+                  backgroundColor: '#C8E6C9',
                   maxWidth:
-                    header === 'NÚMERO' ? 40 :
-                    header === 'ESTADO' ? 60 :
-                    header === 'FECHA SOLICITUD' ? 150 :
-                    header === 'USUARIO' ? 150 :
-                    header === 'TIPO' ? 140 :
+                    header === 'NÚMERO' ? 70 :
+                    header === 'ESTADO' ? 80 :
+                    header === 'FECHA SOLICITUD' ? 130 :
+                    header === 'USUARIO' ? 140 :
+                    header === 'TIPO' ? 120 :
                     header === 'DNI/CUIT' ? 110 :
                     header === 'APELLIDO' ? 110 :
                     header === 'NOMBRE' ? 110 :
@@ -143,11 +172,14 @@ const Solicitudes = () => {
                   padding: '6px 8px'
                 }}
               >
-                {header}
+                <Typography variant="body2" noWrap title={header} sx={{ fontWeight: 'bold', color: '#5f6368' }}>
+                  {header}
+                </Typography>
               </TableCell>
             ))}
           </TableRow>
-          </TableHead>
+        </TableHead>
+        <Box sx={{ height: '12px' }} />
           <TableBody>
             {solicitudes
               .filter(s => estadoFiltro === '' || s.Estado === estadoFiltro)

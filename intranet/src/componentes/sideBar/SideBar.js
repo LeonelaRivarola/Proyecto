@@ -19,12 +19,14 @@ import {
   ExpandLess,
   ExpandMore,
 } from '@mui/icons-material';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
 
 const SideBar = () => {
   const location = useLocation();
   const activePage = location.pathname;
+  const navigate = useNavigate();
 
   const [openTecnica, setOpenTecnica] = useState(false);
   const [openObras, setOpenObras] = useState(false);
@@ -67,7 +69,12 @@ const SideBar = () => {
       }}
     >
       <Box sx={{ p: 2, textAlign: 'center' }}>
-        <img src="../../assets/Corpico_logo.svg" alt="logo" style={{ maxWidth: '80%' }} />
+        <img src="../../assets/Corpico_logo.svg" 
+        alt="logo" 
+        style={{ maxWidth: '80%' }} 
+        onClick={() => navigate('/Home')}
+        sx={{ cursor: 'pointer'}}
+        />
       </Box>
 
 
