@@ -13,6 +13,7 @@ import {
   IconButton,
   Tooltip
 } from '@mui/material';
+import { Outlet } from 'react-router-dom';
 import { API_URL } from '../../../config';
 import NoteAddIcon from '@mui/icons-material/NoteAdd';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -146,6 +147,7 @@ const TiposDeObras = () => {
           </Table>
         </TableContainer>
       </Box>
+      <Outlet></Outlet>
     </Box >
   )
 }
