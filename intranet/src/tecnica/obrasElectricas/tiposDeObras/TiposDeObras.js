@@ -10,7 +10,8 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  IconButton
+  IconButton,
+  Tooltip
 } from '@mui/material';
 import { API_URL } from '../../../config';
 import NoteAddIcon from '@mui/icons-material/NoteAdd';
@@ -105,6 +106,7 @@ const TiposDeObras = () => {
                   <TableCell>{fila.TOE_INTERNO}</TableCell>
                   <TableCell>
                     <Box display="flex" gap={1}>
+                      <Tooltip title="Editar tipo de obra" arrow>
                       <IconButton onClick={() => handleEditarTO(fila.TOE_ID)}
                         size="small"
                         sx={{
@@ -118,6 +120,8 @@ const TiposDeObras = () => {
                         }}>
                         <NoteAddIcon />
                       </IconButton >
+                      </Tooltip>
+                      <Tooltip title="Eliminar tipo de obra" arrow>
                       <IconButton color="error" onClick={() => handleEliminarTO(fila.TOE_ID)}
                         size="small"
                         sx={{
@@ -131,6 +135,7 @@ const TiposDeObras = () => {
                         }}>
                         <DeleteIcon />
                       </IconButton>
+                      </Tooltip>
                     </Box>
                   </TableCell>
               </TableRow>
