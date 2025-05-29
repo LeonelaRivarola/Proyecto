@@ -44,7 +44,7 @@ const TiposDeObras = () => {
     //
   }
 
-    const handleEliminarTO = (id) => {
+  const handleEliminarTO = (id) => {
     //setSolicitudE(id);
     //setModalOpen(true);
   };
@@ -116,7 +116,7 @@ const TiposDeObras = () => {
                           borderRadius: 2,
                           padding: '4px'
                         }}>
-                        <NoteAddIcon fontSize="small" />
+                        <NoteAddIcon />
                       </IconButton >
                       <IconButton color="error" onClick={() => handleEliminarTO(fila.TOE_ID)}
                         size="small"
@@ -129,7 +129,7 @@ const TiposDeObras = () => {
                           borderRadius: 2,
                           padding: '4px'
                         }}>
-                        <DeleteIcon fontSize="small" />
+                        <DeleteIcon />
                       </IconButton>
                     </Box>
                   </TableCell>

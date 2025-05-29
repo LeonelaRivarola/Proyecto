@@ -18,15 +18,14 @@ import {
   InputLabel,
   MenuItem,
   Select,
-  List,
-  ListItem,
-  ListItemText
+  Tooltip
 } from '@mui/material';
 
 import { UploadFile, Delete } from '@mui/icons-material';
 import { API_URL } from '../../../config';
 import { Navigate, useNavigate } from 'react-router-dom';
 import ModalEliminarSolicitud from '../../../componentes/modales/ModalEliminarSolicitud.js';
+import { styled } from '@mui/system';
 
 const Solicitudes = () => {
   const [solicitudes, setSolicitudes] = useState([]);
@@ -37,6 +36,7 @@ const Solicitudes = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [mensajeVisible, setMensajeVisible] = useState(false);
   const [mensajeTexto, setMensajeTexto] = useState('');
+  const [hover, setHover] = useState(false);
   const navigate = useNavigate();
 
   const handleDocumentar = (id) => {
@@ -74,7 +74,6 @@ const Solicitudes = () => {
       setModalOpen(false);
     }
   };
-
 
   const fetchSolicitudes = async () => {
     try {
@@ -127,6 +126,26 @@ const Solicitudes = () => {
       </Container>
     );
   }
+
+  const HoverLabelButton = styled(Button)(({ theme }) => ({
+    position: 'relative',
+    overflow: 'hidden',
+
+    '& .label': {
+      opacity: 0,
+      transition: 'opacity 0.3s ease',
+      position: 'absolute',
+      bottom: '-20px',
+      left: '50%',
+      transform: 'translateX(-50%)',
+      fontSize: '0.8rem',
+      color: theme.palette.text.secondary,
+    },
+
+    '&:hover .label': {
+      opacity: 1,
+    },
+  }));
 
   return (
     <Box>
@@ -246,32 +265,42 @@ const Solicitudes = () => {
                     <TableCell>{solicitud.Nombre}</TableCell>
                     <TableCell>
                       <Box display="flex" gap={1}>
-                        <IconButton onClick={() => handleDocumentar(solicitud.Número)}
-                          size="small"
-                          sx={{
-                            backgroundColor: '#000080',
-                            color: 'white',
-                            '&:hover': {
-                              backgroundColor: '#0a0a5c',
-                            },
-                            borderRadius: 2,
-                            padding: '4px'
-                          }}>
-                          <UploadFile fontSize="small"  />
-                        </IconButton >
-                        <IconButton color="error" onClick={() => handleEliminar(solicitud)}
-                          size="small"
-                          sx={{
-                            backgroundColor: '#d32f2f',
-                            color: 'white',
-                            '&:hover': {
-                              backgroundColor: '#b71c1c',
-                            },
-                            borderRadius: 2,
-                            padding: '4px'
-                          }}>
-                          <Delete fontSize="small" />
-                        </IconButton>
+                        <Tooltip title="Documentar solicitud" arrow>
+                          <IconButton
+                            onClick={() => handleDocumentar(solicitud.Número)}
+                            size="small"
+                            sx={{
+                              backgroundColor: '#000080',
+                              color: 'white',
+                              '&:hover': {
+                                backgroundColor: '#0a0a5c',
+                              },
+                              borderRadius: 2,
+                              padding: '4px'
+                            }}
+                          >
+                            <UploadFile fontSize="small" />
+                          </IconButton>
+                        </Tooltip>
+
+                        <Tooltip title="Eliminar solicitud" arrow>
+                          <IconButton
+                            color="error"
+                            onClick={() => handleEliminar(solicitud)}
+                            size="small"
+                            sx={{
+                              backgroundColor: '#d32f2f',
+                              color: 'white',
+                              '&:hover': {
+                                backgroundColor: '#b71c1c',
+                              },
+                              borderRadius: 2,
+                              padding: '4px'
+                            }}
+                          >
+                            <Delete fontSize="small" />
+                          </IconButton>
+                        </Tooltip>
                       </Box>
                     </TableCell>
                   </TableRow>

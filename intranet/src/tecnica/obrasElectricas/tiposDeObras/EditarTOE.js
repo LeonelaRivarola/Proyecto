@@ -1,6 +1,6 @@
 import React from 'react'
 
-const EditarTO = () => {
+const EditarTOE = () => {
   return (
     <div>
       
@@ -8,4 +8,4 @@ const EditarTO = () => {
   )
 }
 
-export default EditarTO
+export default EditarTOE
