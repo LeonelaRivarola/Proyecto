@@ -12,7 +12,8 @@ import {
   TableRow,
 } from '@mui/material';
 import { API_URL } from '../../../config';
-
+import NoteAddIcon from '@mui/icons-material/NoteAdd';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const TipoDeObras = () => {
   const [tipoObras, setTipoObras] = useState([]);
@@ -38,8 +39,17 @@ const TipoDeObras = () => {
     fetchTiposOE();
   }, [])
 
+  const handleEditarTO = (id) => {
+    
+  }
+
+    const handleEliminar = (id) => {
+    //setSolicitudE(id);
+    //setModalOpen(true);
+  };
+
   return (
-    <Box sx={{ maxWidth: '900px', mx: 'auto', mt: 4 }}>
+    <Box>
       <Paper
         elevation={4}
         sx={{
@@ -74,31 +84,61 @@ const TipoDeObras = () => {
       </Paper>
 
       {/* Tabla */}
-      <TableContainer component={Paper} elevation={2}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell sx={{ fontWeight: 'bold', color: '#5f6368' }}>ABREVIATURA</TableCell>
-              <TableCell sx={{ fontWeight: 'bold', color: '#5f6368' }}>DESCRIPCIÓN</TableCell>
-              <TableCell sx={{ fontWeight: 'bold', color: '#5f6368' }}>INTERNO</TableCell>
-              <TableCell sx={{ fontWeight: 'bold', color: '#5f6368' }}>ACCIONES</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {tipoObras.map((fila) => (
-              <TableRow key={fila.TOE_ID}>
-                <TableCell>{fila.TOE_ABREVIATURA}</TableCell>
-                <TableCell>{fila.TOE_DESCRIPCION}</TableCell>
-                <TableCell>{fila.TOE_INTERNO}</TableCell>
-                <TableCell>
-                  <Button variant="outlined" size="small">Editar</Button>
-                </TableCell>
+      <Box sx={{ maxWidth: '100%', mx: 'auto', mt: 4 }}>
+        <TableContainer component={Paper} elevation={2} sx={{ overflow: 'hidden' }}>
+          <Table size="small" sx={{ minWidth: '100%', tableLayout: 'auto' }}>
+            <TableHead>
+              <TableRow>
+                <TableCell sx={{ fontWeight: 'bold', color: '#5f6368' }}>ABREVIATURA</TableCell>
+                <TableCell sx={{ fontWeight: 'bold', color: '#5f6368' }}>DESCRIPCIÓN</TableCell>
+                <TableCell sx={{ fontWeight: 'bold', color: '#5f6368' }}>INTERNO</TableCell>
+                <TableCell sx={{ fontWeight: 'bold', color: '#5f6368' }}>ACCIONES</TableCell>
+              </TableRow>
+            </TableHead>
+            <Box sx={{ height: '12px' }} />
+            <TableBody>
+              {tipoObras.map((fila) => (
+                <TableRow key={fila.TOE_ID}>
+                  <TableCell>{fila.TOE_ABREVIATURA}</TableCell>
+                  <TableCell>{fila.TOE_DESCRIPCION}</TableCell>
+                  <TableCell>{fila.TOE_INTERNO}</TableCell>
+                  <TableCell>
+                    <Box display="flex" gap={1}>
+                      <IconButton onClick={() => handleEditarTO(fila.TOE_ID)}
+                        size="small"
+                        sx={{
+                          backgroundColor: '#000080',
+                          color: 'white',
+                          '&:hover': {
+                            backgroundColor: '#0a0a5c',
+                          },
+                          borderRadius: 2,
+                          padding: '4px'
+                        }}>
+                        <NoteAddIcon fontSize="small" />
+                      </IconButton >
+                      <IconButton color="error" onClick={() => handleEliminarTO(fila.TOE_ID)}
+                        size="small"
+                        sx={{
+                          backgroundColor: '#d32f2f',
+                          color: 'white',
+                          '&:hover': {
+                            backgroundColor: '#b71c1c',
+                          },
+                          borderRadius: 2,
+                          padding: '4px'
+                        }}>
+                        <DeleteIcon fontSize="small" />
+                      </IconButton>
+                    </Box>
+                  </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
     </Box>
+    </Box >
   )
 }
 
