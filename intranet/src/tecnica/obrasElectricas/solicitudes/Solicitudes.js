@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Container,
   Typography,
@@ -35,8 +35,8 @@ const Solicitudes = () => {
   const [error, setError] = useState(null);
   const [solicitudE, setSolicitudE] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
-  const [toastMensaje, setToastMensaje] = useState('');
-  const [toastAbierto, setToastAbierto] = useState(false);
+  const [mensajeVisible, setMensajeVisible] = useState(false);
+  const [mensajeTexto, setMensajeTexto] = useState('');
   const navigate = useNavigate();
 
   const handleDocumentar = (id) => {
@@ -51,7 +51,6 @@ const Solicitudes = () => {
   const handleConfirmDelete = async () => {
     const token = localStorage.getItem('token');
     try {
-      console.log(solicitudE);
       await fetch(`${API_URL}/api/tecnica/obrasElectricas/eliminar/${solicitudE.Número}`, {
         method: 'DELETE',
         headers: {
@@ -60,37 +59,44 @@ const Solicitudes = () => {
         }
       });
 
+      setMensajeTexto(`Se ha eliminado exitosamente la solicitud ${solicitudE.Número}`);
+      setMensajeVisible(true);
+
+      setTimeout(() => {
+        setMensajeVisible(false);
+      }, 4000);
+
+      fetchSolicitudes();
+
     } catch (error) {
       console.error('Error eliminando la solicitud:', error);
     } finally {
       setModalOpen(false);
     }
-    setToastMensaje(`Se ha eliminado exitosamente la solicitud número ${solicitudE.Número}`);
-    setToastAbierto(true);
-
   };
 
-  const fetchSolicitudes = useCallback(async () => {
-    try {
-      const token = localStorage.getItem('token');
-      const respuesta = await fetch(`${API_URL}/api/tecnica/obrasElectricas/solicitudes`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        }
-      });
-      const data = await respuesta.json();
-      setSolicitudes(data);
-    } catch (err) {
-      setError(err);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
 
   useEffect(() => {
+    const fetchSolicitudes = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const respuesta = await fetch(`${API_URL}/api/tecnica/obrasElectricas/solicitudes`, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        const data = await respuesta.json();
+        setSolicitudes(data);
+      } catch (err) {
+        setError(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchSolicitudes();
-  }, [fetchSolicitudes]);
+  }, []);
 
   if (loading) {
     return (
@@ -125,6 +131,20 @@ const Solicitudes = () => {
   return (
     <Box>
       <FormControl variant="outlined" size="small" sx={{ minWidth: 200, mb: 2 }}>
+        {mensajeVisible && (
+          <Alert
+            severity="success"
+            sx={{
+              mb: 2,
+              borderRadius: 2,
+              backgroundColor: '#d0f0c0',
+              color: '#1b5e20',
+              fontWeight: 'bold'
+            }}
+          >
+            {mensajeTexto}
+          </Alert>
+        )}
         <InputLabel id="estado-label">Filtrar por Estado</InputLabel>
         <Select
           labelId="estado-label"
@@ -261,21 +281,6 @@ const Solicitudes = () => {
         onConfirm={handleConfirmDelete}
         itemName={solicitudE.Nombre}
       />
-      <Snackbar
-        open={toastAbierto}
-        autoHideDuration={4000}
-        onClose={() => setToastAbierto(false)}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-      >
-        <Alert
-          onClose={() => setToastAbierto(false)}
-          severity="success"
-          sx={{ width: '100%' }}
-        >
-          {toastMensaje}
-        </Alert>
-      </Snackbar>
-
     </Box>
   );
 };
