@@ -40,7 +40,6 @@ const TipoDeObras = () => {
 
   return (
     <Box sx={{ maxWidth: '900px', mx: 'auto', mt: 4 }}>
-      {/* Encabezado verde */}
       <Paper
         elevation={4}
         sx={{
