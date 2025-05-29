@@ -44,7 +44,7 @@ const TiposDeObras = () => {
   }, [])
 
   const handleEditarTO = (id) => {
-    navigate(`/home/tipos-obras/editar/${id}`);
+    navigate(`/home/tipos-obras/editar-tipoOE/${id}`);
   }
 
   const handleEliminarTO = (id) => {
