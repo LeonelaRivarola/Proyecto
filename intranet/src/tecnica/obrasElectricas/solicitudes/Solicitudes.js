@@ -66,7 +66,6 @@ const Solicitudes = () => {
         setMensajeVisible(false);
       }, 4000);
 
-      fetchSolicitudes();
 
     } catch (error) {
       console.error('Error eliminando la solicitud:', error);
