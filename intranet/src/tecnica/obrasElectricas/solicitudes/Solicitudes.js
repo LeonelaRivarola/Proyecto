@@ -90,46 +90,46 @@ const Solicitudes = () => {
   }
 
   return (
-    <Container maxWidth="xl">
-      <Box
+    <Box sx={{ maxWidth: '900px', mx: 'auto', mt: 4 }}>
+      <Paper
+        elevation={4}
         sx={{
-          background: 'linear-gradient(to right, #4caf50, #81c784)',
-          p: 3,
-          borderRadius: 4,
-          mb: 4,
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          p: 2,
+          borderRadius: 3,
+          background: 'linear-gradient(90deg, #43a047, #66bb6a)',
+          color: 'white',
+          mb: 2,
         }}
       >
-        <Typography variant="h4" fontWeight="bold" color="white">
-          Solicitudes
+        <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+          Listado de Solicitudes
         </Typography>
-      </Box>
+        <Button
+          variant="contained"
+          sx={{
+            backgroundColor: '#2e7d32',
+            color: 'white',
+            '&:hover': {
+              backgroundColor: '#1b5e20',
+            },
+            borderRadius: 2,
+            fontWeight: 'bold',
+            textTransform: 'none',
+          }}
+        >
+          NUEVA SOLICITUD
+        </Button>
+      </Paper>
 
-      <Box display="flex" justifyContent="left" mb={4}>
-        <FormControl variant="outlined" size="small" sx={{ minWidth: 200 }}>
-          <InputLabel id="estado-label">Estado</InputLabel>
-          <Select
-            labelId="estado-label"
-            value={estadoFiltro}
-            onChange={(e) => setEstadoFiltro(e.target.value)}
-            label="Estado"
-          >
-            <MenuItem value="">Todos</MenuItem>
-            <MenuItem value="Aceptada">Aceptada</MenuItem>
-            <MenuItem value="Actualizar">Actualizar</MenuItem>
-            <MenuItem value="Cerrada">Cerrada</MenuItem>
-            <MenuItem value="Iniciada">Iniciada</MenuItem>
-            <MenuItem value="Pendiente">Pendiente</MenuItem>
-            <MenuItem value="Presupuestada">Presupuestada</MenuItem>
-          </Select>
-        </FormControl>
-      </Box>
-
-      <TableContainer component={Paper} sx={{ borderRadius: 5, minWidth: 1200 }}>
+      <TableContainer component={Paper} elevation={2}>
         <Table>
-          <TableHead sx={{ background: 'linear-gradient(to right, #388e3c, #66bb6a)' }}>
+          <TableHead sx={{ fontWeight: 'bold', color: '#5f6368' }}>
             <TableRow>
               {['NÚMERO', 'ESTADO', 'FECHA SOLICITUD', 'USUARIO', 'TIPO', 'DNI/CUIT', 'APELLIDO', 'NOMBRE', 'ACCIONES'].map(header => (
-                <TableCell key={header} sx={{ color: 'white', fontWeight: 'bold' }}>{header}</TableCell>
+                <TableCell key={header}>{header}</TableCell>
               ))}
             </TableRow>
           </TableHead>
@@ -177,7 +177,7 @@ const Solicitudes = () => {
           </TableBody>
         </Table>
       </TableContainer>
-    </Container>
+    </Box>
   );
 };
 
