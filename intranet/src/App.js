@@ -26,10 +26,12 @@ const App = () => {
           <Route path="emails" element={<EmailsTec />} />
           <Route path="presupuestos" element={<Presupuestos />} />
           <Route path="solicitudes" element={<Solicitudes />} />
-          <Route path="tipos-obras" element={<TiposDeObras />} />
+          <Route path="tipos-obras" element={<TiposDeObras />}>
+            <Route path="editar-tipoOE/:id" element={<EditarTOE />} />
+          </Route>
           <Route path="nueva-solicitud" element={<NuevaSolicitud />} />
           <Route path="emails-solicitudes" element={<EmailSolicitudes />} />
-          <Route path="editar-tipoOE/:id" element={<EditarTOE />} />
+          
         </Route>
         <Route path="/" element={<Ingresar />}></Route>
       </Routes>
