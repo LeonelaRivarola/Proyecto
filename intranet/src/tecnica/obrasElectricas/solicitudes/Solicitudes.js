@@ -147,6 +147,7 @@ const Solicitudes = () => {
           <MenuItem value="Presupuestada">Presupuestada</MenuItem>
         </Select>
       </FormControl>
+      <Box sx={{ height: '10px' }} />
       {mensajeVisible && (
         <Alert
           severity="success"
