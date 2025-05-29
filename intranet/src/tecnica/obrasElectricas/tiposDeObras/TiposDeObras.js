@@ -10,12 +10,13 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  IconButton
 } from '@mui/material';
 import { API_URL } from '../../../config';
 import NoteAddIcon from '@mui/icons-material/NoteAdd';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-const TipoDeObras = () => {
+const TiposDeObras = () => {
   const [tipoObras, setTipoObras] = useState([]);
 
   useEffect(() => {
@@ -23,8 +24,8 @@ const TipoDeObras = () => {
       try {
         const token = localStorage.getItem('token');
         const respuesta = await fetch(`${API_URL}/api/tecnica/obrasElectricas/tipoObras`, {
+          method: 'GET',
           headers: {
-            method: 'GET',
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
           }
@@ -40,10 +41,10 @@ const TipoDeObras = () => {
   }, [])
 
   const handleEditarTO = (id) => {
-    
+    //
   }
 
-    const handleEliminar = (id) => {
+    const handleEliminarTO = (id) => {
     //setSolicitudE(id);
     //setModalOpen(true);
   };
@@ -142,4 +143,4 @@ const TipoDeObras = () => {
   )
 }
 
-export default TipoDeObras
+export default TiposDeObras
