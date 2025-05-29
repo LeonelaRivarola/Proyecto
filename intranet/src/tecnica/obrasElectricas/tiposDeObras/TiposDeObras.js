@@ -16,9 +16,11 @@ import {
 import { API_URL } from '../../../config';
 import NoteAddIcon from '@mui/icons-material/NoteAdd';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 const TiposDeObras = () => {
   const [tipoObras, setTipoObras] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchTiposOE = async () => {
@@ -42,7 +44,7 @@ const TiposDeObras = () => {
   }, [])
 
   const handleEditarTO = (id) => {
-    //
+    navigate(`/home/tipos-obras/editar/${id}`);
   }
 
   const handleEliminarTO = (id) => {

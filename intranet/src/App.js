@@ -15,6 +15,7 @@ import TiposDeObras from "./tecnica/obrasElectricas/tiposDeObras/TiposDeObras";
 import NuevaSolicitud from "./tecnica/obrasElectricas/nuevaSolicitud/NuevaSolicitud";
 import EmailSolicitudes from "./tecnica/obrasElectricas/emails/EmailSolicitudes";
 import SesionProtegida from "./sesion/SesionProtegida";
+import EditarTOE from "./tecnica/obrasElectricas/tiposDeObras/EditarTOE";
 
 const App = () => {
   return (
@@ -28,6 +29,7 @@ const App = () => {
           <Route path="tipos-obras" element={<TiposDeObras />} />
           <Route path="nueva-solicitud" element={<NuevaSolicitud />} />
           <Route path="emails-solicitudes" element={<EmailSolicitudes />} />
+          <Route path="editar-tipoOE/:id" element={<EditarTOE />} />
         </Route>
         <Route path="/" element={<Ingresar />}></Route>
       </Routes>
