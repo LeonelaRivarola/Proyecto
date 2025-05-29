@@ -11,10 +11,7 @@ import {
   TableContainer,
   Paper,
   IconButton,
-  Select,
-  MenuItem,
-  InputLabel,
-  FormControl,
+  Button,
   Alert,
   Box,
 } from '@mui/material';
@@ -90,7 +87,7 @@ const Solicitudes = () => {
   }
 
   return (
-    <Box sx={{ maxWidth: '900px', mx: 'auto', mt: 4 }}>
+    <Box sx={{ maxWidth: '1100px', overflowX: 'auto', mx: 'auto', mt: '1' }}>
       <Paper
         elevation={4}
         sx={{
@@ -124,14 +121,32 @@ const Solicitudes = () => {
         </Button>
       </Paper>
 
-      <TableContainer component={Paper} elevation={2}>
-        <Table>
+      <Box sx={{ maxWidth: '98%', mx: 'auto', overflowX: 'hidden', mt: 1 }}>
+       <TableContainer component={Paper} elevation={2}>
+        <Table size="small" sx={{ minWidth: '100%', tableLayout: 'fixed' }}>
           <TableHead sx={{ fontWeight: 'bold', color: '#5f6368' }}>
-            <TableRow>
-              {['NÚMERO', 'ESTADO', 'FECHA SOLICITUD', 'USUARIO', 'TIPO', 'DNI/CUIT', 'APELLIDO', 'NOMBRE', 'ACCIONES'].map(header => (
-                <TableCell key={header}>{header}</TableCell>
-              ))}
-            </TableRow>
+          <TableRow>
+            {['NÚMERO', 'ESTADO', 'FECHA SOLICITUD', 'USUARIO', 'TIPO', 'DNI/CUIT', 'APELLIDO', 'NOMBRE', 'ACCIONES'].map(header => (
+              <TableCell
+                key={header}
+                sx={{
+                  maxWidth:
+                    header === 'NÚMERO' ? 40 :
+                    header === 'ESTADO' ? 60 :
+                    header === 'FECHA SOLICITUD' ? 150 :
+                    header === 'USUARIO' ? 150 :
+                    header === 'TIPO' ? 140 :
+                    header === 'DNI/CUIT' ? 110 :
+                    header === 'APELLIDO' ? 110 :
+                    header === 'NOMBRE' ? 110 :
+                    header === 'ACCIONES' ? 90 : undefined,
+                  padding: '6px 8px'
+                }}
+              >
+                {header}
+              </TableCell>
+            ))}
+          </TableRow>
           </TableHead>
           <TableBody>
             {solicitudes
@@ -150,10 +165,10 @@ const Solicitudes = () => {
                     <Box display="flex" gap={1}>
                       <IconButton onClick={() => handleDocumentar(solicitud.Número)}
                         sx={{
-                          backgroundColor: '#388e3c',
+                          backgroundColor: '#000080',
                           color: 'white',
                           '&:hover': {
-                            backgroundColor: '#2e7d32',
+                            backgroundColor: '#0a0a5c',
                           },
                           borderRadius: 3
                         }}>
@@ -177,6 +192,7 @@ const Solicitudes = () => {
           </TableBody>
         </Table>
       </TableContainer>
+      </Box>
     </Box>
   );
 };
