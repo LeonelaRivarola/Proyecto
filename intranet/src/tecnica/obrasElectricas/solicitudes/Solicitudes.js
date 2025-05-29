@@ -66,6 +66,7 @@ const Solicitudes = () => {
         setMensajeVisible(false);
       }, 4000);
 
+      await fetchSolicitudes();
 
     } catch (error) {
       console.error('Error eliminando la solicitud:', error);
@@ -75,25 +76,25 @@ const Solicitudes = () => {
   };
 
 
-  useEffect(() => {
-    const fetchSolicitudes = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        const respuesta = await fetch(`${API_URL}/api/tecnica/obrasElectricas/solicitudes`, {
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          }
-        });
-        const data = await respuesta.json();
-        setSolicitudes(data);
-      } catch (err) {
-        setError(err);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchSolicitudes = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const respuesta = await fetch(`${API_URL}/api/tecnica/obrasElectricas/solicitudes`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      const data = await respuesta.json();
+      setSolicitudes(data);
+    } catch (err) {
+      setError(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchSolicitudes();
   }, []);
 
@@ -130,20 +131,6 @@ const Solicitudes = () => {
   return (
     <Box>
       <FormControl variant="outlined" size="small" sx={{ minWidth: 200, mb: 2 }}>
-        {mensajeVisible && (
-          <Alert
-            severity="success"
-            sx={{
-              mb: 2,
-              borderRadius: 2,
-              backgroundColor: '#d0f0c0',
-              color: '#1b5e20',
-              fontWeight: 'bold'
-            }}
-          >
-            {mensajeTexto}
-          </Alert>
-        )}
         <InputLabel id="estado-label">Filtrar por Estado</InputLabel>
         <Select
           labelId="estado-label"
@@ -160,6 +147,20 @@ const Solicitudes = () => {
           <MenuItem value="Presupuestada">Presupuestada</MenuItem>
         </Select>
       </FormControl>
+      {mensajeVisible && (
+        <Alert
+          severity="success"
+          sx={{
+            mb: 2,
+            borderRadius: 2,
+            backgroundColor: '#d0f0c0',
+            color: '#1b5e20',
+            fontWeight: 'bold'
+          }}
+        >
+          {mensajeTexto}
+        </Alert>
+      )}
       <Paper
         elevation={4}
         sx={{
