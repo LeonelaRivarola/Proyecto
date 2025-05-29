@@ -196,7 +196,7 @@ const Solicitudes = () => {
       </Paper>
 
       <Box sx={{ maxWidth: '100%', mx: 'auto', mt: 4 }}>
-        <TableContainer component={Paper} elevation={2} sx={{ overflow: 'hidden'}}>
+        <TableContainer component={Paper} elevation={2} sx={{ overflow: 'hidden' }}>
           <Table size="small" sx={{ minWidth: '100%', tableLayout: 'auto' }}>
             <TableHead>
               <TableRow>
@@ -246,26 +246,30 @@ const Solicitudes = () => {
                     <TableCell>
                       <Box display="flex" gap={1}>
                         <IconButton onClick={() => handleDocumentar(solicitud.Número)}
+                          size="small"
                           sx={{
                             backgroundColor: '#000080',
                             color: 'white',
                             '&:hover': {
                               backgroundColor: '#0a0a5c',
                             },
-                            borderRadius: 3
+                            borderRadius: 2,
+                            padding: '4px'
                           }}>
-                          <UploadFile />
-                        </IconButton>
+                          <UploadFile fontSize="small"  />
+                        </IconButton >
                         <IconButton color="error" onClick={() => handleEliminar(solicitud)}
+                          size="small"
                           sx={{
                             backgroundColor: '#d32f2f',
                             color: 'white',
                             '&:hover': {
                               backgroundColor: '#b71c1c',
                             },
-                            borderRadius: 3
+                            borderRadius: 2,
+                            padding: '4px'
                           }}>
-                          <Delete />
+                          <Delete fontSize="small" />
                         </IconButton>
                       </Box>
                     </TableCell>
