@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import {
   Container,
   Typography,
@@ -35,6 +35,8 @@ const Solicitudes = () => {
   const [error, setError] = useState(null);
   const [solicitudE, setSolicitudE] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
+  const [toastMensaje, setToastMensaje] = useState('');
+  const [toastAbierto, setToastAbierto] = useState(false);
   const navigate = useNavigate();
 
   const handleDocumentar = (id) => {
@@ -63,29 +65,32 @@ const Solicitudes = () => {
     } finally {
       setModalOpen(false);
     }
+    setToastMensaje(`Se ha eliminado exitosamente la solicitud número ${solicitudE.Número}`);
+    setToastAbierto(true);
+
   };
 
-  useEffect(() => {
-    const fetchSolicitudes = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        const respuesta = await fetch(`${API_URL}/api/tecnica/obrasElectricas/solicitudes`, {
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          }
-        });
-        const data = await respuesta.json();
-        setSolicitudes(data);
-      } catch (err) {
-        setError(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchSolicitudes();
+  const fetchSolicitudes = useCallback(async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const respuesta = await fetch(`${API_URL}/api/tecnica/obrasElectricas/solicitudes`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      const data = await respuesta.json();
+      setSolicitudes(data);
+    } catch (err) {
+      setError(err);
+    } finally {
+      setLoading(false);
+    }
   }, []);
+
+  useEffect(() => {
+    fetchSolicitudes();
+  }, [fetchSolicitudes]);
 
   if (loading) {
     return (
@@ -256,6 +261,21 @@ const Solicitudes = () => {
         onConfirm={handleConfirmDelete}
         itemName={solicitudE.Nombre}
       />
+      <Snackbar
+        open={toastAbierto}
+        autoHideDuration={4000}
+        onClose={() => setToastAbierto(false)}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <Alert
+          onClose={() => setToastAbierto(false)}
+          severity="success"
+          sx={{ width: '100%' }}
+        >
+          {toastMensaje}
+        </Alert>
+      </Snackbar>
+
     </Box>
   );
 };
