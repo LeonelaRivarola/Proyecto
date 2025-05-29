@@ -105,7 +105,7 @@ const TiposDeObras = () => {
                   <TableCell>{fila.TOE_DESCRIPCION}</TableCell>
                   <TableCell>{fila.TOE_INTERNO}</TableCell>
                   <TableCell>
-                    <Box display="flex" gap={3}>
+                    <Box display="flex" gap={2}>
                       <Tooltip title="Editar tipo de obra" arrow>
                       <IconButton onClick={() => handleEditarTO(fila.TOE_ID)}
                         size="small"
