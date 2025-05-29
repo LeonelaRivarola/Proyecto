@@ -91,10 +91,10 @@ const TiposDeObras = () => {
           <Table size="small" sx={{ minWidth: '100%', tableLayout: 'auto' }}>
             <TableHead>
               <TableRow>
-                <TableCell sx={{ fontWeight: 'bold', color: '#5f6368' }}>ABREVIATURA</TableCell>
-                <TableCell sx={{ fontWeight: 'bold', color: '#5f6368' }}>DESCRIPCIÓN</TableCell>
-                <TableCell sx={{ fontWeight: 'bold', color: '#5f6368' }}>INTERNO</TableCell>
-                <TableCell sx={{ fontWeight: 'bold', color: '#5f6368' }}>ACCIONES</TableCell>
+                <TableCell sx={{ fontWeight: 'bold', color: '#5f6368', backgroundColor: '#C8E6C9'}}>ABREVIATURA</TableCell>
+                <TableCell sx={{ fontWeight: 'bold', color: '#5f6368', backgroundColor: '#C8E6C9' }}>DESCRIPCIÓN</TableCell>
+                <TableCell sx={{ fontWeight: 'bold', color: '#5f6368', backgroundColor: '#C8E6C9' }}>INTERNO</TableCell>
+                <TableCell sx={{ fontWeight: 'bold', color: '#5f6368', backgroundColor: '#C8E6C9' }}>ACCIONES</TableCell>
               </TableRow>
             </TableHead>
             <Box sx={{ height: '12px' }} />
@@ -107,43 +107,43 @@ const TiposDeObras = () => {
                   <TableCell>
                     <Box display="flex" gap={2}>
                       <Tooltip title="Editar tipo de obra" arrow>
-                      <IconButton onClick={() => handleEditarTO(fila.TOE_ID)}
-                        size="small"
-                        sx={{
-                          backgroundColor: '#000080',
-                          color: 'white',
-                          '&:hover': {
-                            backgroundColor: '#0a0a5c',
-                          },
-                          borderRadius: 2,
-                          padding: '4px'
-                        }}>
-                        <NoteAddIcon />
-                      </IconButton >
+                        <IconButton onClick={() => handleEditarTO(fila.TOE_ID)}
+                          size="small"
+                          sx={{
+                            backgroundColor: '#000080',
+                            color: 'white',
+                            '&:hover': {
+                              backgroundColor: '#0a0a5c',
+                            },
+                            borderRadius: 2,
+                            padding: '4px'
+                          }}>
+                          <NoteAddIcon />
+                        </IconButton >
                       </Tooltip>
                       <Tooltip title="Eliminar tipo de obra" arrow>
-                      <IconButton color="error" onClick={() => handleEliminarTO(fila.TOE_ID)}
-                        size="small"
-                        sx={{
-                          backgroundColor: '#d32f2f',
-                          color: 'white',
-                          '&:hover': {
-                            backgroundColor: '#b71c1c',
-                          },
-                          borderRadius: 2,
-                          padding: '4px'
-                        }}>
-                        <DeleteIcon />
-                      </IconButton>
+                        <IconButton color="error" onClick={() => handleEliminarTO(fila.TOE_ID)}
+                          size="small"
+                          sx={{
+                            backgroundColor: '#d32f2f',
+                            color: 'white',
+                            '&:hover': {
+                              backgroundColor: '#b71c1c',
+                            },
+                            borderRadius: 2,
+                            padding: '4px'
+                          }}>
+                          <DeleteIcon />
+                        </IconButton>
                       </Tooltip>
                     </Box>
                   </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </Box>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Box>
     </Box >
   )
 }
