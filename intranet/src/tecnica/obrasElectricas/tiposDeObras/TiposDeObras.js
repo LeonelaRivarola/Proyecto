@@ -106,7 +106,7 @@ const TiposDeObras = () => {
                   <TableCell>{fila.TOE_INTERNO}</TableCell>
                   <TableCell>
                     <Box display="flex" gap={2}>
-                      <Tooltip title="Editar tipo de obra" arrow>
+                      <Tooltip title="Editar Tipo de Obra" arrow>
                         <IconButton onClick={() => handleEditarTO(fila.TOE_ID)}
                           size="small"
                           sx={{
@@ -121,7 +121,7 @@ const TiposDeObras = () => {
                           <NoteAddIcon />
                         </IconButton >
                       </Tooltip>
-                      <Tooltip title="Eliminar tipo de obra" arrow>
+                      <Tooltip title="Eliminar Tipo de Obra" arrow>
                         <IconButton color="error" onClick={() => handleEliminarTO(fila.TOE_ID)}
                           size="small"
                           sx={{

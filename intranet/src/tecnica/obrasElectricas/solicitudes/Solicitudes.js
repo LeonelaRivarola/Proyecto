@@ -265,7 +265,7 @@ const Solicitudes = () => {
                     <TableCell>{solicitud.Nombre}</TableCell>
                     <TableCell>
                       <Box display="flex" gap={1}>
-                        <Tooltip title="Documentar solicitud" arrow>
+                        <Tooltip title="Documentar Solicitud" arrow>
                           <IconButton
                             onClick={() => handleDocumentar(solicitud.Número)}
                             size="small"
@@ -283,7 +283,7 @@ const Solicitudes = () => {
                           </IconButton>
                         </Tooltip>
 
-                        <Tooltip title="Eliminar solicitud" arrow>
+                        <Tooltip title="Eliminar Solicitud" arrow>
                           <IconButton
                             color="error"
                             onClick={() => handleEliminar(solicitud)}
