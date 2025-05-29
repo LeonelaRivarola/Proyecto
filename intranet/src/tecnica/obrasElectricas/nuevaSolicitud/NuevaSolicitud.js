@@ -73,7 +73,6 @@ const NuevaSolicitud = () => {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
-      console.log("Datos enviados:", formData);
       const response = await fetch(`${API_URL}/api/tecnica/obrasElectricas/nueva-solicitud`, {
         method: 'POST',
         headers: {
@@ -89,7 +88,7 @@ const NuevaSolicitud = () => {
         alert("Error del servidor: " + errorText);
         return;
       }
-      
+
       navigate('/home/solicitudes');
 
     } catch (err) {
