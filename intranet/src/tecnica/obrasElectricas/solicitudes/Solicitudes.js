@@ -26,7 +26,7 @@ import {
 import { UploadFile, Delete } from '@mui/icons-material';
 import { API_URL } from '../../../config';
 import { Navigate, useNavigate } from 'react-router-dom';
-import ModalEliminarSolicitud from '../../../componentes/modales/ModalEliminarSolicitud.JS';
+import ModalEliminarSolicitud from '../../../componentes/modales/ModalEliminarSolicitud.js';
 
 const Solicitudes = () => {
   const [solicitudes, setSolicitudes] = useState([]);
@@ -49,17 +49,14 @@ const Solicitudes = () => {
   const handleConfirmDelete = async () => {
     const token = localStorage.getItem('token');
     try {
-      await fetch(`${API_URL}/api/tecnica/obrasElectricas/eliminar/${solicitudE.id}`, {
+      console.log(solicitudE);
+      await fetch(`${API_URL}/api/tecnica/obrasElectricas/eliminar/${solicitudE.Número}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         }
       });
-
-      setSolicitudE(prev =>
-        prev.filter(s => s.id !== solicitudE.id)
-      );
 
     } catch (error) {
       console.error('Error eliminando la solicitud:', error);
