@@ -229,6 +229,7 @@ const Solicitudes = () => {
                       <Box display="flex" gap={2}>
                         {solicitud.Estado === 'Pendiente' ? (
                           <div>
+                            <Box display="flex" gap={2}>
                             <Tooltip title="Presupuestar Documento" arrow>
                               <IconButton
                                 onClick={() => handlePresupuestar(solicitud.Número)}
@@ -264,9 +265,11 @@ const Solicitudes = () => {
                                 <DoDisturbAltIcon fontSize="small" />
                               </IconButton>
                             </Tooltip>
+                            </Box>
                           </div>
                         ) : solicitud.Estado === 'Iniciada' ? (
                           <div>
+                            <Box display="flex" gap={2}>
                             <Tooltip title="Documentar Solicitud" arrow>
                               <IconButton
                                 onClick={() => handleDocumentar(solicitud.Número)}
@@ -302,9 +305,9 @@ const Solicitudes = () => {
                                 <Delete fontSize="small" />
                               </IconButton>
                             </Tooltip>
+                            </Box>
                           </div>
                         ) : null}
-
                       </Box>
                     </TableCell>
                   </TableRow>
