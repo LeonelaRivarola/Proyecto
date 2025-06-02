@@ -23,13 +23,13 @@ const App = () => {
       <Routes>
         {/* Ruta protegida */}
         <Route path="/home" element={<SesionProtegida><Home /></SesionProtegida>}>
-        <Route path="emails" element={<EmailsTec />} />
-        <Route path="presupuestos" element={<Presupuestos />} />
-        <Route path="solicitudes" element={<Solicitudes />} />
-        <Route path="tipos-obras" element={<TiposDeObras />} />
-        <Route path="editar-tipoOE/:id" element={<EditarTOE />} />
-        <Route path="nueva-solicitud" element={<NuevaSolicitud />} />
-        <Route path="emails-solicitudes" element={<EmailSolicitudes />} />
+        <Route path="emails" element={<SesionProtegida> <EmailsTec /> </SesionProtegida>} />
+        <Route path="presupuestos" element={<SesionProtegida> <Presupuestos /> </SesionProtegida>} />
+        <Route path="solicitudes" element={ <SesionProtegida> <Solicitudes /> </SesionProtegida>} />
+        <Route path="tipos-obras" element={<SesionProtegida> <TiposDeObras /> </SesionProtegida>} />
+        <Route path="editar-tipoOE/:id" element={<SesionProtegida> <EditarTOE /> </SesionProtegida>} />
+        <Route path="nueva-solicitud" element={<SesionProtegida> <NuevaSolicitud /> </SesionProtegida>} />
+        <Route path="emails-solicitudes" element={<SesionProtegida> <EmailSolicitudes /> </SesionProtegida>} />
       </Route>
         <Route path="/" element={<Ingresar />}></Route>
       </Routes>
