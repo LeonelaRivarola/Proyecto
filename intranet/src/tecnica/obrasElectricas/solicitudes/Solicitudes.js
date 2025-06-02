@@ -226,7 +226,7 @@ const Solicitudes = () => {
                     <TableCell>{solicitud.Apellido}</TableCell>
                     <TableCell>{solicitud.Nombre}</TableCell>
                     <TableCell>
-                      <Box display="flex" gap={1}>
+                      <Box display="flex" gap={2}>
                         {solicitud.Estado === 'Pendiente' ? (
                           <div>
                             <Tooltip title="Presupuestar Documento" arrow>
