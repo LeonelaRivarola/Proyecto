@@ -21,17 +21,17 @@ const App = () => {
   return (
     <Router>
       <Routes>
-        {/* Rutas protegidas como rutas independientes */}
-        <Route path="/home" element={<SesionProtegida><Home /></SesionProtegida>} />
-        <Route path="/home/emails" element={<SesionProtegida><EmailsTec /></SesionProtegida>} />
-        <Route path="/home/presupuestos" element={<SesionProtegida><Presupuestos /></SesionProtegida>} />
-        <Route path="/home/solicitudes" element={<SesionProtegida><Solicitudes /></SesionProtegida>} />
-        <Route path="/home/tipos-obras" element={<SesionProtegida><TiposDeObras /></SesionProtegida>} />
-        <Route path="/home/editar-tipoOE/:id" element={<SesionProtegida><EditarTOE /></SesionProtegida>} />
-        <Route path="/home/nueva-solicitud" element={<SesionProtegida><NuevaSolicitud /></SesionProtegida>} />
-        <Route path="/home/emails-solicitudes" element={<SesionProtegida><EmailSolicitudes /></SesionProtegida>} />
-        {/* Ruta pública */}
-        <Route path="/" element={<Ingresar />} />
+        {/* Ruta protegida */}
+        <Route path="/home" element={<SesionProtegida> <Home /></SesionProtegida>}>
+        <Route path="emails" element={<SesionProtegida> <EmailsTec /> </SesionProtegida>} />
+        <Route path="presupuestos" element={<SesionProtegida> <Presupuestos /> </SesionProtegida>} />
+        <Route path="solicitudes" element={ <SesionProtegida> <Solicitudes /> </SesionProtegida>} />
+        <Route path="tipos-obras" element={<SesionProtegida> <TiposDeObras /> </SesionProtegida>} />
+        <Route path="editar-tipoOE/:id" element={<SesionProtegida> <EditarTOE /> </SesionProtegida>} />
+        <Route path="nueva-solicitud" element={<SesionProtegida> <NuevaSolicitud /> </SesionProtegida>} />
+        <Route path="emails-solicitudes" element={<SesionProtegida> <EmailSolicitudes /> </SesionProtegida>} />
+      </Route>
+        <Route path="/" element={<Ingresar />}></Route>
       </Routes>
     </Router>
   )
