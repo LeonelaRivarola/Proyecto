@@ -22,10 +22,11 @@ import {
 } from '@mui/material';
 
 import { UploadFile, Delete } from '@mui/icons-material';
+import UploadFileIcon from '@mui/icons-material/UploadFile';
 import { API_URL } from '../../../config';
 import { Navigate, useNavigate } from 'react-router-dom';
 import ModalEliminarSolicitud from '../../../componentes/modales/ModalEliminarSolicitud.js';
-import { styled } from '@mui/system';
+import DoDisturbAltIcon from '@mui/icons-material/DoDisturbAlt';
 
 const Solicitudes = () => {
   const [solicitudes, setSolicitudes] = useState([]);
@@ -36,11 +37,14 @@ const Solicitudes = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [mensajeVisible, setMensajeVisible] = useState(false);
   const [mensajeTexto, setMensajeTexto] = useState('');
-  const [hover, setHover] = useState(false);
   const navigate = useNavigate();
 
   const handleDocumentar = (id) => {
     console.log("Documentar solicitud:", id);
+  };
+
+  const handlePresupuestar = (id) => {
+    console.log("Presupuestar solicitud:", id);
   };
 
   const handleEliminar = (id) => {
@@ -104,48 +108,6 @@ const Solicitudes = () => {
       </Box>
     );
   }
-
-  if (error) {
-    return (
-      <Container maxWidth="md">
-        <Alert severity="error">
-          <Typography variant="h6" gutterBottom>¡Error al cargar los datos!</Typography>
-          <Typography>{error.message}</Typography>
-          <Typography variant="body2" mt={2}>Por favor, intente más tarde o contacte soporte.</Typography>
-        </Alert>
-      </Container>
-    );
-  }
-
-  if (!solicitudes || solicitudes.length === 0) {
-    return (
-      <Container maxWidth="md">
-        <Alert severity="info">
-          No hay solicitudes para mostrar en este momento.
-        </Alert>
-      </Container>
-    );
-  }
-
-  const HoverLabelButton = styled(Button)(({ theme }) => ({
-    position: 'relative',
-    overflow: 'hidden',
-
-    '& .label': {
-      opacity: 0,
-      transition: 'opacity 0.3s ease',
-      position: 'absolute',
-      bottom: '-20px',
-      left: '50%',
-      transform: 'translateX(-50%)',
-      fontSize: '0.8rem',
-      color: theme.palette.text.secondary,
-    },
-
-    '&:hover .label': {
-      opacity: 1,
-    },
-  }));
 
   return (
     <Box>
@@ -265,42 +227,84 @@ const Solicitudes = () => {
                     <TableCell>{solicitud.Nombre}</TableCell>
                     <TableCell>
                       <Box display="flex" gap={1}>
-                        <Tooltip title="Documentar Solicitud" arrow>
-                          <IconButton
-                            onClick={() => handleDocumentar(solicitud.Número)}
-                            size="small"
-                            sx={{
-                              backgroundColor: '#000080',
-                              color: 'white',
-                              '&:hover': {
-                                backgroundColor: '#0a0a5c',
-                              },
-                              borderRadius: 2,
-                              padding: '4px'
-                            }}
-                          >
-                            <UploadFile fontSize="small" />
-                          </IconButton>
-                        </Tooltip>
+                        {solicitud.Estado === 'Pendiente' ? (
+                          <div>
+                            <Tooltip title="Presupuestar Documento" arrow>
+                              <IconButton
+                                onClick={() => handlePresupuestar(solicitud.Número)}
+                                size="small"
+                                sx={{
+                                  backgroundColor: '#000080',
+                                  color: 'white',
+                                  '&:hover': {
+                                    backgroundColor: '#0a0a5c',
+                                  },
+                                  borderRadius: 2,
+                                  padding: '4px'
+                                }}
+                              >
+                                <UploadFileIcon fontSize="small" />
+                              </IconButton>
+                            </Tooltip>
+                            <Tooltip title="Cancelar y Eliminar Solicitud" arrow>
+                              <IconButton
+                                color="error"
+                                onClick={() => handleEliminar(solicitud)}
+                                size="small"
+                                sx={{
+                                  backgroundColor: '#FFA500',
+                                  color: 'white',
+                                  '&:hover': {
+                                    backgroundColor: '#CC8400',
+                                  },
+                                  borderRadius: 2,
+                                  padding: '4px'
+                                }}
+                              >
+                                <DoDisturbAltIcon fontSize="small" />
+                              </IconButton>
+                            </Tooltip>
+                          </div>
+                        ) : solicitud.Estado === 'Iniciada' ? (
+                          <div>
+                            <Tooltip title="Documentar Solicitud" arrow>
+                              <IconButton
+                                onClick={() => handleDocumentar(solicitud.Número)}
+                                size="small"
+                                sx={{
+                                  backgroundColor: '#000080',
+                                  color: 'white',
+                                  '&:hover': {
+                                    backgroundColor: '#0a0a5c',
+                                  },
+                                  borderRadius: 2,
+                                  padding: '4px'
+                                }}
+                              >
+                                <UploadFile fontSize="small" />
+                              </IconButton>
+                            </Tooltip>
+                            <Tooltip title="Eliminar Solicitud" arrow>
+                              <IconButton
+                                color="error"
+                                onClick={() => handleEliminar(solicitud)}
+                                size="small"
+                                sx={{
+                                  backgroundColor: '#d32f2f',
+                                  color: 'white',
+                                  '&:hover': {
+                                    backgroundColor: '#b71c1c',
+                                  },
+                                  borderRadius: 2,
+                                  padding: '4px'
+                                }}
+                              >
+                                <Delete fontSize="small" />
+                              </IconButton>
+                            </Tooltip>
+                          </div>
+                        ) : null}
 
-                        <Tooltip title="Eliminar Solicitud" arrow>
-                          <IconButton
-                            color="error"
-                            onClick={() => handleEliminar(solicitud)}
-                            size="small"
-                            sx={{
-                              backgroundColor: '#d32f2f',
-                              color: 'white',
-                              '&:hover': {
-                                backgroundColor: '#b71c1c',
-                              },
-                              borderRadius: 2,
-                              padding: '4px'
-                            }}
-                          >
-                            <Delete fontSize="small" />
-                          </IconButton>
-                        </Tooltip>
                       </Box>
                     </TableCell>
                   </TableRow>
