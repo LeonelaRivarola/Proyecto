@@ -23,14 +23,15 @@ const App = () => {
       <Routes>
         {/* Ruta protegida */}
         <Route path="/home" element={<SesionProtegida> <Home /></SesionProtegida>}>
-        <Route path="emails" element={<SesionProtegida> <EmailsTec /> </SesionProtegida>} />
-        <Route path="presupuestos" element={<SesionProtegida> <Presupuestos /> </SesionProtegida>} />
-        <Route path="solicitudes" element={ <SesionProtegida> <Solicitudes /> </SesionProtegida>} />
-        <Route path="tipos-obras" element={<SesionProtegida> <TiposDeObras /> </SesionProtegida>} />
-        <Route path="editar/:id" element={<SesionProtegida> <EditarTOE /> </SesionProtegida>} />
-        <Route path="nueva-solicitud" element={<SesionProtegida> <NuevaSolicitud /> </SesionProtegida>} />
-        <Route path="emails-solicitudes" element={<SesionProtegida> <EmailSolicitudes /> </SesionProtegida>} />
-      </Route>
+          <Route path="emails" element={<SesionProtegida> <EmailsTec /> </SesionProtegida>} />
+          <Route path="presupuestos" element={<SesionProtegida> <Presupuestos /> </SesionProtegida>} />
+          <Route path="solicitudes" element={<SesionProtegida> <Solicitudes /> </SesionProtegida>} />
+          <Route path="tipos-obras" element={<SesionProtegida><TiposDeObras /></SesionProtegida>}>
+            <Route path="editar/:id" element={<SesionProtegida><EditarTOE /></SesionProtegida>} />
+          </Route>
+          <Route path="nueva-solicitud" element={<SesionProtegida> <NuevaSolicitud /> </SesionProtegida>} />
+          <Route path="emails-solicitudes" element={<SesionProtegida> <EmailSolicitudes /> </SesionProtegida>} />
+        </Route>
         <Route path="/" element={<Ingresar />}></Route>
       </Routes>
     </Router>
