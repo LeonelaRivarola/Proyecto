@@ -3,7 +3,8 @@ const solicitudModel = require('../models/solicitudModel');
 module.exports = {
     async index(req, res) {
         try {
-            const solicitudes = await solicitudModel.getAll();
+            const { estado } = req.query;
+            const solicitudes = await solicitudModel.getAll(estado);
             res.json(solicitudes);
         } catch (err) {
             console.error('Error al obtener solicitudes:', err);
@@ -19,6 +20,22 @@ module.exports = {
         } catch (error) {
             console.error('Error al crear solicitud:', error);
             res.status(500).json({ error: 'Error al crear solicitud.' });
+        }
+    },
+
+    async show(req, res) {
+        try{
+            const { id } = req.params;
+            const solicitud = await solicitudModel.getById(id);
+
+            if(!solicitud) {
+                return res.status(404).json({ error: 'Solicitud no encontrada.'});
+            }
+
+            res.json(solicitud);
+        }catch (err) {
+            console.error('Error al obtener la solicitud: ', err);
+            res.status(500).json({ error: 'Error al obtener la solicitud.'});
         }
     },
 

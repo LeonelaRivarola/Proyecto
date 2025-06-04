@@ -1,9 +1,20 @@
+const { request } = require('express');
 const { connectToAlum, sql } = require('../config/db');
 
-exports.getAll = async () => { //obtiene la solicitud
+exports.getAll = async (estadoId) => { //obtiene la solicitud
     const pool = await connectToAlum();
 
-    const result = await pool.request().query(`
+    const request = pool.request();
+
+    let whereEstado = '';
+    if (estadoId) {
+        request.input('estadoId', sql.Int, estadoId);
+        whereEstado = `
+            AND SES.SES_ESTADO_ID = @estadoId
+        `;
+    }
+    
+    const result = await request.query(`
         SELECT 
             SOE.SOE_ID as Número,
             SOE.SOE_FECHA AS Fecha_Solicitud,
@@ -23,11 +34,35 @@ exports.getAll = async () => { //obtiene la solicitud
             FROM SOLICITUD_ESTADO SES2
             WHERE SES2.SES_SOLICITUD_ID = SOE.SOE_ID
         )
+            ${whereEstado}
         ORDER BY SOE.SOE_FECHA DESC
     `);
 
     return result.recordset;
 };
+
+exports.getById = async (id) => {
+    const pool = await connectToAlum();
+    const result = await pool.request()
+        .input('id', sql.Int, id)
+        .query(`
+            SELECT 
+                SOE.*, 
+                TOE.TOE_DESCRIPCION,
+                TOE.TOE_INTERNO,
+                LOC.LOC_DESCRIPCION,
+                SES.SES_FECHA, 
+                ESO.ESO_DESCRIPCION
+            FROM SOLICITUD_OBRA_ELECTRICA SOE
+            LEFT JOIN TIPO_OBRA_ELECTRICA TOE ON TOE.TOE_ID = SOE.SOE_TIPO_ID
+            LEFT JOIN GEA.dbo.LOCALIDAD LOC ON LOC.LOC_ID = SOE.SOE_LOCALIDAD_ID
+            LEFT JOIN SOLICITUD_ESTADO SES ON SES.SES_SOLICITUD_ID = SOE.SOE_ID
+            LEFT JOIN ESTADO_SOLICITUD_OBRA ESO ON ESO.ESO_ID = SES.SES_ESTADO_ID
+            WHERE SOE.SOE_ID = @id
+        `);
+
+        return result.recordset[0];
+}
 
 exports.create = async (data) => {
     const {
