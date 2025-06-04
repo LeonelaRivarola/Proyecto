@@ -24,20 +24,13 @@ const EditarTOE = () => {
     const fetchDatos = async () => {
       try {
         const token = localStorage.getItem('token');
-        const res = await fetch(`${API_URL}/api/tecnica/getTipoDeObra/${id}`, {
-          method: 'GET',
+        const res = await fetch(`${API_URL}/api/tecnica/obrasElectricas/getTipoDeObra/${id}`, {
+           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
           }
         });
-
-        if (!res.ok) {
-          const errorText = await res.text();
-          console.error(`Error ${res.status}:`, errorText);
-          throw new Error(`No se pudo cargar el tipo de obra (HTTP ${res.status})`);
-        }
-
         const data = await res.json();
         setFormData({
           abreviatura: data.abreviatura || '',
@@ -45,7 +38,7 @@ const EditarTOE = () => {
           interno: data.interno === 'S',
         });
       } catch (err) {
-        console.error('Error al cargar datos:', err.message);
+        console.error('Error al cargar datos:', err);
       }
     };
 
