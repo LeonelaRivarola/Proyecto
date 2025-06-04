@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import {
   TextField,
   FormControlLabel,
@@ -9,7 +9,6 @@ import {
   Typography,
   Paper
 } from '@mui/material';
-import { Navigate, useNavigate } from 'react-router-dom';
 import { API_URL } from '../../../config';
 
 const EditarTOE = () => {
@@ -17,10 +16,34 @@ const EditarTOE = () => {
   const [formData, setFormData] = useState({
     abreviatura: '',
     descripcion: '',
-    interno: '',
+    interno: false,
   });
   const navigate = useNavigate();
-  
+
+  useEffect(() => {
+    const fetchDatos = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const res = await fetch(`${API_URL}/api/tecnica/obrasElectricas/${id}`, {
+           method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        const data = await res.json();
+        setFormData({
+          abreviatura: data.abreviatura || '',
+          descripcion: data.descripcion || '',
+          interno: data.interno === 'S',
+        });
+      } catch (err) {
+        console.error('Error al cargar datos:', err);
+      }
+    };
+
+    fetchDatos();
+  }, [id]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -41,7 +64,7 @@ const EditarTOE = () => {
 
     try {
       const token = localStorage.getItem('token');
-      const respuesta = await fetch(`${API_URL}/api/tecnica/obrasElectricas/editar-tipoObras/${id}`, {
+      await fetch(`${API_URL}/api/tecnica/obrasElectricas/editar-tipoObras/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -49,37 +72,30 @@ const EditarTOE = () => {
         },
         body: JSON.stringify(datosAGuardar),
       });
-      const data = await respuesta.json();
+      navigate('/home/tipos-obras');
     } catch (err) {
-      console.log(err);
+      console.error('Error al actualizar:', err);
     }
-
   };
 
   const handleCancel = () => {
-    setFormData({
-      abreviatura: '',
-      descripcion: '',
-      interno: '',
-    });
-
     navigate('/home/tipos-obras');
-
   };
 
   return (
-    <Paper elevation={3} sx={{ padding: 4, maxWidth: 400, margin: 'auto', marginTop: 6 }}>
+    <Paper elevation={3} sx={{ padding: 4, maxWidth: 800, margin: 'auto', marginTop: 6 }}>
       <Typography variant="h6" gutterBottom>
-        Editar TOE
+        Editar Tipo de Obra Eléctrica
       </Typography>
       <form onSubmit={handleSubmit}>
-        <Box display="flex" flexDirection="column" gap={2}>
+        <Box display="flex" flexWrap="wrap" gap={3}>
           <TextField
             label="Abreviatura"
             name="abreviatura"
             value={formData.abreviatura}
             onChange={handleChange}
             required
+            sx={{ flex: '1 1 200px' }}
           />
           <TextField
             label="Descripción"
@@ -89,6 +105,7 @@ const EditarTOE = () => {
             multiline
             rows={3}
             required
+            sx={{ flex: '2 1 300px' }}
           />
           <FormControlLabel
             control={
@@ -100,16 +117,17 @@ const EditarTOE = () => {
               />
             }
             label={`Interno: ${formData.interno ? 'Sí' : 'No'}`}
+            sx={{ alignSelf: 'center' }}
           />
+        </Box>
 
-          <Box display="flex" justifyContent="space-between" gap={2}>
-            <Button variant="outlined" color="secondary" onClick={handleCancel}>
-              Cancelar
-            </Button>
-            <Button type="submit" variant="contained" color="primary">
-              Actualizar
-            </Button>
-          </Box>
+        <Box display="flex" justifyContent="flex-end" gap={2} mt={3}>
+          <Button variant="outlined" color="secondary" onClick={handleCancel}>
+            Cancelar
+          </Button>
+          <Button type="submit" variant="contained" color="primary">
+            Actualizar
+          </Button>
         </Box>
       </form>
     </Paper>

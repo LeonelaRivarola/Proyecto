@@ -2,6 +2,20 @@
 const tipoObraModel = require('../models/tipoObraModel');
 
 module.exports = {
+    async show(req, res) {
+        try {
+            const id = req.params.id;
+            const tipo = await tipoObraModel.findById(id);
+
+            if (!tipo) return res.status(404).json({ error: 'Tipo de obra no encontrado.' });
+
+            res.json(tipo);
+        } catch (err) {
+            console.error('Error al obtener tipo de obra:', err);
+            res.status(500).json({ error: 'Error al obtener tipo de obra.' });
+        }
+    },
+
     async index(req, res) {
         try {
             const tipos = await tipoObraModel.getAll();
