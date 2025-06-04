@@ -2,10 +2,10 @@ import React from 'react'
 import { BottomNavigation } from '@mui/material'
 import '../../css/tecnica.css'
 
-const Footer = () => {
+const Footer = ({style}) => {
   return (
     <div>
-      <footer className='footer'>Sección Sistemas. Todos los derechos reservados © 2025 Corpico</footer>
+      <footer style={style}>Sección Sistemas. Todos los derechos reservados © 2025 Corpico</footer>
     </div>
   )
 }

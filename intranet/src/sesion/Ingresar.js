@@ -37,7 +37,7 @@ const Ingresar = () => {
             const response = await axios.post(`${API_URL}/api/login`, { username, password });
 
             localStorage.setItem('token', response.data.token);
-            console.log("USERNAME:" + response.data.username);
+            localStorage.setItem('username', response.data.username)
             navigate('/Home');
 
         } catch (err) {
@@ -102,7 +102,18 @@ const Ingresar = () => {
                         </div>
                     </div>
                 </Container>
-                <Footer style={{ backgroundColor: "#96e65c", color: "black" }} />
+                <Footer
+                    style={{
+                        color: "black",
+                        width: "100%",
+                        textAlign: "center",
+                        padding: "10px 0",
+                        position: "absolute",
+                        bottom: 0,
+                        left: 0,
+                        backgroundColor: "#e8f145"
+                    }}
+                />
             </div>
         </div>
     )
