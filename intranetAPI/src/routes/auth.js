@@ -15,7 +15,7 @@ router.delete('/tecnica/obrasElectricas/eliminar/:id', verificarToken, solicitud
 
 //Tipo de obras
 router.get('/tecnica/obrasElectricas/tipoObras', verificarToken, tipoObraController.index);
-router.get('/tecnica/obrasElectricas/tipoObras/:id', verificarToken, tipoObraController.show);
+router.get('/tecnica/obrasElectricas/editarTipoObras/:id', verificarToken, tipoObraController.show);
 router.post('/tecnica/obrasElectricas/nuevo-tipoObras', verificarToken, tipoObraController.store);
 router.put('/tecnica/obrasElectricas/editar-tipoObras/:id', verificarToken, tipoObraController.update);
 router.delete('/tecnica/obrasElectricas/eliminar-tipoObra/:id', verificarToken, tipoObraController.destroy);
