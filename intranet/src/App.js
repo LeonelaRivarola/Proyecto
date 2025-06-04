@@ -27,7 +27,7 @@ const App = () => {
         <Route path="presupuestos" element={<SesionProtegida> <Presupuestos /> </SesionProtegida>} />
         <Route path="solicitudes" element={ <SesionProtegida> <Solicitudes /> </SesionProtegida>} />
         <Route path="tipos-obras" element={<SesionProtegida> <TiposDeObras /> </SesionProtegida>} />
-        <Route path="tipos-obras/editar/:id" element={<SesionProtegida> <EditarTOE /> </SesionProtegida>} />
+        <Route path="editar/:id" element={<SesionProtegida> <EditarTOE /> </SesionProtegida>} />
         <Route path="nueva-solicitud" element={<SesionProtegida> <NuevaSolicitud /> </SesionProtegida>} />
         <Route path="emails-solicitudes" element={<SesionProtegida> <EmailSolicitudes /> </SesionProtegida>} />
       </Route>

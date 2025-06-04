@@ -1,5 +1,5 @@
 import React from 'react'
-import { Grid } from '@mui/material'
+import { Grid, Box } from '@mui/material'
 import HeaderUsu from '../../componentes/headerUsu/HeaderUsu'
 import SideBar from '../../componentes/sideBar/SideBar'
 import Footer from '../../componentes/footer/Footer'
@@ -7,15 +7,14 @@ import { Outlet } from 'react-router-dom'
 import '../../css/tecnica.css';
 
 const Home = () => {
-
   return (
     <Grid container sx={{ height: '100vh', overflow: 'hidden' }}>
-      {/* SIDE BAR FIJO  */}
+      {/* SIDE BAR FIJO */}
       <Grid item xs={3} sx={{ height: '100vh', position: 'fixed', left: 0, top: 0 }}>
         <SideBar />
       </Grid>
 
-      {/* HEADER FIJO + CONTENIDO SELECCIONADO DE SIDE BAR  */}
+      {/* CONTENIDO PRINCIPAL */}
       <Grid
         item
         xs={9}
@@ -27,41 +26,42 @@ const Home = () => {
           height: '100vh',
         }}
       >
-        {/* */}
-        <Grid item sx={{ flexShrink: 0 }}>
+        {/* HEADER */}
+        <Box sx={{ flexShrink: 0 }}>
           <HeaderUsu />
-        </Grid>
+        </Box>
 
-        {/*  */}
-        <Grid
-          item
+        {/* CONTENIDO + FOOTER */}
+        <Box
           sx={{
             flexGrow: 1,
             overflowY: 'auto',
+            display: 'flex',
+            flexDirection: 'column',
             padding: 2,
-            backgroundColo: 'grey'
+            backgroundColor: 'white',
           }}
         >
-          <Outlet />
+          {/* CONTENIDO DINÁMICO */}
+          <Box sx={{ flexGrow: 1 }}>
+            <Outlet />
+          </Box>
 
-          <Grid item sx={{ flexShrink: 0 }}>
-            <Footer
-              style={{
-                color: "black",
-                width: "100%",
-                textAlign: "center",
-                padding: "10px 0",
-                position: "absolute",
-                bottom: 0,
-                left: 0,
-                backgroundColor: "#f5f5f5"
-              }}
-            />
-          </Grid>
-        </Grid>
+          {/* FOOTER AL FINAL DEL CONTENEDOR */}
+          <Box
+            sx={{
+              flexShrink: 0,
+              textAlign: 'center',
+              padding: '10px 0',
+              backgroundColor: '#f5f5f5',
+              color: 'black',
+            }}
+          >
+            <Footer />
+          </Box>
+        </Box>
       </Grid>
     </Grid>
-
   )
 }
 
