@@ -55,6 +55,8 @@ const Home = () => {
               padding: '10px 0',
               backgroundColor: '#f5f5f5',
               color: 'black',
+              marginTop: '15px',
+              borderRadius: '8px'
             }}
           >
             <Footer />
