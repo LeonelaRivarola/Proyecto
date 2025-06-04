@@ -46,7 +46,7 @@ router.delete('/tecnica/obrasElectricas/eliminar-tipoObra/:id', verificarToken, 
 //interferencias
 router.get('/tecnica/obrasElectricas/interferencia', verificarToken, interferenciaController.index);
 router.post('/tecnica/obrasElectricas/nueva-interferencia',verificarToken, interferenciaController.store);
-
+router.delete('/tecnica/obrasElectricas/eliminar-interf/:id', verificarToken, interferenciaController.destroy);
 
 // router.get('/', authMiddleware, dashboardController);
 // router.get('sign-up', registerController.create);
