@@ -24,7 +24,7 @@ const EditarTOE = () => {
     const fetchDatos = async () => {
       try {
         const token = localStorage.getItem('token');
-        const res = await fetch(`${API_URL}/api/tecnica/obrasElectricas/${id}`, {
+        const res = await fetch(`${API_URL}/api/tecnica/editarTipoObras/${id}`, {
            method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -64,7 +64,7 @@ const EditarTOE = () => {
 
     try {
       const token = localStorage.getItem('token');
-      await fetch(`${API_URL}/api/tecnica/obrasElectricas/editarTipoObras/${id}`, {
+      await fetch(`${API_URL}/api/tecnica/obrasElectricas/editar-tipoObras/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
