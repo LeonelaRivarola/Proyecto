@@ -32,7 +32,6 @@ const Solicitudes = () => {
   const [solicitudes, setSolicitudes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [estadoFiltro, setEstadoFiltro] = useState('');
-  const [error, setError] = useState(null);
   const [solicitudE, setSolicitudE] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [mensajeVisible, setMensajeVisible] = useState(false);

@@ -102,7 +102,18 @@ const Ingresar = () => {
                         </div>
                     </div>
                 </Container>
-                <Footer style={{ backgroundColor: "#96e65c", color: "black" }} />
+                <Footer
+                    style={{
+                        color: "black",
+                        width: "100%",
+                        textAlign: "center",
+                        padding: "10px 0",
+                        position: "absolute",
+                        bottom: 0,
+                        left: 0,
+                        backgroundColor: "#e8f145"
+                    }}
+                />
             </div>
         </div>
     )

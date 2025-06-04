@@ -129,8 +129,8 @@ const NuevaSolicitud = () => {
   }, []);
 
   return (
-    <Container maxWidth="true" sx={{}}>
-      <Typography variant="h5" align="left" fontWeight="bold" gutterBottom sx={{ paddingBottom: 2 }}>
+    <Container maxWidth="true">
+      <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
         Nueva Solicitud
       </Typography>
       <Card>

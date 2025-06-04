@@ -2,6 +2,7 @@ import React from 'react'
 import { Grid } from '@mui/material'
 import HeaderUsu from '../../componentes/headerUsu/HeaderUsu'
 import SideBar from '../../componentes/sideBar/SideBar'
+import Footer from '../../componentes/footer/Footer'
 import { Outlet } from 'react-router-dom'
 import '../../css/tecnica.css';
 
@@ -19,7 +20,7 @@ const Home = () => {
         item
         xs={9}
         sx={{
-          marginLeft: '300px', 
+          marginLeft: '300px',
           width: 'calc(100% - 300px)',
           display: 'flex',
           flexDirection: 'column',
@@ -42,6 +43,21 @@ const Home = () => {
           }}
         >
           <Outlet />
+
+          <Grid item sx={{ flexShrink: 0 }}>
+            <Footer
+              style={{
+                color: "black",
+                width: "100%",
+                textAlign: "center",
+                padding: "10px 0",
+                position: "absolute",
+                bottom: 0,
+                left: 0,
+                backgroundColor: "#f5f5f5"
+              }}
+            />
+          </Grid>
         </Grid>
       </Grid>
     </Grid>
