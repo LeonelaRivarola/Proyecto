@@ -4,6 +4,8 @@ const authController = require('../controllers/authController');
 const solicitudController = require('../controllers/solicitudController');
 const verificarToken = require('../middlewares/authMiddleware');
 const tipoObraController = require('../controllers/tipoObraController');
+// const presupuestoController = require('../controllers/presupuestoController');
+const interferenciaController = require('../controllers/interferenciaController');
 
 //
 router.post('/login', authController.login);
@@ -21,13 +23,13 @@ router.delete('/tecnica/obrasElectricas/eliminar-tipoObra/:id', verificarToken, 
 
 
 // Presupuestos
-router.get('/tecnica/obrasElectricas/presupuestos', verificarToken, presupuestoController.index);
-router.get('/tecnica/obrasElectricas/presupuestos/crear/:solicitud', verificarToken, presupuestoController.create);
-router.post('/tecnica/obrasElectricas/presupuestos/guardar', verificarToken, presupuestoController.store);
-router.post('/tecnica/obrasElectricas/presupuestos/mostrar/:presupuesto', verificarToken, presupuestoController.show);
-router.get('/tecnica/obrasElectricas/presupuestos/documento/:solicitud', verificarToken, presupuestoController.abrirPresupuesto);
-router.post('/tecnica/obrasElectricas/presupuestos/actualizar/:solicitud', verificarToken, presupuestoController.update);
-router.post('/tecnica/obrasElectricas/presupuestos/notificar-email/:solicitud', verificarToken, presupuestoController.notificarEmail);
+// router.get('/tecnica/obrasElectricas/presupuestos', verificarToken, presupuestoController.index);
+// router.get('/tecnica/obrasElectricas/presupuestos/crear/:solicitud', verificarToken, presupuestoController.create);
+// router.post('/tecnica/obrasElectricas/presupuestos/guardar', verificarToken, presupuestoController.store);
+// router.post('/tecnica/obrasElectricas/presupuestos/mostrar/:presupuesto', verificarToken, presupuestoController.show);
+// router.get('/tecnica/obrasElectricas/presupuestos/documento/:solicitud', verificarToken, presupuestoController.abrirPresupuesto);
+// router.post('/tecnica/obrasElectricas/presupuestos/actualizar/:solicitud', verificarToken, presupuestoController.update);
+// router.post('/tecnica/obrasElectricas/presupuestos/notificar-email/:solicitud', verificarToken, presupuestoController.notificarEmail);
 
 // // Route:: get('tecnica/obrasElectricas/presupuestos/crear/{solicitud}', [PresupuestoController:: class, 'create']) -> name('presupuestar-solicitud');
 // // Route:: get('tecnica/obrasElectricas/presupuestos/documento/{solicitud}', [PresupuestoController:: class, 'abrirPresupuesto']) -> name('abrir-presupuesto');
@@ -41,7 +43,9 @@ router.post('/tecnica/obrasElectricas/presupuestos/notificar-email/:solicitud', 
 // const solicitudController = require('../controllers/solicitudController');
 // const presupuestoController = require('../controllers/presupuestoController');
 
-
+//interferencias
+router.get('/tecnica/obrasElectricas/interferencia', verificarToken, interferenciaController.index);
+router.post('/tecnica/obrasElectricas/nueva-interferencia',verificarToken, interferenciaController.store);
 
 
 // router.get('/', authMiddleware, dashboardController);

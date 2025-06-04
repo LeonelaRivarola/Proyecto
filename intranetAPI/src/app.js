@@ -17,3 +17,7 @@ const PORT = 18001;
 const HOST = "172.16.14.210"; //26 es la otra pc
 
 
+app.listen(PORT, HOST, () => {
+    console.log(`Servidor corriendo en http://${HOST}:${PORT}`);
+  });
+  
