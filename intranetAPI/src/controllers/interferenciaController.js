@@ -13,7 +13,7 @@ module.exports = {
      async store(req, res) {
             try {
                 const solicitudId = await interfModel.create(req.body);
-                res.json(solicitudId);
+                // res.json(solicitudId);
                 res.status(201).json({ message: 'Solicitud creada correctamente.' });
     
             } catch (error) {
