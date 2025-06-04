@@ -1,4 +1,4 @@
-const interfModel = require('../models/interferenciaModel')
+const interfModel = require('../models/interferenciaController')
 module.exports = {
     async index(req, res) {
         try {
