@@ -58,7 +58,7 @@ const EditarTOE = () => {
 
     const datosAGuardar = {
       ...formData,
-      interno: formData.TOE_INTERNO ? 'S' : 'N',
+      interno: formData.interno? 'S' : 'N',
     };
 
     try {
@@ -91,7 +91,7 @@ const EditarTOE = () => {
           <TextField
             label="Abreviatura"
             name="abreviatura"
-            value={formData.TOE_ABREVIATURA}
+            value={formData.abreviatura}
             onChange={handleChange}
             required
             sx={{ flex: '1 1 200px' }}
@@ -109,13 +109,13 @@ const EditarTOE = () => {
           <FormControlLabel
             control={
               <Switch
-                checked={formData.TOE_INTERNO}
+                checked={formData.interno}
                 onChange={handleSwitchChange}
                 name="interno"
                 color="primary"
               />
             }
-            label={`Interno: ${formData.TOE_INTERNO ? 'Sí' : 'No'}`}
+            label={`Interno: ${formData.interno ? 'Sí' : 'No'}`}
             sx={{ alignSelf: 'center' }}
           />
         </Box>
