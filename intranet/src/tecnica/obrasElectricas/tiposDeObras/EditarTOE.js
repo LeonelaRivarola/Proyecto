@@ -31,7 +31,7 @@ const EditarTOE = () => {
           }
         });
         const data = await res.json();
-        console.log( "datos de tipos de obra" + data);
+        console.log( "datos de tipos de obra" + data.ABREVIATURA);
         setFormData({
           abreviatura: data.abreviatura || '',
           descripcion: data.descripcion || '',
