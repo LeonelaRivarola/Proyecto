@@ -25,13 +25,13 @@ const EditarTOE = () => {
       try {
         const token = localStorage.getItem('token');
         const res = await fetch(`${API_URL}/api/tecnica/obrasElectricas/getTipoDeObra/${id}`, {
-           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
           }
         });
         const data = await res.json();
+        console.log( "datos de tipos de obra" + data);
         setFormData({
           abreviatura: data.abreviatura || '',
           descripcion: data.descripcion || '',
