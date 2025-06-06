@@ -29,6 +29,7 @@ router.get('/tecnica/obrasElectricas/emails', verificarToken, emailController.in
 
 // Presupuestos
 router.get('/tecnica/obrasElectricas/presupuestos', verificarToken, presupuestoController.index);
+router.get('/tecnica/obrasElectricas/getPresupuestoPath/:usuario', verificarToken, presupuestoController.showPresupuestoPath);
 // router.post('/tecnica/obrasElectricas/presupuestos/guardar', verificarToken, presupuestoController.store);
 // router.get('/tecnica/obrasElectricas/presupuestos/mostrar/:presupuesto', verificarToken, presupuestoController.show);
 
