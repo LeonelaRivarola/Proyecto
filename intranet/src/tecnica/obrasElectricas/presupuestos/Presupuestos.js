@@ -15,7 +15,6 @@ import {
 } from "@mui/material";
 import { API_URL } from "../../../config";
 import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
-import { Outlet } from "react-router-dom"; // Si usás rutas anidadas
 
 const Presupuestos = () => {
   const [presupuestos, setPresupuestos] = useState([]);
