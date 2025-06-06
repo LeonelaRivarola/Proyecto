@@ -4,6 +4,7 @@ const authController = require('../controllers/authController');
 const solicitudController = require('../controllers/solicitudController');
 const verificarToken = require('../middlewares/authMiddleware');
 const tipoObraController = require('../controllers/tipoObraController');
+const emailController = require('../controllers/emailController');
 
 //
 router.post('/login', authController.login);
@@ -19,6 +20,10 @@ router.get('/tecnica/obrasElectricas/getTipoDeObra/:id', verificarToken, tipoObr
 router.post('/tecnica/obrasElectricas/nuevo-tipoObras', verificarToken, tipoObraController.store);
 router.put('/tecnica/obrasElectricas/editar-tipoObras/:id', verificarToken, tipoObraController.update);
 router.delete('/tecnica/obrasElectricas/eliminar-tipoObra/:id', verificarToken, tipoObraController.destroy);
+
+
+// Emails 
+router.get('/tecnica/obrasElectricas/emails', verificarToken, emailController.index);
 
 
 // Presupuestos
