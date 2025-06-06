@@ -31,11 +31,10 @@ const EditarTOE = () => {
           }
         });
         const data = await res.json();
-        console.log( "datos de tipos de obra" + data.TOE_ID);
         setFormData({
-          abreviatura: data.abreviatura || '',
-          descripcion: data.descripcion || '',
-          interno: data.interno === 'S',
+          abreviatura: data.TOE_ABREVIATURA || '',
+          descripcion: data.TOE_DESCRIPCION || '',
+          interno: data.TOE_INTERNO === 'S',
         });
       } catch (err) {
         console.error('Error al cargar datos:', err);
@@ -59,7 +58,7 @@ const EditarTOE = () => {
 
     const datosAGuardar = {
       ...formData,
-      interno: formData.interno ? 'S' : 'N',
+      interno: formData.TOE_INTERNO ? 'S' : 'N',
     };
 
     try {
@@ -92,7 +91,7 @@ const EditarTOE = () => {
           <TextField
             label="Abreviatura"
             name="abreviatura"
-            value={formData.abreviatura}
+            value={formData.TOE_ABREVIATURA}
             onChange={handleChange}
             required
             sx={{ flex: '1 1 200px' }}
@@ -110,13 +109,13 @@ const EditarTOE = () => {
           <FormControlLabel
             control={
               <Switch
-                checked={formData.interno}
+                checked={formData.TOE_INTERNO}
                 onChange={handleSwitchChange}
                 name="interno"
                 color="primary"
               />
             }
-            label={`Interno: ${formData.interno ? 'Sí' : 'No'}`}
+            label={`Interno: ${formData.TOE_INTERNO ? 'Sí' : 'No'}`}
             sx={{ alignSelf: 'center' }}
           />
         </Box>
