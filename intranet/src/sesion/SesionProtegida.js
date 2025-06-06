@@ -12,7 +12,6 @@ const isTokenValid = (token) => {
 const SesionProtegida = ({ children }) => {
   const token = localStorage.getItem("token");
   if (!token || !isTokenValid(token)) {
-    console.log(token);
     return <Navigate to="/" replace />;
   }
   return children;
