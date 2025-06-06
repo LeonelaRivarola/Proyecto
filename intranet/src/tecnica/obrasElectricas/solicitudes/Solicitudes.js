@@ -303,6 +303,27 @@ const Solicitudes = () => {
                               </IconButton>
                             </Tooltip>
                           </Box>
+                        ): solicitud.Estado === 'Presupuestada' ? (
+                          <Box display="flex" gap={1.5}>
+                            <Tooltip title="Cancelar y Eliminar Solicitud" arrow>
+                              <IconButton
+                                color="error"
+                                onClick={() => handleEliminar(solicitud)}
+                                size="small"
+                                sx={{
+                                  backgroundColor: '#FFA500',
+                                  color: 'white',
+                                  '&:hover': {
+                                    backgroundColor: '#CC8400',
+                                  },
+                                  borderRadius: 2,
+                                  padding: '4px'
+                                }}
+                              >
+                                <DoDisturbAltIcon fontSize="small" />
+                              </IconButton>
+                            </Tooltip>
+                            </Box>
                         ) : null}
                       </Box>
                     </TableCell>
