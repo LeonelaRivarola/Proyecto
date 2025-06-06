@@ -87,7 +87,7 @@ const Presupuestos = () => {
                 <TableRow key={fila.SOE_ID}>
                   <TableCell>{fila.SOE_APELLIDO}</TableCell>
                   <TableCell>{fila.SOE_NOMBRE}</TableCell>
-                  <TableCell>${fila.SPR_PRESUPUESTO_ID?.toLocaleString() || 0}</TableCell>
+                  <TableCell>{fila.SPR_PRESUPUESTO_ID?.toLocaleString() || 0}</TableCell>
                   <TableCell>
                     <Tooltip title="Descargar PDF">
                       <IconButton onClick={() => descargarPDF(fila.SPR_PRESUPUESTO_ID)} color="primary">
