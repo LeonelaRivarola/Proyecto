@@ -1,12 +1,13 @@
-const { connectToGeaCorpico, sql } = require('../config/db');
+const { connectToAlum, sql } = require('../config/db');
 
 exports.getAll = async () => {
-const pool = await connectToGeaCorpico();
-const result = await pool.request().query(`
-    SELECT SPO_ID, SPO_APELLIDO, SPO_NOMBRE, SPO_SOLICITUD
-    FROM SOLICITUD_PRESUPUESTO_OBRA
-    ORDER BY SPO_ID DESC
- `
-);
-return result.recordset;
+    const pool = await connectToAlum();
+    const result = await pool.request().query(`
+        SELECT SOE_ID, SOE_NOMBRE, SOE_APELLIDO, SPR_PRESUPUESTO_ID
+        FROM SOLICITUD_OBRA_ELECTRICA soe
+        INNER JOIN SOLICITUD_PRESUPUESTO spr
+        ON soe.SOE_USUARIO = spr.SPR_USUARIO;
+        `
+    );
+    return result.recordset;
 }

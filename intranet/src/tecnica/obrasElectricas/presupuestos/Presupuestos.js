@@ -84,13 +84,13 @@ const Presupuestos = () => {
             </TableHead>
             <TableBody>
               {presupuestos.map((fila) => (
-                <TableRow key={fila.SPO_ID}>
-                  <TableCell>{fila.SPO_APELLIDO}</TableCell>
-                  <TableCell>{fila.SPO_NOMBRE}</TableCell>
-                  <TableCell>${fila.SPO_PRESUPUESTO?.toLocaleString() || 0}</TableCell>
+                <TableRow key={fila.SOE_ID}>
+                  <TableCell>{fila.SOE_APELLIDO}</TableCell>
+                  <TableCell>{fila.SOE_NOMBRE}</TableCell>
+                  <TableCell>${fila.SPR_PRESUPUESTO_ID?.toLocaleString() || 0}</TableCell>
                   <TableCell>
                     <Tooltip title="Descargar PDF">
-                      <IconButton onClick={() => descargarPDF(fila.SPO_ID)} color="primary">
+                      <IconButton onClick={() => descargarPDF(fila.SPR_PRESUPUESTO_ID)} color="primary">
                         <PictureAsPdfIcon />
                       </IconButton>
                     </Tooltip>
