@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import {
-  Container,
   Typography,
-  CircularProgress,
   Table,
   TableHead,
   TableRow,
@@ -11,15 +9,7 @@ import {
   TableBody,
   TableContainer,
   Paper,
-  IconButton,
-  Button,
-  Alert,
   Box,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  Tooltip
 } from '@mui/material';
 import { API_URL } from '../../../config';
 
