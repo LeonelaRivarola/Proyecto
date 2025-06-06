@@ -46,9 +46,29 @@ const Presupuestos = () => {
     fetchPresupuestos();
   }, []);
 
-  const descargarPDF = (id) => {
-    // Lógica para descargar el PDF del presupuesto
-    console.log(`Descargar presupuesto con ID: ${id}`);
+  const mostrarPDF = async (usuario) => {
+    try {
+      const token = localStorage.getItem('token');
+      const respuesta = await fetch(`${API_URL}/api/tecnica/obrasElectricas/getPresupuestoPath/${usuario}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      const data = await respuesta.json();
+      console.log(data);
+
+      if (data?.PSO_PATH) {
+        const pdfURL = `${API_URL}/${data.PSO_PATH}`;
+        window.open(pdfURL, '_blank'); 
+      } else {
+        console.error('No se encontró la ruta del PDF:', data);
+      }
+
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -89,8 +109,8 @@ const Presupuestos = () => {
                   <TableCell>{fila.SOE_NOMBRE}</TableCell>
                   <TableCell>{fila.SPR_PRESUPUESTO_ID?.toLocaleString() || 0}</TableCell>
                   <TableCell>
-                    <Tooltip title="Descargar PDF">
-                      <IconButton onClick={() => descargarPDF(fila.SPR_PRESUPUESTO_ID)} color="primary">
+                    <Tooltip title="Mostrar PDF">
+                      <IconButton onClick={() => mostrarPDF(fila.SPR_USUARIO)} color="primary">
                         <PictureAsPdfIcon />
                       </IconButton>
                     </Tooltip>
@@ -101,8 +121,6 @@ const Presupuestos = () => {
           </Table>
         </TableContainer>
       </Box>
-
-      <Outlet />
     </Box>
   );
 };
