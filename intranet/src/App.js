@@ -13,7 +13,7 @@ import Solicitudes from './tecnica/obrasElectricas/solicitudes/Solicitudes';
 import TiposDeObras from "./tecnica/obrasElectricas/tiposDeObras/TiposDeObras";
 import NuevaSolicitud from "./tecnica/obrasElectricas/nuevaSolicitud/NuevaSolicitud";
 import EditarTOE from "./tecnica/obrasElectricas/tiposDeObras/EditarTOE";
-import Interferencias from "./tecnica/interferencia/Interferencias";
+import Interferencias from "./tecnica/interferencia/interferencias";
 import SesionProtegida from "./sesion/SesionProtegida";
 
 const App = () => {

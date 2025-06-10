@@ -90,7 +90,7 @@ const Interferencias = () => {
         }
       });
       const data = await respuesta.json();
-   } catch (err) {
+    } catch (err) {
       setError(err);
     } finally {
       setLoading(false);
@@ -213,102 +213,71 @@ const Interferencias = () => {
               </TableRow>
             </TableHead>
             <Box sx={{ height: '12px' }} />
-            
+
             <TableBody>
               {interferencias
-                .filter(s => estadoFiltro === '' || s.Estado === estadoFiltro)
+                .filter(i => estadoFiltro === '' || i.estado === estadoFiltro)
                 .map((interferencia) => (
                   <TableRow key={interferencia.id} hover>
+                    <TableCell>{interferencia.id}</TableCell>
                     <TableCell>{interferencia.estado}</TableCell>
                     <TableCell>{interferencia.fecha}</TableCell>
-                    <TableCell>{interferencia.Usuario}</TableCell>
-                    {/* <TableCell>{solicitud.Tipo}</TableCell>
-                    <TableCell>{solicitud.DNI_CUIT}</TableCell>
-                    <TableCell>{solicitud.Apellido}</TableCell>
-                    <TableCell>{solicitud.Nombre}</TableCell> */}
+                    <TableCell>{interferencia.usuario}</TableCell>
+                    <TableCell>{interferencia.tipo}</TableCell>
+                    <TableCell>{interferencia.dni_cuit}</TableCell>
+                    <TableCell>{interferencia.apellido}</TableCell>
+                    <TableCell>{interferencia.nombre}</TableCell>
                     <TableCell>
                       <Box display="flex" gap={2}>
-                        {solicitud.Estado === 'Pendiente' ? (
+                        {interferencia.estado === 'Pendiente' && (
                           <Box display="flex" gap={1.5}>
                             <Tooltip title="Presupuestar Documento" arrow>
                               <IconButton
-                                onClick={() => handlePresupuestar(solicitud.Número)}
+                                onClick={() => handlePresupuestar(interferencia.id)}
                                 size="small"
-                                sx={{
-                                  backgroundColor: '#000080',
-                                  color: 'white',
-                                  '&:hover': {
-                                    backgroundColor: '#0a0a5c',
-                                  },
-                                  borderRadius: 2,
-                                  padding: '4px'
-                                }}
+                                sx={{ backgroundColor: '#000080', color: 'white', '&:hover': { backgroundColor: '#0a0a5c' }, borderRadius: 2 }}
                               >
-                                <UploadFileIcon fontSize="small" />
+                                <UploadFile fontSize="small" />
                               </IconButton>
                             </Tooltip>
                             <Tooltip title="Cancelar y Eliminar Solicitud" arrow>
                               <IconButton
-                                color="error"
-                                onClick={() => handleEliminar(solicitud)}
+                                onClick={() => handleEliminar(interferencia)}
                                 size="small"
-                                sx={{
-                                  backgroundColor: '#FFA500',
-                                  color: 'white',
-                                  '&:hover': {
-                                    backgroundColor: '#CC8400',
-                                  },
-                                  borderRadius: 2,
-                                  padding: '4px'
-                                }}
+                                sx={{ backgroundColor: '#FFA500', color: 'white', '&:hover': { backgroundColor: '#CC8400' }, borderRadius: 2 }}
                               >
                                 <DoDisturbAltIcon fontSize="small" />
                               </IconButton>
                             </Tooltip>
                           </Box>
-                        ) : solicitud.Estado === 'Iniciada' ? (
+                        )}
+                        {interferencia.estado === 'Iniciada' && (
                           <Box display="flex" gap={1.5}>
                             <Tooltip title="Documentar Solicitud" arrow>
                               <IconButton
-                                onClick={() => handleDocumentar(solicitud.Número)}
+                                onClick={() => handleDocumentar(interferencia.id)}
                                 size="small"
-                                sx={{
-                                  backgroundColor: '#000080',
-                                  color: 'white',
-                                  '&:hover': {
-                                    backgroundColor: '#0a0a5c',
-                                  },
-                                  borderRadius: 2,
-                                  padding: '4px'
-                                }}
+                                sx={{ backgroundColor: '#000080', color: 'white', '&:hover': { backgroundColor: '#0a0a5c' }, borderRadius: 2 }}
                               >
                                 <UploadFile fontSize="small" />
                               </IconButton>
                             </Tooltip>
                             <Tooltip title="Eliminar Solicitud" arrow>
                               <IconButton
-                                color="error"
-                                onClick={() => handleEliminar(solicitud)}
+                                onClick={() => handleEliminar(interferencia)}
                                 size="small"
-                                sx={{
-                                  backgroundColor: '#d32f2f',
-                                  color: 'white',
-                                  '&:hover': {
-                                    backgroundColor: '#b71c1c',
-                                  },
-                                  borderRadius: 2,
-                                  padding: '4px'
-                                }}
+                                sx={{ backgroundColor: '#d32f2f', color: 'white', '&:hover': { backgroundColor: '#b71c1c' }, borderRadius: 2 }}
                               >
                                 <Delete fontSize="small" />
                               </IconButton>
                             </Tooltip>
                           </Box>
-                        ) : null}
+                        )}
                       </Box>
                     </TableCell>
                   </TableRow>
                 ))}
+
             </TableBody>
           </Table>
         </TableContainer>
