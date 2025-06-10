@@ -76,6 +76,7 @@ const CrearTipoOE = () => {
                         label="Descripcion"
                         name="descripcion"
                         value={formData.descripcion}
+                        onChange={handleChange}
                         multiline
                         rows={3}
                         required
