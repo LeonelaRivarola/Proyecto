@@ -10,6 +10,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Alert,
   IconButton,
   Tooltip
 } from '@mui/material';
@@ -28,24 +29,24 @@ const TiposDeObras = () => {
   const [mensajeTexto, setMensajeTexto] = useState('');
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchTiposOE = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        const respuesta = await fetch(`${API_URL}/api/tecnica/obrasElectricas/tipoObras`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          }
-        });
-        const data = await respuesta.json();
-        setTipoObras(data);
-      } catch (err) {
-        console.log(err);
-      }
+  const fetchTiposOE = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const respuesta = await fetch(`${API_URL}/api/tecnica/obrasElectricas/tipoObras`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      const data = await respuesta.json();
+      setTipoObras(data);
+    } catch (err) {
+      console.log(err);
     }
+  }
 
+  useEffect(() => {
     fetchTiposOE();
   }, [])
 
