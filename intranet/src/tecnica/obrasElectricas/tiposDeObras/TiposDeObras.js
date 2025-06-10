@@ -74,7 +74,7 @@ const TiposDeObras = () => {
         }
       });
 
-      setMensajeTexto(`Se ha eliminado exitosamente el tipo de Obra ${tipoObraE.TOE_ABREVIATURA}`);
+      setMensajeTexto(`Se ha eliminado exitosamente el Tipo de Obra ${tipoObraE.TOE_ABREVIATURA}`);
       setMensajeVisible(true);
 
       setTimeout(() => {
