@@ -123,7 +123,7 @@ const TiposDeObras = () => {
           Listado
         </Typography>
         <Button
-        onClick={handleNuevoTOE()}
+        onClick={handleNuevoTOE}
           variant="contained"
           sx={{
             backgroundColor: '#2e7d32',
