@@ -74,7 +74,7 @@ const TiposDeObras = () => {
         }
       });
 
-      setMensajeTexto(`Se ha eliminado exitosamente el tipo de Obra ${tipoObraE.TOE_ID}`);
+      setMensajeTexto(`Se ha eliminado exitosamente el tipo de Obra ${tipoObraE.TOE_ABREVIATURA}`);
       setMensajeVisible(true);
 
       setTimeout(() => {
@@ -204,7 +204,7 @@ const TiposDeObras = () => {
         open={modalOpen}
         onClose={() => setModalOpen(false)}
         onConfirm={handleConfirmDelete}
-        itemName={tipoObraE.TOE_ID}
+        itemName={tipoObraE.TOE_ABREVIATURA}
       />
     </Box >
   )
