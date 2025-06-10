@@ -172,7 +172,7 @@ const TiposDeObras = () => {
                         </IconButton >
                       </Tooltip>
                       <Tooltip title="Eliminar Tipo de Obra" arrow>
-                        <IconButton color="error" onClick={() => handleEliminarTO(fila.TOE_ID)}
+                        <IconButton color="error" onClick={() => handleEliminarTO(fila)}
                           size="small"
                           sx={{
                             backgroundColor: '#d32f2f',
