@@ -180,7 +180,7 @@ const Solicitudes = () => {
 
       <Box sx={{ maxWidth: '100%', mx: 'auto', mt: 4 }}>
         <TableContainer component={Paper} elevation={2} sx={{ overflow: 'hidden' }}>
-          <Table size="small" sx={{ minWidth: '100%', tableLayout: 'auto' }}>
+          <Table size="small" sx={{ minWidth: '100%', tableLayout: 'fixed' }}>
             <TableHead>
               <TableRow>
                 {['NÚMERO', 'ESTADO', 'FECHA SOLICITUD', 'USUARIO', 'TIPO', 'DNI/CUIT', 'APELLIDO', 'NOMBRE', 'ACCIONES'].map(header => (
