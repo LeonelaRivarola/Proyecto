@@ -66,7 +66,7 @@ const TiposDeObras = () => {
   const handleConfirmDelete = async () => {
     const token = localStorage.getItem('token');
     try {
-      await fetch(`${API_URL}/tecnica/obrasElectricas/eliminar-tipoObra/${tipoObraE.TOE_ID}`, {
+      await fetch(`${API_URL}/api/tecnica/obrasElectricas/eliminar-tipoObra/${tipoObraE.TOE_ID}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
