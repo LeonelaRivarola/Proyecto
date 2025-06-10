@@ -27,6 +27,7 @@ import { API_URL } from '../../../config';
 import { Navigate, useNavigate } from 'react-router-dom';
 import ModalEliminarSolicitud from '../../../componentes/modales/ModalEliminarSolicitud.js';
 import DoDisturbAltIcon from '@mui/icons-material/DoDisturbAlt';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 
 const Solicitudes = () => {
   const [solicitudes, setSolicitudes] = useState([]);
@@ -234,16 +235,16 @@ const Solicitudes = () => {
                                 onClick={() => handlePresupuestar(solicitud.Número)}
                                 size="small"
                                 sx={{
-                                  backgroundColor: '#000080',
+                                  backgroundColor: '#cccccc',
                                   color: 'white',
                                   '&:hover': {
-                                    backgroundColor: '#0a0a5c',
+                                    backgroundColor: '#999999',
                                   },
                                   borderRadius: 2,
                                   padding: '4px'
                                 }}
                               >
-                                <UploadFileIcon fontSize="small" />
+                                <AttachMoneyIcon fontSize="small" />
                               </IconButton>
                             </Tooltip>
                             <Tooltip title="Cancelar y Eliminar Solicitud" arrow>
