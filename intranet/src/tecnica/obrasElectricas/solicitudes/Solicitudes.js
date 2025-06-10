@@ -235,10 +235,10 @@ const Solicitudes = () => {
                                 onClick={() => handlePresupuestar(solicitud.Número)}
                                 size="small"
                                 sx={{
-                                  backgroundColor: '#cccccc',
+                                  backgroundColor: '#aaaaaa',
                                   color: 'white',
                                   '&:hover': {
-                                    backgroundColor: '#999999',
+                                    backgroundColor: '#888888',
                                   },
                                   borderRadius: 2,
                                   padding: '4px'
