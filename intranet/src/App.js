@@ -16,6 +16,7 @@ import NuevaSolicitud from "./tecnica/obrasElectricas/nuevaSolicitud/NuevaSolici
 import EmailSolicitudes from "./tecnica/obrasElectricas/emails/EmailSolicitudes";
 import SesionProtegida from "./sesion/SesionProtegida";
 import EditarTOE from "./tecnica/obrasElectricas/tiposDeObras/EditarTOE";
+import CrearTipoOE from "./tecnica/obrasElectricas/tiposDeObras/CrearTipoOE";
 
 const App = () => {
   return (
@@ -28,6 +29,7 @@ const App = () => {
           <Route path="solicitudes" element={<SesionProtegida> <Solicitudes /> </SesionProtegida>} />
           <Route path="tipos-obras" element={<SesionProtegida><TiposDeObras /></SesionProtegida>} />
           <Route path="editar/:id" element={<SesionProtegida><EditarTOE /></SesionProtegida>} />
+          <Route path="nuevo" element={<SesionProtegida><CrearTipoOE /></SesionProtegida>} />
           <Route path="nueva-solicitud" element={<SesionProtegida> <NuevaSolicitud /> </SesionProtegida>} />
           <Route path="emails-solicitudes" element={<SesionProtegida> <EmailSolicitudes /> </SesionProtegida>} />
         </Route>

@@ -54,6 +54,10 @@ const TiposDeObras = () => {
     navigate(`/home/editar/${id}`);
   }
 
+  const handleNuevoTOE = () => {
+    navigate(`/home/nuevo`);
+  }
+
   const handleEliminarTO = (id) => {
     setTipoObraE(id);
     setModalOpen(true);
@@ -119,6 +123,7 @@ const TiposDeObras = () => {
           Listado
         </Typography>
         <Button
+        onClick={handleNuevoTOE()}
           variant="contained"
           sx={{
             backgroundColor: '#2e7d32',
