@@ -44,7 +44,7 @@ router.delete('/tecnica/obrasElectricas/eliminar-tipoObra/:id', verificarToken, 
 // const presupuestoController = require('../controllers/presupuestoController');
 
 //interferencias
-router.get('/tecnica/interferencia/solicitudesInterf', verificarToken, interferenciaController.index);
+router.get('/tecnica/interferencia/listado', verificarToken, interferenciaController.index);
 router.post('/tecnica/interferencia/nueva-interferencia',verificarToken, interferenciaController.store);
 router.delete('/tecnica/interferencia/eliminar-interf/:id', verificarToken, interferenciaController.destroy);
 
