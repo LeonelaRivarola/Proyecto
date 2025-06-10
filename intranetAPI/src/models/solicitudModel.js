@@ -73,7 +73,7 @@ exports.create = async (data) => {
         .input('tipo', sql.Int, tipo)
         .query('SELECT TOE_INTERNO FROM TIPO_OBRA_ELECTRICA WHERE TOE_ID = @tipo');
 
-    const estadoId = 4; // Siempre inicia en estado "Iniciada"
+    const estadoId = 5; // Siempre inicia en estado "Pendiente"
 
     await pool.request()
         .input('solicitudId', sql.Int, solicitudId)
