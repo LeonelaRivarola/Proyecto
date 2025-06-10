@@ -77,7 +77,7 @@ const TiposDeObras = () => {
         setMensajeVisible(false);
       }, 4000);
 
-      await fetchSolicitudes();
+      await fetchTiposOE();
 
     } catch (error) {
       console.error('Error eliminando el tipo de obra:', error);
