@@ -8,13 +8,13 @@ import {
     Typography
 } from '@mui/material';
 
-const ModalEliminarTipoObra = (open, onClose, onConfirm, itemName) => {
+const ModalEliminarTipoObra = ({ open, onClose, onConfirm, itemName }) => {
     return (
         <Dialog open={open} onClose={onClose}>
             <DialogTitle>Confirmar Eliminación</DialogTitle>
             <DialogContent>
                 <Typography>
-                    ¿Estás seguro que quieres eliminar este tipo de obra? Esta acción no se puede deshacer.
+                    ¿Estás seguro que quieres eliminar el tipo de obra {itemName}? Esta acción no se puede deshacer.
                 </Typography>
             </DialogContent>
             <DialogActions>
@@ -26,7 +26,8 @@ const ModalEliminarTipoObra = (open, onClose, onConfirm, itemName) => {
                 </Button>
             </DialogActions>
         </Dialog>
-    )
-}
+    );
+};
+
 
 export default ModalEliminarTipoObra
