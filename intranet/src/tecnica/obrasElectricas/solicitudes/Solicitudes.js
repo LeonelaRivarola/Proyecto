@@ -179,8 +179,8 @@ const Solicitudes = () => {
       </Paper>
 
       <Box sx={{ maxWidth: '100%', mx: 'auto', mt: 4 }}>
-        <TableContainer component={Paper} elevation={2} sx={{ overflowX: 'auto' }}>
-          <Table size="small" sx={{ minWidth: '100%', tableLayout: 'fixed' }}>
+        <TableContainer component={Paper} elevation={2} sx={{ overflow: 'hidden' }}>
+          <Table size="small" sx={{ minWidth: '100%', tableLayout: 'auto' }}>
             <TableHead>
               <TableRow>
                 {['NÚMERO', 'ESTADO', 'FECHA SOLICITUD', 'USUARIO', 'TIPO', 'DNI/CUIT', 'APELLIDO', 'NOMBRE', 'ACCIONES'].map(header => (
@@ -201,9 +201,8 @@ const Solicitudes = () => {
                                   header === 'DNI/CUIT' ? 110 :
                                     header === 'APELLIDO' ? 110 :
                                       header === 'NOMBRE' ? 110 :
-                                        header === 'ACCIONES' ? 120 : undefined,
-                      padding: '6px 8px',
-                      boxSizing: 'border-box',
+                                        header === 'ACCIONES' ? 90 : undefined,
+                      padding: '6px 8px'
                     }}
                   >
                     <Typography variant="body2" noWrap title={header} sx={{ fontWeight: 'bold', color: '#5f6368' }}>
@@ -213,23 +212,24 @@ const Solicitudes = () => {
                 ))}
               </TableRow>
             </TableHead>
+            <Box sx={{ height: '12px' }} />
             <TableBody>
               {solicitudes
                 .filter(s => estadoFiltro === '' || s.Estado === estadoFiltro)
                 .map((solicitud) => (
                   <TableRow key={solicitud.id} hover>
-                    <TableCell sx={{ maxWidth: 70 }}>{solicitud.Número}</TableCell>
-                    <TableCell sx={{ maxWidth: 80 }}>{solicitud.Estado}</TableCell>
-                    <TableCell sx={{ maxWidth: 130 }}>{solicitud.Fecha_Solicitud}</TableCell>
-                    <TableCell sx={{ maxWidth: 140 }}>{solicitud.Usuario}</TableCell>
-                    <TableCell sx={{ maxWidth: 120 }}>{solicitud.Tipo}</TableCell>
-                    <TableCell sx={{ maxWidth: 110 }}>{solicitud.DNI_CUIT}</TableCell>
-                    <TableCell sx={{ maxWidth: 110 }}>{solicitud.Apellido}</TableCell>
-                    <TableCell sx={{ maxWidth: 110 }}>{solicitud.Nombre}</TableCell>
-                    <TableCell sx={{ maxWidth: 120, padding: '4px' }}>
-                      <Box display="flex" gap={1} justifyContent="center" flexWrap="nowrap">
-                        {solicitud.Estado === 'Pendiente' && (
-                          <>
+                    <TableCell>{solicitud.Número}</TableCell>
+                    <TableCell>{solicitud.Estado}</TableCell>
+                    <TableCell>{solicitud.Fecha_Solicitud}</TableCell>
+                    <TableCell>{solicitud.Usuario}</TableCell>
+                    <TableCell>{solicitud.Tipo}</TableCell>
+                    <TableCell>{solicitud.DNI_CUIT}</TableCell>
+                    <TableCell>{solicitud.Apellido}</TableCell>
+                    <TableCell>{solicitud.Nombre}</TableCell>
+                    <TableCell>
+                      <Box display="flex" gap={2}>
+                        {solicitud.Estado === 'Pendiente' ? (
+                          <Box display="flex" gap={1.5}>
                             <Tooltip title="Presupuestar Documento" arrow>
                               <IconButton
                                 onClick={() => handlePresupuestar(solicitud.Número)}
@@ -237,11 +237,11 @@ const Solicitudes = () => {
                                 sx={{
                                   backgroundColor: '#aaaaaa',
                                   color: 'white',
-                                  '&:hover': { backgroundColor: '#888888' },
+                                  '&:hover': {
+                                    backgroundColor: '#888888',
+                                  },
                                   borderRadius: 2,
-                                  padding: '4px',
-                                  minWidth: 32,
-                                  minHeight: 32,
+                                  padding: '4px'
                                 }}
                               >
                                 <AttachMoneyIcon fontSize="small" />
@@ -255,20 +255,19 @@ const Solicitudes = () => {
                                 sx={{
                                   backgroundColor: '#FFA500',
                                   color: 'white',
-                                  '&:hover': { backgroundColor: '#CC8400' },
+                                  '&:hover': {
+                                    backgroundColor: '#CC8400',
+                                  },
                                   borderRadius: 2,
-                                  padding: '4px',
-                                  minWidth: 32,
-                                  minHeight: 32,
+                                  padding: '4px'
                                 }}
                               >
                                 <DoDisturbAltIcon fontSize="small" />
                               </IconButton>
                             </Tooltip>
-                          </>
-                        )}
-                        {solicitud.Estado === 'Iniciada' && (
-                          <>
+                          </Box>
+                        ) : solicitud.Estado === 'Iniciada' ? (
+                          <Box display="flex" gap={1.5}>
                             <Tooltip title="Documentar Solicitud" arrow>
                               <IconButton
                                 onClick={() => handleDocumentar(solicitud.Número)}
@@ -276,11 +275,11 @@ const Solicitudes = () => {
                                 sx={{
                                   backgroundColor: '#000080',
                                   color: 'white',
-                                  '&:hover': { backgroundColor: '#0a0a5c' },
+                                  '&:hover': {
+                                    backgroundColor: '#0a0a5c',
+                                  },
                                   borderRadius: 2,
-                                  padding: '4px',
-                                  minWidth: 32,
-                                  minHeight: 32,
+                                  padding: '4px'
                                 }}
                               >
                                 <UploadFile fontSize="small" />
@@ -294,38 +293,39 @@ const Solicitudes = () => {
                                 sx={{
                                   backgroundColor: '#d32f2f',
                                   color: 'white',
-                                  '&:hover': { backgroundColor: '#b71c1c' },
+                                  '&:hover': {
+                                    backgroundColor: '#b71c1c',
+                                  },
                                   borderRadius: 2,
-                                  padding: '4px',
-                                  minWidth: 32,
-                                  minHeight: 32,
+                                  padding: '4px'
                                 }}
                               >
                                 <Delete fontSize="small" />
                               </IconButton>
                             </Tooltip>
-                          </>
-                        )}
-                        {solicitud.Estado === 'Presupuestada' && (
-                          <Tooltip title="Cancelar y Eliminar Solicitud" arrow>
-                            <IconButton
-                              color="error"
-                              onClick={() => handleEliminar(solicitud)}
-                              size="small"
-                              sx={{
-                                backgroundColor: '#FFA500',
-                                color: 'white',
-                                '&:hover': { backgroundColor: '#CC8400' },
-                                borderRadius: 2,
-                                padding: '4px',
-                                minWidth: 32,
-                                minHeight: 32,
-                              }}
-                            >
-                              <DoDisturbAltIcon fontSize="small" />
-                            </IconButton>
-                          </Tooltip>
-                        )}
+                          </Box>
+                        ): solicitud.Estado === 'Presupuestada' ? (
+                          <Box display="flex" gap={1.5}>
+                            <Tooltip title="Cancelar y Eliminar Solicitud" arrow>
+                              <IconButton
+                                color="error"
+                                onClick={() => handleEliminar(solicitud)}
+                                size="small"
+                                sx={{
+                                  backgroundColor: '#FFA500',
+                                  color: 'white',
+                                  '&:hover': {
+                                    backgroundColor: '#CC8400',
+                                  },
+                                  borderRadius: 2,
+                                  padding: '4px'
+                                }}
+                              >
+                                <DoDisturbAltIcon fontSize="small" />
+                              </IconButton>
+                            </Tooltip>
+                            </Box>
+                        ) : null}
                       </Box>
                     </TableCell>
                   </TableRow>
@@ -333,7 +333,6 @@ const Solicitudes = () => {
             </TableBody>
           </Table>
         </TableContainer>
-
       </Box>
       <ModalEliminarSolicitud
         open={modalOpen}
