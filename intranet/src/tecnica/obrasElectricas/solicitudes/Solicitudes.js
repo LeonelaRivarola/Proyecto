@@ -171,7 +171,7 @@ const Solicitudes = () => {
             fontWeight: 'bold',
             textTransform: 'none',
           }}
-          onClick={() => navigate('/home/nueva-solicitud')}
+          onClick={() => navigate('/Home/nueva-solicitud')}
         >
           NUEVA SOLICITUD
         </Button>

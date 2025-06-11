@@ -1,4 +1,3 @@
-import React from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -21,7 +20,7 @@ const App = () => {
     <Router>
       <Routes>
         <Route path="/" element={<Ingresar />} />
-        <Route path="/home" element={<SesionProtegida><Home /></SesionProtegida>}>
+        <Route path="/Home" element={<SesionProtegida><Home /></SesionProtegida>}>
           <Route path="emails" element={<EmailSolicitudes />} />
           <Route path="presupuestos" element={<Presupuestos />} />
           <Route path="solicitudes" element={<Solicitudes />} />
@@ -29,7 +28,7 @@ const App = () => {
           <Route path="editar/:id" element={<EditarTOE />} />
           <Route path="nueva-solicitud" element={<NuevaSolicitud />} />
           <Route path="emails-solicitudes" element={<EmailSolicitudes />} />
-          <Route path="interferencia" element={<Interferencias />} />
+          <Route path="interferencias" element={<Interferencias />} />
         </Route>
       </Routes>
     </Router>

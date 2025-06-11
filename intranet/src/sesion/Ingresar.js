@@ -33,20 +33,33 @@ const Ingresar = () => {
             return;
         }
 
-        try {
-            const response = await axios.post(`${API_URL}/api/login`, { username, password });
+        // Simulación de login sin servidor
+        const usuarioSimulado = "admin";
+        const passwordSimulada = "1234";
 
-            localStorage.setItem('token', response.data.token);
-            localStorage.setItem('username', response.data.username)
+        if (username === usuarioSimulado && password === passwordSimulada) {
+            // Guardar token simulado en localStorage
+            localStorage.setItem('token', 'token-falso-12345');
+            localStorage.setItem('username', username);
             navigate('/Home');
-
-        } catch (err) {
-            if (err.response) {
-                setError(err.response.data.message || 'Error al iniciar sesión');
-            } else {
-                setError('Error de conexión al servidor');
-            }
+        } else {
+            setError("Credenciales incorrectas");
         }
+
+        // try {
+        //     const response = await axios.post(`${API_URL}/api/login`, { username, password });
+
+        //     localStorage.setItem('token', response.data.token);
+        //     localStorage.setItem('username', response.data.username)
+        //     navigate('/Home');
+
+        // } catch (err) {
+        //     if (err.response) {
+        //         setError(err.response.data.message || 'Error al iniciar sesión');
+        //     } else {
+        //         setError('Error de conexión al servidor');
+        //     }
+        // }
     };
 
     return (

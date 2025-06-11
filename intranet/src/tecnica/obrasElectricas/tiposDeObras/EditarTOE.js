@@ -72,14 +72,14 @@ const EditarTOE = () => {
         },
         body: JSON.stringify(datosAGuardar),
       });
-      navigate('/home/tipos-obras');
+      navigate('/Home/tipos-obras');
     } catch (err) {
       console.error('Error al actualizar:', err);
     }
   };
 
   const handleCancel = () => {
-    navigate('/home/tipos-obras');
+    navigate('/Home/tipos-obras');
   };
 
   return (

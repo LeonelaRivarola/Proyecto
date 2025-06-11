@@ -31,6 +31,9 @@ const SideBar = () => {
   const [openTecnica, setOpenTecnica] = useState(false);
   const [openObras, setOpenObras] = useState(false);
 
+  const [openInterferencias, setOpenInterferencias] = useState(false);
+  const [openListaInterf, setOpenListaInterf] = useState(false);
+
   const isActive = (path) => activePage === path;
 
   const getItemStyle = (path) => ({
@@ -64,16 +67,16 @@ const SideBar = () => {
           margin: 2,
           boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.4)',
           position: 'fixed',
-          height: 'calc(100% - 32px)', 
+          height: 'calc(100% - 32px)',
         }
       }}
     >
       <Box sx={{ p: 2, textAlign: 'center' }}>
-        <img src="../../assets/Corpico_logo.svg" 
-        alt="logo" 
-        style={{ maxWidth: '80%' }} 
-        onClick={() => navigate('/Home')}
-        sx={{ cursor: 'pointer'}}
+        <img src="../../assets/Corpico_logo.svg"
+          alt="logo"
+          style={{ maxWidth: '80%' }}
+          onClick={() => navigate('/Home')}
+          sx={{ cursor: 'pointer' }}
         />
       </Box>
 
@@ -86,59 +89,82 @@ const SideBar = () => {
           {openTecnica ? <ExpandLess /> : <ExpandMore />}
         </ListItemButton>
 
-        <Collapse in={openTecnica} timeout="auto" unmountOnExit>
-          <List component="div" disablePadding sx={{ pl: 4 }}>
-            <ListItemButton onClick={() => setOpenObras(!openObras)}>
-              <ListItemText primary="Obras Eléctricas" />
-              {openObras ? <ExpandLess /> : <ExpandMore />}
-            </ListItemButton>
 
-            <Collapse in={openObras} timeout="auto" unmountOnExit>
-              <List component="div" disablePadding sx={{ pl: 4 }} borderRadius={5}>
-                <ListItemButton
-                  component={Link}
-                  to="/home/nueva-solicitud"
-                  selected={isActive('/home/nueva-solicitud')}
-                  sx={getItemStyle('/home/nueva-solicitud')}
-                >
-                  <ListItemText primary="Nueva Solicitud" />
-                </ListItemButton>
-                <ListItemButton
-                  component={Link}
-                  to="/home/solicitudes"
-                  selected={isActive('/home/solicitudes')}
-                  sx={getItemStyle('/home/solicitudes')}
-                >
-                  <ListItemText primary="Solicitudes" />
-                </ListItemButton>
-                <ListItemButton
-                  component={Link}
-                  to="/home/presupuestos"
-                  selected={isActive('/home/presupuestos')}
-                  sx={getItemStyle('/home/presupuestos')}
-                >
-                  <ListItemText primary="Presupuestos" />
-                </ListItemButton>
-                <ListItemButton
-                  component={Link}
-                  to="/home/tipos-obras"
-                  selected={isActive('/home/tipos-obras')}
-                  sx={getItemStyle('/home/tipos-obras')}
-                >
-                  <ListItemText primary="Tipos de Obras" />
-                </ListItemButton>
-                <ListItemButton
-                  component={Link}
-                  to="/home/emails-solicitudes"
-                  selected={isActive('/home/emails-solicitudes')}
-                  sx={getItemStyle('/home/emails-solicitudes')}
-                >
-                  <ListItemText primary="E-mails Solicitudes" />
-                </ListItemButton>
-              </List>
-            </Collapse>
-          </List>
-        </Collapse>
+<Collapse in={openTecnica} timeout="auto" unmountOnExit>
+  <List component="div" disablePadding sx={{ pl: 4 }}>
+    {/* Obras Eléctricas */}
+    <ListItemButton onClick={() => setOpenObras(!openObras)}>
+      <ListItemText primary="Obras Eléctricas" />
+      {openObras ? <ExpandLess /> : <ExpandMore />}
+    </ListItemButton>
+
+    <Collapse in={openObras} timeout="auto" unmountOnExit>
+      <List component="div" disablePadding sx={{ pl: 4 }}>
+        {/* Subítems de Obras */}
+        <ListItemButton
+          component={Link}
+          to="/home/nueva-solicitud"
+          selected={isActive('/home/nueva-solicitud')}
+          sx={getItemStyle('/home/nueva-solicitud')}
+        >
+          <ListItemText primary="Nueva Solicitud" />
+        </ListItemButton>
+        <ListItemButton
+          component={Link}
+          to="/home/solicitudes"
+          selected={isActive('/home/solicitudes')}
+          sx={getItemStyle('/home/solicitudes')}
+        >
+          <ListItemText primary="Solicitudes" />
+        </ListItemButton>
+        <ListItemButton
+          component={Link}
+          to="/Home/presupuestos"
+          selected={isActive('/Home/presupuestos')}
+          sx={getItemStyle('/Home/presupuestos')}
+        >
+          <ListItemText primary="Presupuestos" />
+        </ListItemButton>
+        <ListItemButton
+          component={Link}
+          to="/Home/tipos-obras"
+          selected={isActive('/Home/tipos-obras')}
+          sx={getItemStyle('/Home/tipos-obras')}
+        >
+          <ListItemText primary="Tipos de Obras" />
+        </ListItemButton>
+        <ListItemButton
+          component={Link}
+          to="/Home/emails-solicitudes"
+          selected={isActive('/Home/emails-solicitudes')}
+          sx={getItemStyle('/Home/emails-solicitudes')}
+        >
+          <ListItemText primary="E-mails Solicitudes" />
+        </ListItemButton>
+      </List>
+    </Collapse>
+
+    {/* Interferencias */}
+    <ListItemButton onClick={() => setOpenInterferencias(!openInterferencias)}>
+      <ListItemText primary="Interferencias" />
+      {openInterferencias ? <ExpandLess /> : <ExpandMore />}
+    </ListItemButton>
+
+    <Collapse in={openInterferencias} timeout="auto" unmountOnExit>
+      <List component="div" disablePadding sx={{ pl: 4 }}>
+        <ListItemButton
+      component={Link}
+      to="/home/interferencias"
+      selected={isActive('/home/interferencias')}
+      sx={getItemStyle('/home/interferencias')}
+    >
+       <ListItemText primary="Lista" />
+    </ListItemButton>
+      </List>
+    </Collapse>
+  </List>
+</Collapse>
+
       </List>
 
     </Drawer>

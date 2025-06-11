@@ -89,7 +89,7 @@ const NuevaSolicitud = () => {
         return;
       }
 
-      navigate('/home/solicitudes');
+      navigate('/Home/solicitudes');
 
     } catch (err) {
       console.error("Error al enviar la solicitud:", err);
@@ -326,7 +326,7 @@ const NuevaSolicitud = () => {
                   variant="outlined"
                   color="error"
                   startIcon={<Cancel />}
-                  onClick={() => navigate('/home/solicitudes')}
+                  onClick={() => navigate('/Home/solicitudes')}
                 >
                   Cancelar
                 </Button>

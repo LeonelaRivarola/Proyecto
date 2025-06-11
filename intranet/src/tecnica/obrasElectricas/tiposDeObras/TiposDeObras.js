@@ -45,7 +45,7 @@ const TiposDeObras = () => {
   }, [])
 
   const handleEditarTO = (id) => {
-    navigate(`/home/editar/${id}`);
+    navigate(`/Home/editar/${id}`);
   }
 
   const handleEliminarTO = (id) => {
