@@ -17,7 +17,7 @@ const NuevaInterferencia = () => {
     cuit: "",
     nombre: "",
     apellido: "",
-    persona: "",
+    es_persona: "",
     email: "",
     calle: "",
     altura: "",
@@ -26,9 +26,9 @@ const NuevaInterferencia = () => {
     vereda: "",
     entre1: "",
     entre2: "",
-    localidad: "",
-    latitud: "",
-    longitud: "",
+    // localidad: parseInt(formData.localidad) || null,
+    // latitud: parseFloat(formData.latitud) || null,
+    // longitud: parseFloat(formData.longitud) || null,
     desde: "",
     hasta: "",
     fecha: new Date().toISOString().split('T')[0], // Fecha actual
@@ -37,6 +37,14 @@ const NuevaInterferencia = () => {
     usuario: localStorage.getItem("username"),
   });
 
+  //---------
+  const cleanFormData = {
+    ...formData,
+    localidad: parseInt(formData.localidad) || null,
+    latitud: parseFloat(formData.latitud) || null,
+    longitud: parseFloat(formData.longitud) || null,
+  };
+  //----------
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarSeverity, setSnackbarSeverity] = useState("success");
   const [snackbarMessage, setSnackbarMessage] = useState("");
@@ -53,7 +61,7 @@ const NuevaInterferencia = () => {
       const response = await fetch(`${API_URL}/api/interferencias/nueva-solicitud`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(cleanFormData),
       });
 
       if (!response.ok) throw new Error("Error al enviar la solicitud");
@@ -92,7 +100,7 @@ const NuevaInterferencia = () => {
               <TextField label="Apellido" name="apellido" value={formData.apellido} onChange={handleChange} fullWidth />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField label="Tipo de Persona" name="persona" value={formData.persona} onChange={handleChange} fullWidth />
+              <TextField label="Tipo de Persona" name="es_persona" value={formData.es_persona} onChange={handleChange} fullWidth />
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField label="Email" name="email" value={formData.email} onChange={handleChange} fullWidth />

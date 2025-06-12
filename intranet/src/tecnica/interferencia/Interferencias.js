@@ -1,8 +1,51 @@
 // src/tecnica/interferencia/Interferencias.js
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+
+
 
 const Interferencias = () => {
+  const [interferencias, setInterferencias] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+
+  useEffect(() => {
+    fetchInterferencias();
+  }, [])
+
+  const fetchInterferencias = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const respuesta = await fetch(`${API_URL}/api/tecnica/obrasElectricas/solicitudes`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      const data = await respuesta.json();
+      setInterferencias(data);
+    } catch (err) {
+      setError(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" height="80vh">
+        <CircularProgress />
+      </Box>
+    );
+  }
+  
+  const formatDate = (fecha) => {
+    if (!fecha) return '';
+    const date = new Date(fecha);
+    return date.toLocaleDateString(); // o date.toISOString().slice(0,10)
+  };
 
   return (
     <div style={{ padding: '20px' }}>
@@ -17,27 +60,29 @@ const Interferencias = () => {
             <th style={thStyle}>Fecha de solicitud</th> {/*dia en el que se solicito la interferencia */}
             <th style={thStyle}>Fecha de inicio</th> {/*fehca de  cuanto duraria la obra desde hasta cuando */}
             <th style={thStyle}>Fecha de fin</th>
-            <th style={thStyle}>Localidad</th> 
+            <th style={thStyle}>Localidad</th>
           </tr>
         </thead>
         <tbody>
-          {/* {interferencias.map((item) => (
-            <tr key={item.id}>
-            <td style={tdStyle}>{item.solicitud}</td>
-            <td style={tdStyle}>{item.empresaPersona}</td>
-            <td style={tdStyle}>{item.direccion}</td>
-            <td style={tdStyle}>{item.estado}</td>
-            <td style={tdStyle}>{item.fechaSolicitud}</td>
-            <td style={tdStyle}>{item.fechaInicio}</td>
-            <td style={tdStyle}>{item.fechaFin}</td>
-            <td style={tdStyle}>{item.localidad}</td> 
-          </tr>
-          ))}*/}
+          {interferencias.map((item) => (
+            <tr key={item.ID}>
+              <td style={tdStyle}>{item.ID}</td>
+              <td style={tdStyle}>{item.Nombre} {item.Apellido}</td>
+              <td style={tdStyle}>{item.Calle} {item.Altura}, {item.Piso ? `Piso ${item.Piso}` : ''} {item.Dpto ? `Dpto ${item.Dpto}` : ''}, entre {item.Entre1} y {item.Entre2}</td>
+              <td style={tdStyle}>Pendiente</td> {/* Cambiar por campo real si lo tenés */}
+              <td style={tdStyle}>{formatDate(item.Fecha_interf)}</td>
+              <td style={tdStyle}>{formatDate(item.Desde)}</td>
+              <td style={tdStyle}>{formatDate(item.Hasta)}</td>
+              <td style={tdStyle}>{item.ID_Localidad}</td> {/* Idealmente buscar el nombre de la localidad */}
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>
   );
 };
+
+
 
 // Estilos simples para tabla
 const thStyle = {
