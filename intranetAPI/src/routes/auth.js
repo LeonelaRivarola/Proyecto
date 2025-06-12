@@ -44,9 +44,9 @@ router.delete('/tecnica/obrasElectricas/eliminar-tipoObra/:id', verificarToken, 
 // const presupuestoController = require('../controllers/presupuestoController');
 
 //interferencias
-router.get('/tecnica/interferencia/listado', verificarToken, interferenciaController.index);
-router.post('/tecnica/interferencia/nueva-interferencia',verificarToken, interferenciaController.store);
-router.delete('/tecnica/interferencia/eliminar-interf/:id', verificarToken, interferenciaController.destroy);
+router.get('/tecnica/interferencia/Interferencias', verificarToken, interferenciaController.index);
+router.post('/tecnica/interferencia/nueva',verificarToken, interferenciaController.store);
+// router.delete('/tecnica/interferencia/eliminar-interf/:id', verificarToken, interferenciaController.destroy);
 
 // router.get('/', authMiddleware, dashboardController);
 // router.get('sign-up', registerController.create);
