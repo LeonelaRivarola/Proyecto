@@ -3,12 +3,6 @@
 import React from 'react';
 
 const Interferencias = () => {
-  // // Datos de ejemplo
-  // const interferencias = [
-  //   { id: 1, nombre: "Interferencia en línea 123", estado: "Pendiente" },
-  //   { id: 2, nombre: "Cruce con cableado externo", estado: "Resuelta" },
-  //   { id: 3, nombre: "Poste mal ubicado", estado: "En análisis" },
-  // ];
 
   return (
     <div style={{ padding: '20px' }}>
@@ -23,7 +17,6 @@ const Interferencias = () => {
             <th style={thStyle}>Fecha de solicitud</th> {/*dia en el que se solicito la interferencia */}
             <th style={thStyle}>Fecha de inicio</th> {/*fehca de  cuanto duraria la obra desde hasta cuando */}
             <th style={thStyle}>Fecha de fin</th>
-            {/* <th style={thStyle}>Tipo</th> */} {/* no lo pidieron pero me parece que hay que tener consideracion */}
             <th style={thStyle}>Localidad</th> 
           </tr>
         </thead>
