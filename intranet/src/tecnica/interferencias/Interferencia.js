@@ -113,7 +113,7 @@ const Interferencias = () => {
                             <TableRow key={interferencia.ID}>
                                 <TableCell>{interferencia.ID}</TableCell>
                                 <TableCell>{interferencia.Nombre}</TableCell>
-                                <TableCell>Calle {interferencia.Calle}{interferencia.Dpto}Entre {interferencia.Entre1} y {interferencia.Entre2}</TableCell>
+                                <TableCell>Calle {interferencia.Calle}{interferencia.Dpto} Entre {interferencia.Entre1} y {interferencia.Entre2}</TableCell>
                                 <TableCell>Estado...</TableCell>
                                 <TableCell>{interferencia.Fecha_interf}</TableCell>
                                 <TableCell>{interferencia.Desde}</TableCell>
