@@ -8,7 +8,7 @@ exports.getAll = async (res, req) => {
     const result = await request.query(`
         SELECT 
             SOI_ID as ID,
-            SOI_CUIT as DNI/CUIT,
+            SOI_CUIT as CUIT_DNI,
             SOI_NOMBRE as Nombre,
             SOI_APELLIDO as Apellido,
             SOI_PERSONA as Es_persona,
