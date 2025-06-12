@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Container,
   Typography,
   CircularProgress,
   Table,
@@ -22,7 +21,6 @@ import {
 } from '@mui/material';
 
 import { UploadFile, Delete } from '@mui/icons-material';
-import UploadFileIcon from '@mui/icons-material/UploadFile';
 import { API_URL } from '../../../config';
 import { Navigate, useNavigate } from 'react-router-dom';
 import ModalEliminarSolicitud from '../../../componentes/modales/ModalEliminarSolicitud.js';
