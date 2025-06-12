@@ -20,8 +20,10 @@ import {
     Tooltip
 } from '@mui/material';
 import { API_URL } from '../../config';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 const Interferencias = () => {
+    const navigate = useNavigate();
     const [error, setError] = useState(false);
     const [interferencias, setInterferencias] = useState([]);
 
