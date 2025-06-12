@@ -160,9 +160,9 @@ const SideBar = () => {
 
                 <ListItemButton
                   component={Link}
-                  to="/home/interferencias/nueva"
-                  selected={isActive('/home/interferencias/nueva')}
-                  sx={getItemStyle('/home/interferencias/nueva')}
+                  to="/home/nueva-interferencia"
+                  selected={isActive('/home/nueva-interferencia')}
+                  sx={getItemStyle('/home/nueva-interferencia')}
                 >
                   <ListItemText primary="Nueva interferencia" />
                 </ListItemButton>
