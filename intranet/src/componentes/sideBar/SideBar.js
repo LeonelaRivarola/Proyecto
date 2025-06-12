@@ -64,16 +64,16 @@ const SideBar = () => {
           margin: 2,
           boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.4)',
           position: 'fixed',
-          height: 'calc(100% - 32px)', 
+          height: 'calc(100% - 32px)',
         }
       }}
     >
       <Box sx={{ p: 2, textAlign: 'center' }}>
-        <img src="../../assets/Corpico_logo.svg" 
-        alt="logo" 
-        style={{ maxWidth: '80%' }} 
-        onClick={() => navigate('/Home')}
-        sx={{ cursor: 'pointer'}}
+        <img src="../../assets/Corpico_logo.svg"
+          alt="logo"
+          style={{ maxWidth: '80%' }}
+          onClick={() => navigate('/Home')}
+          sx={{ cursor: 'pointer' }}
         />
       </Box>
 
@@ -137,6 +137,36 @@ const SideBar = () => {
                 </ListItemButton>
               </List>
             </Collapse>
+
+            {/* Interferencias */}
+            <ListItemButton onClick={() => setOpenInterferencias(!openInterferencias)}>
+              <ListItemText primary="Interferencias" />
+              {openInterferencias ? <ExpandLess /> : <ExpandMore />}
+            </ListItemButton>
+
+            <Collapse in={openInterferencias} timeout="auto" unmountOnExit>
+              <List component="div" disablePadding sx={{ pl: 4 }}>
+                <ListItemButton
+                  component={Link}
+                  to="/home/interferencias"
+                  selected={isActive('/home/interferencias')}
+                  sx={getItemStyle('/home/interferencias')}
+                >
+                  <ListItemText primary="Lista" />
+                </ListItemButton>
+
+                <ListItemButton
+                  component={Link}
+                  to="/home/interferencias/nueva"
+                  selected={isActive('/home/interferencias/nueva')}
+                  sx={getItemStyle('/home/interferencias/nueva')}
+                >
+                  <ListItemText primary="Nueva interferencia" />
+                </ListItemButton>
+
+              </List>
+            </Collapse>
+
           </List>
         </Collapse>
       </List>

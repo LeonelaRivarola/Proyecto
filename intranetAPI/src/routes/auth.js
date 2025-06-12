@@ -33,6 +33,12 @@ router.get('/tecnica/obrasElectricas/getPresupuestoPath/:usuario', verificarToke
 // router.post('/tecnica/obrasElectricas/presupuestos/guardar', verificarToken, presupuestoController.store);
 // router.get('/tecnica/obrasElectricas/presupuestos/mostrar/:presupuesto', verificarToken, presupuestoController.show);
 
+
+//interferencias
+router.get('/tecnica/interferencia/Interferencias', verificarToken, interferenciaController.index);
+
+
+
 // // Route:: get('tecnica/obrasElectricas/presupuestos/crear/{solicitud}', [PresupuestoController:: class, 'create']) -> name('presupuestar-solicitud');
 // // Route:: get('tecnica/obrasElectricas/presupuestos/documento/{solicitud}', [PresupuestoController:: class, 'abrirPresupuesto']) -> name('abrir-presupuesto');
 // // Route:: post('tecnica/obrasElectricas/presupuestos/actualizar/{solicitud}', [PresupuestoController:: class, 'update']) -> name('procesar-presupuesto');
