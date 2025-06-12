@@ -39,7 +39,7 @@ exports.getAll = async (res, req) => {
 exports.create = async (data) => {
     const {
         cuit, nombre, apellido, es_persona, email, calle, altura, piso, dpto, vereda,
-        entre1, entre2, localidad, lat, long,  desde, hasta, //fecha_interf, 
+        entre1, entre2, localidad, latitud, longitud,  desde, hasta, //fecha_interf, 
         mapa, path
     } = data;
 
@@ -54,14 +54,14 @@ exports.create = async (data) => {
         .input('email', sql.VarChar, email)
         .input('calle', sql.VarChar, calle)
         .input('altura', sql.VarChar, altura)
-        .input('piso', sql.VarChar, piso)
-        .input('dpto', sql.VarChar, dpto)
+        .input('piso', sql.VarChar, piso || null)
+        .input('dpto', sql.VarChar, dpto || null)
         .input('vereda',sql.Char, vereda)
         .input('entre1', sql.VarChar, entre1)
         .input('entre2', sql.VarChar, entre2)
         .input('localidad', sql.Int, localidad)
-        .input('latitud', sql.Decimal, lat)
-        .input('longitud', sql.Decimal, long)
+        .input('latitud', sql.Decimal, latitud)
+        .input('longitud', sql.Decimal, longitud)
         .input('desde', sql.Date, desde)
         .input('hasta', sql.Date, hasta)
         .input('fecha', sql.DateTime, fechaActual)
