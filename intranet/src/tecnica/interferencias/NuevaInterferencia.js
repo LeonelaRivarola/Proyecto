@@ -32,7 +32,7 @@ const NuevaInterferencia = () => {
     altura: "",
     piso: "",
     dpto: "",
-    vereda: "N", // puede ser 'S' o 'N'
+    vereda: "I", // puede ser 'I' o 'P'
     entre1: "",
     entre2: "",
     localidad: "",
@@ -53,7 +53,7 @@ const NuevaInterferencia = () => {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`${API_URL}/api/solicitud-interferencia`, {
+      const response = await fetch(`${API_URL}/api/interferencia/nueva`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -70,7 +70,7 @@ const NuevaInterferencia = () => {
       }
 
       alert("Interferencia creada con éxito.");
-      navigate('/home/interferencia');
+      navigate('/home/interferencias');
 
     } catch (err) {
       console.error("Error al enviar la interferencia:", err);
@@ -115,8 +115,8 @@ const NuevaInterferencia = () => {
                   <FormControl fullWidth>
                     <InputLabel>Es Persona</InputLabel>
                     <Select name="es_persona" value={formData.es_persona} onChange={handleChange}>
-                      <MenuItem value="S">Sí</MenuItem>
-                      <MenuItem value="N">No</MenuItem>
+                      <MenuItem value="S">Personal</MenuItem>
+                      <MenuItem value="N">Empresa</MenuItem>
                     </Select>
                   </FormControl>
                 </Grid>
@@ -133,7 +133,7 @@ const NuevaInterferencia = () => {
                 <Grid item xs={6} md={3}>
                   <TextField label="Altura" name="altura" value={formData.altura} onChange={handleChange} fullWidth />
                 </Grid>
-                <Grid item xs={6} md={3}>
+                <Grid item xs={12} md={6}>
                   <FormControl fullWidth>
                     <InputLabel>Localidad</InputLabel>
                     <Select name="localidad" value={formData.localidad} onChange={handleChange}>
@@ -156,8 +156,8 @@ const NuevaInterferencia = () => {
                   <FormControl fullWidth>
                     <InputLabel>Vereda</InputLabel>
                     <Select name="vereda" value={formData.vereda} onChange={handleChange}>
-                      <MenuItem value="S">Sí</MenuItem>
-                      <MenuItem value="N">No</MenuItem>
+                      <MenuItem value="I">Impar</MenuItem>
+                      <MenuItem value="P">Par</MenuItem>
                     </Select>
                   </FormControl>
                 </Grid>
