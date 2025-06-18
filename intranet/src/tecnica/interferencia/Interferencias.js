@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { API_URL } from '../../../config';
+import { API_URL } from '../../config';
 import { Box, CircularProgress} from '@mui/material';
 
 
@@ -42,7 +42,7 @@ const Interferencias = () => {
       </Box>
     );
   }
-  
+
   const formatDate = (fecha) => {
     if (!fecha) return '';
     const date = new Date(fecha);
