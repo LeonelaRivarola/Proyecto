@@ -13,7 +13,7 @@ router.post('/login', authController.login);
 
 //Solicitudes
 router.get('/tecnica/obrasElectricas/solicitudes', verificarToken, solicitudController.index);
-router.post('/tecnica/obrasElectricas/nueva-solicitud',verificarToken, solicitudController.store);
+router.post('/tecnica/obrasElectricas/nueva-solicitud', verificarToken, solicitudController.store);
 router.delete('/tecnica/obrasElectricas/eliminar/:id', verificarToken, solicitudController.destroy);
 
 //Tipo de obras
@@ -37,7 +37,7 @@ router.get('/tecnica/obrasElectricas/getPresupuestoPath/:usuario', verificarToke
 
 //interferencias
 router.get('/tecnica/interferencia/Interferencias', verificarToken, interferenciaController.index);
-
+router.post('/tecnica/interferencia/nueva', verificarToken, interferenciaController.store);
 
 
 // // Route:: get('tecnica/obrasElectricas/presupuestos/crear/{solicitud}', [PresupuestoController:: class, 'create']) -> name('presupuestar-solicitud');

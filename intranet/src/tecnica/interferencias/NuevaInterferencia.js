@@ -1,191 +1,214 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from 'react';
+import {
+  Container,
+  Grid,
+  Card,
+  CardContent,
+  Typography,
+  TextField,
+  Select,
+  MenuItem,
+  Button,
+  InputLabel,
+  FormControl,
+  Box,
+  Paper,
+} from "@mui/material";
+import { useNavigate } from 'react-router-dom';
+import { API_URL } from '../../../config';
+import { Send, Cancel } from '@mui/icons-material';
 
 const NuevaInterferencia = () => {
-  const mapRef = useRef(null);
-  const deleteBtnRef = useRef(null);
+  const navigate = useNavigate();
+  const [localidades, setLocalidades] = useState([]);
 
-  const [map, setMap] = useState(null);
-  const [drawingManager, setDrawingManager] = useState(null);
-  const [selectedOverlay, setSelectedOverlay] = useState(null);
+  const [formData, setFormData] = useState({
+    cuit: "",
+    nombre: "",
+    apellido: "",
+    es_persona: "S", // puede ser 'S' o 'N'
+    email: "",
+    calle: "",
+    altura: "",
+    piso: "",
+    dpto: "",
+    vereda: "N", // puede ser 'S' o 'N'
+    entre1: "",
+    entre2: "",
+    localidad: "",
+    latitud: "",
+    longitud: "",
+    desde: "",
+    hasta: "",
+    mapa: "",
+    path: ""
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`${API_URL}/api/solicitud-interferencia`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Error en respuesta del servidor:", errorText);
+        alert("Error del servidor: " + errorText);
+        return;
+      }
+
+      alert("Interferencia creada con éxito.");
+      navigate('/home/interferencia');
+
+    } catch (err) {
+      console.error("Error al enviar la interferencia:", err);
+      alert("Error al guardar la interferencia");
+    }
+  };
 
   useEffect(() => {
-    // Cargar la API de Google Maps dinámicamente
-    if (!window.google) {
-      const script = document.createElement("script");
-      script.src =
-        "https://maps.googleapis.com/maps/api/js?key=AIzaSyA_TMQ1qzW06reNAT9l-3Kn89omHwEdNGI&libraries=drawing";
-      script.async = true;
-      script.defer = true;
-      script.onload = () => {
-        initMap();
-      };
-      document.head.appendChild(script);
-    } else {
-      initMap();
-    }
-
-    // Limpieza al desmontar
-    return () => {
-      if (deleteBtnRef.current) {
-        deleteBtnRef.current.style.display = "none";
-      }
-      if (mapRef.current) {
-        mapRef.current.innerHTML = "";
-      }
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    setLocalidades([
+      { LOC_ID: 9966, LOC_DESCRIPCION: "Dorila" },
+      { LOC_ID: 10041, LOC_DESCRIPCION: "Gral Pico" },
+      { LOC_ID: 10303, LOC_DESCRIPCION: "Metileo" },
+      { LOC_ID: 10341, LOC_DESCRIPCION: "Speluzzi" },
+      { LOC_ID: 10349, LOC_DESCRIPCION: "Trebolares" },
+      { LOC_ID: 10366, LOC_DESCRIPCION: "Vertiz" },
+    ]);
   }, []);
 
-  const initMap = () => {
-    const defaultPos = { lat: -34.6037, lng: -58.3816 };
-
-    const mapInstance = new window.google.maps.Map(mapRef.current, {
-      center: defaultPos,
-      zoom: 12,
-    });
-
-    // Geolocalización
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const userPos = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          };
-          mapInstance.setCenter(userPos);
-          mapInstance.setZoom(15);
-
-          new window.google.maps.Marker({
-            position: userPos,
-            map: mapInstance,
-            title: "Estás aquí",
-          });
-        },
-        () => {
-          console.warn("Geolocalización no permitida o no disponible");
-        }
-      );
-    } else {
-      console.warn("Geolocalización no soportada por el navegador");
-    }
-
-    const drawingManagerInstance = new window.google.maps.drawing.DrawingManager({
-      drawingMode: null,
-      drawingControl: true,
-      drawingControlOptions: {
-        position: window.google.maps.ControlPosition.TOP_CENTER,
-        drawingModes: [
-          window.google.maps.drawing.OverlayType.MARKER,
-          window.google.maps.drawing.OverlayType.CIRCLE,
-          window.google.maps.drawing.OverlayType.RECTANGLE,
-          window.google.maps.drawing.OverlayType.POLYLINE,
-        ],
-      },
-      polylineOptions: {
-        strokeColor: "#FF0000",
-        strokeWeight: 3,
-        editable: true,
-        draggable: true,
-      },
-      markerOptions: {
-        draggable: true,
-      },
-      circleOptions: {
-        fillColor: "#00FFFF",
-        fillOpacity: 0.3,
-        strokeWeight: 2,
-        editable: true,
-        draggable: true,
-        zIndex: 1,
-      },
-      rectangleOptions: {
-        fillColor: "#00FF00",
-        fillOpacity: 0.2,
-        strokeWeight: 2,
-        editable: true,
-        draggable: true,
-        zIndex: 1,
-      },
-    });
-
-    drawingManagerInstance.setMap(mapInstance);
-
-    // Evento cuando se completa un dibujo
-    window.google.maps.event.addListener(
-      drawingManagerInstance,
-      "overlaycomplete",
-      (event) => {
-        const overlay = event.overlay;
-
-        overlay.addListener("click", () => {
-          setSelectedOverlay(overlay);
-          if (deleteBtnRef.current) {
-            deleteBtnRef.current.style.display = "block";
-          }
-        });
-
-        if (
-          event.type === window.google.maps.drawing.OverlayType.CIRCLE ||
-          event.type === window.google.maps.drawing.OverlayType.RECTANGLE
-        ) {
-          overlay.setEditable(true);
-          overlay.setDraggable(true);
-        }
-      }
-    );
-
-    // Ocultar botón borrar al hacer click en el mapa
-    mapInstance.addListener("click", () => {
-      setSelectedOverlay(null);
-      if (deleteBtnRef.current) {
-        deleteBtnRef.current.style.display = "none";
-      }
-    });
-
-    setMap(mapInstance);
-    setDrawingManager(drawingManagerInstance);
-  };
-
-  const handleDelete = () => {
-    if (selectedOverlay) {
-      selectedOverlay.setMap(null);
-      setSelectedOverlay(null);
-      if (deleteBtnRef.current) {
-        deleteBtnRef.current.style.display = "none";
-      }
-    }
-  };
-
-
-
   return (
-    <div style={{ height: "100vh", width: "100%", position: "relative" }}>
-      <div
-        id="map"
-        ref={mapRef}
-        style={{ height: "100%", width: "100%" }}
-      ></div>
-      <button
-        ref={deleteBtnRef}
-        onClick={handleDelete}
-        style={{
-          position: "absolute",
-          top: 10,
-          right: 10,
-          padding: "8px 12px",
-          background: "red",
-          color: "white",
-          border: "none",
-          borderRadius: 4,
-          cursor: "pointer",
-          display: "none",
-          zIndex: 5,
-        }}
-      >
-        Eliminar figura
-      </button>
-    </div>
-  );
-};
+    <Container maxWidth="true">
+      <Typography variant="h6" sx={{ fontWeight: 'bold' }}>Nueva Solicitud de Interferencia</Typography>
+      <Card>
+        <CardContent>
+          <Box component="form" onSubmit={handleSubmit}>
+            {/* Datos Personales */}
+            <Paper variant="outlined" sx={{ p: 2, mb: 3 }}>
+              <Typography variant="h6" gutterBottom>Solicitante</Typography>
+              <Grid container spacing={2}>
+                <Grid item xs={12} md={3}>
+                  <TextField label="CUIT/DNI" name="cuit" value={formData.cuit} onChange={handleChange} fullWidth />
+                </Grid>
+                <Grid item xs={12} md={4.5}>
+                  <TextField label="Nombre" name="nombre" value={formData.nombre} onChange={handleChange} fullWidth />
+                </Grid>
+                <Grid item xs={12} md={4.5}>
+                  <TextField label="Apellido" name="apellido" value={formData.apellido} onChange={handleChange} fullWidth />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <TextField label="Email" name="email" value={formData.email} onChange={handleChange} fullWidth />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <FormControl fullWidth>
+                    <InputLabel>Es Persona</InputLabel>
+                    <Select name="es_persona" value={formData.es_persona} onChange={handleChange}>
+                      <MenuItem value="S">Sí</MenuItem>
+                      <MenuItem value="N">No</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Grid>
+              </Grid>
+            </Paper>
+
+            {/* Dirección */}
+            <Paper variant="outlined" sx={{ p: 2, mb: 3 }}>
+              <Typography variant="h6" gutterBottom>Ubicación</Typography>
+              <Grid container spacing={2}>
+                <Grid item xs={12} md={6}>
+                  <TextField label="Calle" name="calle" value={formData.calle} onChange={handleChange} fullWidth />
+                </Grid>
+                <Grid item xs={6} md={3}>
+                  <TextField label="Altura" name="altura" value={formData.altura} onChange={handleChange} fullWidth />
+                </Grid>
+                <Grid item xs={6} md={3}>
+                  <FormControl fullWidth>
+                    <InputLabel>Localidad</InputLabel>
+                    <Select name="localidad" value={formData.localidad} onChange={handleChange}>
+                      <MenuItem value="" disabled>Seleccione</MenuItem>
+                      {localidades.map((loc) => (
+                        <MenuItem key={loc.LOC_ID} value={loc.LOC_ID}>
+                          {loc.LOC_DESCRIPCION}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid item xs={4}>
+                  <TextField label="Piso" name="piso" value={formData.piso} onChange={handleChange} fullWidth />
+                </Grid>
+                <Grid item xs={4}>
+                  <TextField label="Dpto" name="dpto" value={formData.dpto} onChange={handleChange} fullWidth />
+                </Grid>
+                <Grid item xs={4}>
+                  <FormControl fullWidth>
+                    <InputLabel>Vereda</InputLabel>
+                    <Select name="vereda" value={formData.vereda} onChange={handleChange}>
+                      <MenuItem value="S">Sí</MenuItem>
+                      <MenuItem value="N">No</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField label="Entre calle 1" name="entre1" value={formData.entre1} onChange={handleChange} fullWidth />
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField label="Entre calle 2" name="entre2" value={formData.entre2} onChange={handleChange} fullWidth />
+                </Grid>
+              </Grid>
+            </Paper>
+
+            {/* Coordenadas y Fechas */}
+            <Paper variant="outlined" sx={{ p: 2, mb: 3 }}>
+              <Typography variant="h6" gutterBottom>Detalles de Interferencia</Typography>
+              <Grid container spacing={2}>
+                <Grid item xs={6}>
+                  <TextField label="Latitud" name="latitud" value={formData.latitud} onChange={handleChange} fullWidth />
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField label="Longitud" name="longitud" value={formData.longitud} onChange={handleChange} fullWidth />
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField type="date" label="Desde" name="desde" value={formData.desde} onChange={handleChange} fullWidth InputLabelProps={{ shrink: true }} />
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField type="date" label="Hasta" name="hasta" value={formData.hasta} onChange={handleChange} fullWidth InputLabelProps={{ shrink: true }} />
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField label="Mapa (URL)" name="mapa" value={formData.mapa} onChange={handleChange} fullWidth />
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField label="Path (URL)" name="path" value={formData.path} onChange={handleChange} fullWidth />
+                </Grid>
+              </Grid>
+            </Paper>
+
+            {/* Botones */}
+            <Grid container justifyContent="center" spacing={2}>
+              <Grid item>
+                <Button type="submit" variant="contained" color="success" startIcon={<Send />}>Crear</Button>
+              </Grid>
+              <Grid item>
+                <Button variant="outlined" color="error" startIcon={<Cancel />} onClick={() => navigate('/home/solicitudes')}>Cancelar</Button>
+              </Grid>
+            </Grid>
+          </Box>
+        </CardContent>
+      </Card>
+    </Container>
+  )
+}
 
 export default NuevaInterferencia
