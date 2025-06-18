@@ -13,7 +13,7 @@ const createConfig = (database) => ({
 });
 
 console.log('Host:', process.env.SRV_HOST);
-console.log('Base Alum:', process.env.SRV_ALUM);
+// console.log('Base Alum:', process.env.SRV_ALUM);
 
 async function connectToGeaCorpico() {
     const pool = new sql.ConnectionPool(createConfig(process.env.SRV_GeaCorpico));

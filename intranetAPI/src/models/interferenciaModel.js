@@ -20,8 +20,7 @@ exports.getAll = async (res, req) => {
             SOI.SOI_VEREDA as Vereda,
             SOI.SOI_ENTRE1 as Entre1,
             SOI.SOI_ENTRE2 as Entre2,
-            SOI.SOI_LOCALIDAD_ID as ID_Localidad,
-            LOC.LOC_NOMBRE as Localidad,
+            LOC.LOC_DESCRIPCION as Localidad,
             SOI.SOI_LATITUD as Latitud,
             SOI.SOI_LONGITUD as Longitud,
             SOI.SOI_DESDE as Desde,
@@ -30,7 +29,7 @@ exports.getAll = async (res, req) => {
             SOI.SOI_MAPA as Mapa,
             SOI.SOI_PATH as Path
         FROM SOLICITUD_INTERFERENCIA SOI
-        INNER JOIN Gea.dbo.LOCALIDAD LOC ON LOC.LOC_ID = SOI.SOI_LOCALIDAD_ID;
+        INNER JOIN LOCALIDAD LOC ON LOC.LOC_ID = SOI.SOI_LOCALIDAD_ID;
 
     `);
     return result.recordset;

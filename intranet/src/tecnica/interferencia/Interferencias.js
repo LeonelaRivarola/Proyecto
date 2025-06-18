@@ -19,7 +19,7 @@ const Interferencias = () => {
   const fetchInterferencias = async () => {
     try {
       const token = localStorage.getItem('token');
-      const respuesta = await fetch(`${API_URL}/api/tecnica/obrasElectricas/solicitudes`, {
+      const respuesta = await fetch(`${API_URL}/api/tecnica/interferencia/Interferencias`, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
@@ -75,7 +75,7 @@ const Interferencias = () => {
               <td style={tdStyle}>{formatDate(item.Fecha_interf)}</td>
               <td style={tdStyle}>{formatDate(item.Desde)}</td>
               <td style={tdStyle}>{formatDate(item.Hasta)}</td>
-              <td style={tdStyle}>{item.ID_Localidad}</td> {/* Idealmente buscar el nombre de la localidad */}
+              <td style={tdStyle}>{item.Localidad}</td> {/* Idealmente buscar el nombre de la localidad */}
             </tr>
           ))}
         </tbody>
