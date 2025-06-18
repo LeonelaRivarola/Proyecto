@@ -37,7 +37,7 @@ const Interferencias = () => {
                 }
             });
             const data = await respuesta.json();
-            setInterferencias(data.data);
+            setInterferencias(data);
         } catch (err) {
 
         }

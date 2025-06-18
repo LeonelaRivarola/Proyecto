@@ -6,6 +6,7 @@ const verificarToken = require('../middlewares/authMiddleware');
 const tipoObraController = require('../controllers/tipoObraController');
 const emailController = require('../controllers/emailController');
 const presupuestoController = require('../controllers/presupuestoController');
+const interferenciaController = require('../controllers/interferenciaController');
 
 //
 router.post('/login', authController.login);
