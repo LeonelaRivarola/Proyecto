@@ -85,12 +85,12 @@ exports.create = async (data) => {
     return solicitudId;
 };
 
-// exports.remove = async (id) => {
-//     const pool = await connectToGeaCorpico();
-//     const result = await pool.request()
-//         .input('id', sql.Int, id)
-//         .query('DELETE FROM SOLICITUD_INTERFERENCIA WHERE SOI_ID = @id');
+exports.remove = async (id) => {
+    const pool = await connectToGeaCorpico();
+    const result = await pool.request()
+        .input('id', sql.Int, id)
+        .query('DELETE FROM SOLICITUD_INTERFERENCIA WHERE SOI_ID = @id');
 
-//     return result.rowsAffected[0];
-// };
+    return result.rowsAffected[0];
+};
 
