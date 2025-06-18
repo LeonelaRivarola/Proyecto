@@ -17,6 +17,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { API_URL } from '../../config';
 import { Send, Cancel } from '@mui/icons-material';
+import MapaInterferencia from './MapaInterferencia'; // Asegurate de que la ruta sea correcta
 
 const NuevaInterferencia = () => {
   const navigate = useNavigate();
@@ -26,13 +27,13 @@ const NuevaInterferencia = () => {
     cuit: "",
     nombre: "",
     apellido: "",
-    es_persona: "S", // puede ser 'S' o 'N'
+    es_persona: "S",
     email: "",
     calle: "",
     altura: "",
     piso: "",
     dpto: "",
-    vereda: "I", // puede ser 'I' o 'P'
+    vereda: "I",
     entre1: "",
     entre2: "",
     localidad: "",
@@ -64,7 +65,6 @@ const NuevaInterferencia = () => {
 
       if (!response.ok) {
         const errorText = await response.text();
-        console.error("Error en respuesta del servidor:", errorText);
         alert("Error del servidor: " + errorText);
         return;
       }
@@ -73,7 +73,6 @@ const NuevaInterferencia = () => {
       navigate('/home/interferencias');
 
     } catch (err) {
-      console.error("Error al enviar la interferencia:", err);
       alert("Error al guardar la interferencia");
     }
   };
@@ -90,125 +89,141 @@ const NuevaInterferencia = () => {
   }, []);
 
   return (
-    <Container maxWidth="true">
-      <Typography variant="h6" sx={{ fontWeight: 'bold' }}>Nueva Solicitud de Interferencia</Typography>
-      <Card>
-        <CardContent>
-          <Box component="form" onSubmit={handleSubmit}>
-            {/* Datos Personales */}
-            <Paper variant="outlined" sx={{ p: 2, mb: 3 }}>
-              <Typography variant="h6" gutterBottom>Solicitante</Typography>
-              <Grid container spacing={2}>
-                <Grid item xs={12} md={3}>
-                  <TextField label="CUIT/DNI" name="cuit" value={formData.cuit} onChange={handleChange} fullWidth />
-                </Grid>
-                <Grid item xs={12} md={4.5}>
-                  <TextField label="Nombre" name="nombre" value={formData.nombre} onChange={handleChange} fullWidth />
-                </Grid>
-                <Grid item xs={12} md={4.5}>
-                  <TextField label="Apellido" name="apellido" value={formData.apellido} onChange={handleChange} fullWidth />
-                </Grid>
-                <Grid item xs={12} md={6}>
-                  <TextField label="Email" name="email" value={formData.email} onChange={handleChange} fullWidth />
-                </Grid>
-                <Grid item xs={12} md={6}>
-                  <FormControl fullWidth>
-                    <InputLabel>Es Persona</InputLabel>
-                    <Select name="es_persona" value={formData.es_persona} onChange={handleChange}>
-                      <MenuItem value="S">Personal</MenuItem>
-                      <MenuItem value="N">Empresa</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Grid>
-              </Grid>
-            </Paper>
+    <Container maxWidth="xl">
+      <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 2 }}>
+        Nueva Solicitud de Interferencia
+      </Typography>
+      <Grid container spacing={2}>
+        {/* Columna izquierda: Formularios */}
+        <Grid item xs={12} md={6}>
+          <Card>
+            <CardContent>
+              <Box component="form" onSubmit={handleSubmit}>
+                {/* Solicitante */}
+                <Paper variant="outlined" sx={{ p: 2, mb: 3 }}>
+                  <Typography variant="h6" gutterBottom>Solicitante</Typography>
+                  <Grid container spacing={2}>
+                    <Grid item xs={12} md={3}>
+                      <TextField label="CUIT/DNI" name="cuit" value={formData.cuit} onChange={handleChange} fullWidth />
+                    </Grid>
+                    <Grid item xs={12} md={4.5}>
+                      <TextField label="Nombre" name="nombre" value={formData.nombre} onChange={handleChange} fullWidth />
+                    </Grid>
+                    <Grid item xs={12} md={4.5}>
+                      <TextField label="Apellido" name="apellido" value={formData.apellido} onChange={handleChange} fullWidth />
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                      <TextField label="Email" name="email" value={formData.email} onChange={handleChange} fullWidth />
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                      <FormControl fullWidth>
+                        <InputLabel>Es Persona</InputLabel>
+                        <Select name="es_persona" value={formData.es_persona} onChange={handleChange}>
+                          <MenuItem value="S">Personal</MenuItem>
+                          <MenuItem value="N">Empresa</MenuItem>
+                        </Select>
+                      </FormControl>
+                    </Grid>
+                  </Grid>
+                </Paper>
 
-            {/* Dirección */}
-            <Paper variant="outlined" sx={{ p: 2, mb: 3 }}>
-              <Typography variant="h6" gutterBottom>Ubicación</Typography>
-              <Grid container spacing={2}>
-                <Grid item xs={12} md={6}>
-                  <TextField label="Calle" name="calle" value={formData.calle} onChange={handleChange} fullWidth />
-                </Grid>
-                <Grid item xs={6} md={3}>
-                  <TextField label="Altura" name="altura" value={formData.altura} onChange={handleChange} fullWidth />
-                </Grid>
-                <Grid item xs={12} md={6}>
-                  <FormControl fullWidth>
-                    <InputLabel>Localidad</InputLabel>
-                    <Select name="localidad" value={formData.localidad} onChange={handleChange}>
-                      <MenuItem value="" disabled>Seleccione</MenuItem>
-                      {localidades.map((loc) => (
-                        <MenuItem key={loc.LOC_ID} value={loc.LOC_ID}>
-                          {loc.LOC_DESCRIPCION}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                </Grid>
-                <Grid item xs={4}>
-                  <TextField label="Piso" name="piso" value={formData.piso} onChange={handleChange} fullWidth />
-                </Grid>
-                <Grid item xs={4}>
-                  <TextField label="Dpto" name="dpto" value={formData.dpto} onChange={handleChange} fullWidth />
-                </Grid>
-                <Grid item xs={4}>
-                  <FormControl fullWidth>
-                    <InputLabel>Vereda</InputLabel>
-                    <Select name="vereda" value={formData.vereda} onChange={handleChange}>
-                      <MenuItem value="I">Impar</MenuItem>
-                      <MenuItem value="P">Par</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField label="Entre calle 1" name="entre1" value={formData.entre1} onChange={handleChange} fullWidth />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField label="Entre calle 2" name="entre2" value={formData.entre2} onChange={handleChange} fullWidth />
-                </Grid>
-              </Grid>
-            </Paper>
+                {/* Ubicación */}
+                <Paper variant="outlined" sx={{ p: 2, mb: 3 }}>
+                  <Typography variant="h6" gutterBottom>Ubicación</Typography>
+                  <Grid container spacing={2}>
+                    <Grid item xs={12} md={6}>
+                      <TextField label="Calle" name="calle" value={formData.calle} onChange={handleChange} fullWidth />
+                    </Grid>
+                    <Grid item xs={6} md={3}>
+                      <TextField label="Altura" name="altura" value={formData.altura} onChange={handleChange} fullWidth />
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                      <FormControl fullWidth>
+                        <InputLabel>Localidad</InputLabel>
+                        <Select name="localidad" value={formData.localidad} onChange={handleChange}>
+                          <MenuItem value="" disabled>Seleccione</MenuItem>
+                          {localidades.map((loc) => (
+                            <MenuItem key={loc.LOC_ID} value={loc.LOC_ID}>
+                              {loc.LOC_DESCRIPCION}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </FormControl>
+                    </Grid>
+                    <Grid item xs={4}>
+                      <TextField label="Piso" name="piso" value={formData.piso} onChange={handleChange} fullWidth />
+                    </Grid>
+                    <Grid item xs={4}>
+                      <TextField label="Dpto" name="dpto" value={formData.dpto} onChange={handleChange} fullWidth />
+                    </Grid>
+                    <Grid item xs={4}>
+                      <FormControl fullWidth>
+                        <InputLabel>Vereda</InputLabel>
+                        <Select name="vereda" value={formData.vereda} onChange={handleChange}>
+                          <MenuItem value="I">Impar</MenuItem>
+                          <MenuItem value="P">Par</MenuItem>
+                        </Select>
+                      </FormControl>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <TextField label="Entre calle 1" name="entre1" value={formData.entre1} onChange={handleChange} fullWidth />
+                    </Grid>
+                    <Grid item xs={6}>
+                      <TextField label="Entre calle 2" name="entre2" value={formData.entre2} onChange={handleChange} fullWidth />
+                    </Grid>
+                  </Grid>
+                </Paper>
 
-            {/* Coordenadas y Fechas */}
-            <Paper variant="outlined" sx={{ p: 2, mb: 3 }}>
-              <Typography variant="h6" gutterBottom>Detalles de Interferencia</Typography>
-              <Grid container spacing={2}>
-                <Grid item xs={6}>
-                  <TextField label="Latitud" name="latitud" value={formData.latitud} onChange={handleChange} fullWidth />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField label="Longitud" name="longitud" value={formData.longitud} onChange={handleChange} fullWidth />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField type="date" label="Desde" name="desde" value={formData.desde} onChange={handleChange} fullWidth InputLabelProps={{ shrink: true }} />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField type="date" label="Hasta" name="hasta" value={formData.hasta} onChange={handleChange} fullWidth InputLabelProps={{ shrink: true }} />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField label="Mapa (URL)" name="mapa" value={formData.mapa} onChange={handleChange} fullWidth />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField label="Path (URL)" name="path" value={formData.path} onChange={handleChange} fullWidth />
-                </Grid>
-              </Grid>
-            </Paper>
+                {/* Detalles de Interferencia */}
+                <Paper variant="outlined" sx={{ p: 2, mb: 3 }}>
+                  <Typography variant="h6" gutterBottom>Detalles de Interferencia</Typography>
+                  <Grid container spacing={2}>
+                    <Grid item xs={6}>
+                      <TextField label="Latitud" name="latitud" value={formData.latitud} onChange={handleChange} fullWidth />
+                    </Grid>
+                    <Grid item xs={6}>
+                      <TextField label="Longitud" name="longitud" value={formData.longitud} onChange={handleChange} fullWidth />
+                    </Grid>
+                    <Grid item xs={6}>
+                      <TextField type="date" label="Desde" name="desde" value={formData.desde} onChange={handleChange} fullWidth InputLabelProps={{ shrink: true }} />
+                    </Grid>
+                    <Grid item xs={6}>
+                      <TextField type="date" label="Hasta" name="hasta" value={formData.hasta} onChange={handleChange} fullWidth InputLabelProps={{ shrink: true }} />
+                    </Grid>
+                    <Grid item xs={6}>
+                      <TextField label="Mapa (URL)" name="mapa" value={formData.mapa} onChange={handleChange} fullWidth />
+                    </Grid>
+                    <Grid item xs={6}>
+                      <TextField label="Path (URL)" name="path" value={formData.path} onChange={handleChange} fullWidth />
+                    </Grid>
+                  </Grid>
+                </Paper>
 
-            {/* Botones */}
-            <Grid container justifyContent="center" spacing={2}>
-              <Grid item>
-                <Button type="submit" variant="contained" color="success" startIcon={<Send />}>Crear</Button>
-              </Grid>
-              <Grid item>
-                <Button variant="outlined" color="error" startIcon={<Cancel />} onClick={() => navigate('/home/solicitudes')}>Cancelar</Button>
-              </Grid>
-            </Grid>
-          </Box>
-        </CardContent>
-      </Card>
+                {/* Botones */}
+                <Grid container justifyContent="center" spacing={2}>
+                  <Grid item>
+                    <Button type="submit" variant="contained" color="success" startIcon={<Send />}>Crear</Button>
+                  </Grid>
+                  <Grid item>
+                    <Button variant="outlined" color="error" startIcon={<Cancel />} onClick={() => navigate('/home/solicitudes')}>Cancelar</Button>
+                  </Grid>
+                </Grid>
+              </Box>
+            </CardContent>
+          </Card>
+        </Grid>
+
+        {/* Columna derecha: Mapa */}
+        <Grid item xs={12} md={6}>
+          <Card>
+            <CardContent sx={{ p: 0 }}>
+              <MapaInterferencia />
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
     </Container>
-  )
-}
+  );
+};
 
-export default NuevaInterferencia
+export default NuevaInterferencia;
