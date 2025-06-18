@@ -1,4 +1,5 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
+import { useLocation } from 'react-router-dom';
 import {
   Button, Dialog, DialogTitle, DialogContent, DialogActions,
   Switch, TextField, FormControlLabel
@@ -7,7 +8,7 @@ import {
 const PresupuestarSolicitud = () => {
   const location = useLocation();
   const { solicitud } = location.state || {};
-  
+
   return (
     <div>
       sector acreditar solicitud

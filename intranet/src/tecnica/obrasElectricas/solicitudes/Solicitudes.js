@@ -22,6 +22,7 @@ import {
 
 import { UploadFile, Delete } from '@mui/icons-material';
 import { API_URL } from '../../../config';
+import { Outlet } from 'react-router-dom';
 import { Navigate, useNavigate } from 'react-router-dom';
 import ModalEliminarSolicitud from '../../../componentes/modales/ModalEliminarSolicitud.js';
 import DoDisturbAltIcon from '@mui/icons-material/DoDisturbAlt';
