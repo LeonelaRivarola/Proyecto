@@ -15,7 +15,7 @@ import {
   Paper,
 } from "@mui/material";
 import { useNavigate } from 'react-router-dom';
-import { API_URL } from '../../../config';
+import { API_URL } from '../../config';
 import { Send, Cancel } from '@mui/icons-material';
 
 const NuevaInterferencia = () => {
