@@ -39,11 +39,11 @@ const Solicitudes = () => {
   const navigate = useNavigate();
 
   const handleDocumentar = (id) => {
-    console.log("Documentar solicitud:", id);
+    navigate('home/documentar-solicitud');
   };
 
-  const handlePresupuestar = (id) => {
-    console.log("Presupuestar solicitud:", id);
+  const handlePresupuestar = (solicitud) => {
+    navigate('home/presupuestar-solicitud', { state: { solicitud } });
   };
 
   const handleEliminar = (id) => {
@@ -230,7 +230,7 @@ const Solicitudes = () => {
                           <Box display="flex" gap={1.5}>
                             <Tooltip title="Presupuestar Documento" arrow>
                               <IconButton
-                                onClick={() => handlePresupuestar(solicitud.Número)}
+                                onClick={() => handlePresupuestar(solicitud)}
                                 size="small"
                                 sx={{
                                   backgroundColor: '#aaaaaa',
@@ -302,7 +302,7 @@ const Solicitudes = () => {
                               </IconButton>
                             </Tooltip>
                           </Box>
-                        ): solicitud.Estado === 'Presupuestada' ? (
+                        ) : solicitud.Estado === 'Presupuestada' ? (
                           <Box display="flex" gap={1.5}>
                             <Tooltip title="Cancelar y Eliminar Solicitud" arrow>
                               <IconButton
@@ -322,7 +322,7 @@ const Solicitudes = () => {
                                 <DoDisturbAltIcon fontSize="small" />
                               </IconButton>
                             </Tooltip>
-                            </Box>
+                          </Box>
                         ) : null}
                       </Box>
                     </TableCell>
@@ -332,6 +332,7 @@ const Solicitudes = () => {
           </Table>
         </TableContainer>
       </Box>
+      <Outlet />
       <ModalEliminarSolicitud
         open={modalOpen}
         onClose={() => setModalOpen(false)}

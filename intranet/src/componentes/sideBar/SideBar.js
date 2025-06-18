@@ -9,19 +9,12 @@ import {
   Box,
 } from '@mui/material';
 import {
-  Domain,
-  Phone,
-  Business,
-  Group,
-  ReceiptLong,
-  CameraAlt,
   ElectricalServices,
   ExpandLess,
   ExpandMore,
 } from '@mui/icons-material';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Navigate } from 'react-router-dom';
-
 
 const SideBar = () => {
   const location = useLocation();

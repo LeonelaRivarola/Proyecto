@@ -19,6 +19,8 @@ import EditarTOE from "./tecnica/obrasElectricas/tiposDeObras/EditarTOE";
 import CrearTipoOE from "./tecnica/obrasElectricas/tiposDeObras/CrearTipoOE";
 import Interferencia from "./tecnica/interferencias/Interferencia";
 import NuevaInterferencia from "./tecnica/interferencias/NuevaInterferencia";
+import Presupuestar from "./tecnica/obrasElectricas/solicitudes/PresupuestarSolicitud";
+import DocumentarSolicitud from './tecnica/obrasElectricas/solicitudes/DocumentarSolicitud';
 
 const App = () => {
   return (
@@ -29,6 +31,8 @@ const App = () => {
           <Route path="emails" element={<SesionProtegida> <EmailsTec /> </SesionProtegida>} />
           <Route path="presupuestos" element={<SesionProtegida> <Presupuestos /> </SesionProtegida>} />
           <Route path="solicitudes" element={<SesionProtegida> <Solicitudes /> </SesionProtegida>} />
+          <Route path="presupuestar-solicitud" element={<SesionProtegida> <Presupuestar /> </SesionProtegida>} />
+          <Route path="documentar-solicitud" element={<SesionProtegida> <DocumentarSolicitud /> </SesionProtegida>} />
           <Route path="tipos-obras" element={<SesionProtegida><TiposDeObras /></SesionProtegida>} />
           <Route path="editar/:id" element={<SesionProtegida><EditarTOE /></SesionProtegida>} />
           <Route path="nuevo" element={<SesionProtegida><CrearTipoOE /></SesionProtegida>} />
