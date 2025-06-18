@@ -23,9 +23,7 @@ const SideBar = () => {
 
   const [openTecnica, setOpenTecnica] = useState(false);
   const [openObras, setOpenObras] = useState(false);
-
   const [openInterferencias, setOpenInterferencias] = useState(false);
-  const [openListaInterf, setOpenListaInterf] = useState(false);
 
   const isActive = (path) => activePage === path;
 

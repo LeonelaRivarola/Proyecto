@@ -38,7 +38,7 @@ const Ingresar = () => {
 
             localStorage.setItem('token', response.data.token);
             // IMPRIME TOKEN
-            console.log(response.data.token);
+            //console.log(response.data.token);
             localStorage.setItem('username', response.data.username)
             navigate('/Home');
 
