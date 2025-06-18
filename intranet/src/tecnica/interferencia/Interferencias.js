@@ -2,12 +2,14 @@
 
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-
+import { API_URL } from '../../../config';
+import { Box, CircularProgress} from '@mui/material';
 
 
 const Interferencias = () => {
   const [interferencias, setInterferencias] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
 
   useEffect(() => {
