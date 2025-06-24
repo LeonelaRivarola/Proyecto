@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Container,
   Typography,
   CircularProgress,
   Table,
@@ -22,11 +21,12 @@ import {
 } from '@mui/material';
 
 import { UploadFile, Delete } from '@mui/icons-material';
-import UploadFileIcon from '@mui/icons-material/UploadFile';
 import { API_URL } from '../../../config';
+import { Outlet } from 'react-router-dom';
 import { Navigate, useNavigate } from 'react-router-dom';
 import ModalEliminarSolicitud from '../../../componentes/modales/ModalEliminarSolicitud.js';
 import DoDisturbAltIcon from '@mui/icons-material/DoDisturbAlt';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 
 const Solicitudes = () => {
   const [solicitudes, setSolicitudes] = useState([]);
@@ -40,11 +40,11 @@ const Solicitudes = () => {
   const navigate = useNavigate();
 
   const handleDocumentar = (id) => {
-    console.log("Documentar solicitud:", id);
+    navigate('home/documentar-solicitud');
   };
 
-  const handlePresupuestar = (id) => {
-    console.log("Presupuestar solicitud:", id);
+  const handlePresupuestar = (solicitud) => {
+    navigate('home/presupuestar-solicitud', { state: { solicitud } });
   };
 
   const handleEliminar = (id) => {
@@ -171,7 +171,7 @@ const Solicitudes = () => {
             fontWeight: 'bold',
             textTransform: 'none',
           }}
-          onClick={() => navigate('/Home/nueva-solicitud')}
+          onClick={() => navigate('/home/nueva-solicitud')}
         >
           NUEVA SOLICITUD
         </Button>
@@ -231,19 +231,19 @@ const Solicitudes = () => {
                           <Box display="flex" gap={1.5}>
                             <Tooltip title="Presupuestar Documento" arrow>
                               <IconButton
-                                onClick={() => handlePresupuestar(solicitud.Número)}
+                                onClick={() => handlePresupuestar(solicitud)}
                                 size="small"
                                 sx={{
-                                  backgroundColor: '#000080',
+                                  backgroundColor: '#aaaaaa',
                                   color: 'white',
                                   '&:hover': {
-                                    backgroundColor: '#0a0a5c',
+                                    backgroundColor: '#888888',
                                   },
                                   borderRadius: 2,
                                   padding: '4px'
                                 }}
                               >
-                                <UploadFileIcon fontSize="small" />
+                                <AttachMoneyIcon fontSize="small" />
                               </IconButton>
                             </Tooltip>
                             <Tooltip title="Cancelar y Eliminar Solicitud" arrow>
@@ -303,6 +303,27 @@ const Solicitudes = () => {
                               </IconButton>
                             </Tooltip>
                           </Box>
+                        ) : solicitud.Estado === 'Presupuestada' ? (
+                          <Box display="flex" gap={1.5}>
+                            <Tooltip title="Cancelar y Eliminar Solicitud" arrow>
+                              <IconButton
+                                color="error"
+                                onClick={() => handleEliminar(solicitud)}
+                                size="small"
+                                sx={{
+                                  backgroundColor: '#FFA500',
+                                  color: 'white',
+                                  '&:hover': {
+                                    backgroundColor: '#CC8400',
+                                  },
+                                  borderRadius: 2,
+                                  padding: '4px'
+                                }}
+                              >
+                                <DoDisturbAltIcon fontSize="small" />
+                              </IconButton>
+                            </Tooltip>
+                          </Box>
                         ) : null}
                       </Box>
                     </TableCell>
@@ -312,6 +333,7 @@ const Solicitudes = () => {
           </Table>
         </TableContainer>
       </Box>
+      <Outlet />
       <ModalEliminarSolicitud
         open={modalOpen}
         onClose={() => setModalOpen(false)}

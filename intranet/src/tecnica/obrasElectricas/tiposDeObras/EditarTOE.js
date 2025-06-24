@@ -24,8 +24,7 @@ const EditarTOE = () => {
     const fetchDatos = async () => {
       try {
         const token = localStorage.getItem('token');
-        const res = await fetch(`${API_URL}/api/tecnica/obrasElectricas/${id}`, {
-           method: 'GET',
+        const res = await fetch(`${API_URL}/api/tecnica/obrasElectricas/getTipoDeObra/${id}`, {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
@@ -33,9 +32,9 @@ const EditarTOE = () => {
         });
         const data = await res.json();
         setFormData({
-          abreviatura: data.abreviatura || '',
-          descripcion: data.descripcion || '',
-          interno: data.interno === 'S',
+          abreviatura: data.TOE_ABREVIATURA || '',
+          descripcion: data.TOE_DESCRIPCION || '',
+          interno: data.TOE_INTERNO === 'S',
         });
       } catch (err) {
         console.error('Error al cargar datos:', err);
@@ -59,7 +58,7 @@ const EditarTOE = () => {
 
     const datosAGuardar = {
       ...formData,
-      interno: formData.interno ? 'S' : 'N',
+      interno: formData.interno? 'S' : 'N',
     };
 
     try {
@@ -72,14 +71,14 @@ const EditarTOE = () => {
         },
         body: JSON.stringify(datosAGuardar),
       });
-      navigate('/Home/tipos-obras');
+      navigate('/home/tipos-obras');
     } catch (err) {
       console.error('Error al actualizar:', err);
     }
   };
 
   const handleCancel = () => {
-    navigate('/Home/tipos-obras');
+    navigate('/home/tipos-obras');
   };
 
   return (

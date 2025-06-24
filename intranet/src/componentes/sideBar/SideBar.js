@@ -9,19 +9,12 @@ import {
   Box,
 } from '@mui/material';
 import {
-  Domain,
-  Phone,
-  Business,
-  Group,
-  ReceiptLong,
-  CameraAlt,
   ElectricalServices,
   ExpandLess,
   ExpandMore,
 } from '@mui/icons-material';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Navigate } from 'react-router-dom';
-
 
 const SideBar = () => {
   const location = useLocation();
@@ -30,9 +23,7 @@ const SideBar = () => {
 
   const [openTecnica, setOpenTecnica] = useState(false);
   const [openObras, setOpenObras] = useState(false);
-
   const [openInterferencias, setOpenInterferencias] = useState(false);
-  const [openListaInterf, setOpenListaInterf] = useState(false);
 
   const isActive = (path) => activePage === path;
 
@@ -91,15 +82,13 @@ const SideBar = () => {
 
         <Collapse in={openTecnica} timeout="auto" unmountOnExit>
           <List component="div" disablePadding sx={{ pl: 4 }}>
-
-            {/* Obras Eléctricas */}
             <ListItemButton onClick={() => setOpenObras(!openObras)}>
               <ListItemText primary="Obras Eléctricas" />
               {openObras ? <ExpandLess /> : <ExpandMore />}
             </ListItemButton>
 
             <Collapse in={openObras} timeout="auto" unmountOnExit>
-              <List component="div" disablePadding sx={{ pl: 4 }}>
+              <List component="div" disablePadding sx={{ pl: 4 }} borderRadius={5}>
                 <ListItemButton
                   component={Link}
                   to="/home/nueva-solicitud"
@@ -162,9 +151,9 @@ const SideBar = () => {
 
                 <ListItemButton
                   component={Link}
-                  to="/home/interferencias/nueva"
-                  selected={isActive('/home/interferencias/nueva')}
-                  sx={getItemStyle('/home/interferencias/nueva')}
+                  to="/home/nueva-interferencia"
+                  selected={isActive('/home/nueva-interferencia')}
+                  sx={getItemStyle('/home/nueva-interferencia')}
                 >
                   <ListItemText primary="Nueva interferencia" />
                 </ListItemButton>
@@ -175,7 +164,6 @@ const SideBar = () => {
           </List>
         </Collapse>
       </List>
-
 
     </Drawer>
   )
