@@ -132,18 +132,18 @@ const Interferencias = () => {
                                                 <Tooltip title="Editar" arrow>
                                                     <IconButton
                                                         onClick={() => handleEditar(interferencia)}
-                                                        size="small"
+                                                        size="xl"
                                                         sx={{
-                                                            backgroundColor: '#000080',
+                                                            backgroundColor: '#1565c0',
                                                             color: 'white',
                                                             '&:hover': {
-                                                                backgroundColor: '#0a0a5c',
+                                                                backgroundColor: '#0d47a1',
                                                             },
                                                             borderRadius: 2,
                                                             padding: '4px'
                                                         }}
                                                     >
-                                                        <EditDocumentIcon fontSize="small" />
+                                                        <EditDocumentIcon fontSize="xl" />
                                                     </IconButton>
                                                 </Tooltip>
                                             </Box>
@@ -153,18 +153,18 @@ const Interferencias = () => {
                                                 <Tooltip title="Eliminar" arrow>
                                                     <IconButton
                                                         onClick={() => handleEliminar(interferencia)}
-                                                        size="small"
+                                                        size="xl"
                                                         sx={{
-                                                            backgroundColor: '#000080',
+                                                            backgroundColor: '#e53935',
                                                             color: 'white',
                                                             '&:hover': {
-                                                                backgroundColor: '#0a0a5c',
+                                                                backgroundColor: '#c62828',
                                                             },
                                                             borderRadius: 2,
                                                             padding: '4px'
                                                         }}
                                                     >
-                                                        <DeleteIcon fontSize="small" />
+                                                        <DeleteIcon fontSize="xl" />
                                                     </IconButton>
                                                 </Tooltip>
                                             </Box>
