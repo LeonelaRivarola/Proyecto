@@ -40,6 +40,7 @@ const NuevaInterferencia = () => {
     longitud: "",
     desde: "",
     hasta: "",
+    fecha: "",
     mapa: "",
     path: ""
   });
@@ -85,6 +86,9 @@ const NuevaInterferencia = () => {
       { LOC_ID: 10349, LOC_DESCRIPCION: "Trebolares" },
       { LOC_ID: 10366, LOC_DESCRIPCION: "Vertiz" },
     ]);
+
+    const fechaActual = new Date().toISOString().split("T")[0]; 
+    setFormData(prev => ({ ...prev, fecha: fechaActual }));
   }, []);
 
   return (
