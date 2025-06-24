@@ -231,7 +231,7 @@ const NuevaInterferencia = () => {
                   <Grid container spacing={2}>
                     <Grid item xs={12}>
                       <Typography variant="body1" gutterBottom>Mapa</Typography>
-                      <Box sx={{ width: '100%', height: 400 }}>
+                      <Box sx={{ width: '800px', height: 400 }}>
                         <MapaInterferencia onData={(data) => setFormData(prev => ({ ...prev, mapa: data }))} />
                       </Box>
                     </Grid>
