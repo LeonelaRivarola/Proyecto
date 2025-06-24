@@ -52,6 +52,24 @@ const NuevaInterferencia = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // Preparar payload con conversiones necesarias
+    const payload = {
+      ...formData,
+      localidad: parseInt(formData.localidad),
+      latitud: parseFloat(formData.latitud),
+      longitud: parseFloat(formData.longitud)
+    };
+
+    // Validación básica
+    if (
+      !payload.cuit || !payload.nombre || !payload.apellido || !payload.email ||
+      !payload.calle || !payload.altura || isNaN(payload.localidad) ||
+      isNaN(payload.latitud) || isNaN(payload.longitud) ||
+      !payload.desde || !payload.hasta || !payload.mapa || !payload.path
+    ) {
+      alert("Por favor, completá todos los campos obligatorios correctamente.");
+      return;
+    }
     try {
       const token = localStorage.getItem('token');
       const response = await fetch(`${API_URL}/api/tecnica/interferencia/nueva`, {
@@ -87,7 +105,7 @@ const NuevaInterferencia = () => {
       { LOC_ID: 10366, LOC_DESCRIPCION: "Vertiz" },
     ]);
 
-    const fechaActual = new Date().toISOString().split("T")[0]; 
+    const fechaActual = new Date().toISOString().split("T")[0];
     setFormData(prev => ({ ...prev, fecha: fechaActual }));
   }, []);
 
