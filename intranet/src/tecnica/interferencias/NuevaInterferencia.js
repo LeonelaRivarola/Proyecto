@@ -221,8 +221,10 @@ const NuevaInterferencia = () => {
                       <TextField type="date" label="Hasta" name="hasta" value={formData.hasta} onChange={handleChange} fullWidth InputLabelProps={{ shrink: true }} />
                     </Grid>
                     <Grid item xs={12}>
-                      <Typography variant="body1" gutterBottom>Mapa con herramientas de dibujo</Typography>
-                      <MapaInterferencia onData={(data) => setFormData(prev => ({ ...prev, mapa: data }))} />
+                      <Typography variant="body1" gutterBottom>Mapa</Typography>
+                      <Paper elevation={1} sx={{ p: 1, borderRadius: 2 }}>
+                        <MapaInterferencia onData={(data) => setFormData(prev => ({ ...prev, mapa: data }))} />
+                      </Paper>
                     </Grid>
                     <Grid item xs={12}>
                       <Typography variant="body1" gutterBottom>Archivo relacionado (Path)</Typography>
