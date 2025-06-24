@@ -221,14 +221,17 @@ const NuevaInterferencia = () => {
                       <TextField type="date" label="Hasta" name="hasta" value={formData.hasta} onChange={handleChange} fullWidth InputLabelProps={{ shrink: true }} />
                     </Grid>
                     <Grid item xs={12}>
-                      <Typography variant="body1" gutterBottom>Mapa</Typography>
-                      <Paper elevation={1} sx={{ p: 1, borderRadius: 2 }}>
-                        <MapaInterferencia onData={(data) => setFormData(prev => ({ ...prev, mapa: data }))} />
-                      </Paper>
-                    </Grid>
-                    <Grid item xs={12}>
                       <Typography variant="body1" gutterBottom>Archivo relacionado (Path)</Typography>
                       <input type="file" name="path" accept=".pdf,.jpg,.jpeg,.png,.kml" onChange={handleFileChange} />
+                    </Grid>
+                  </Grid>
+                </Paper>
+
+                <Paper variant="outlined" sx={{ p: 2, mb: 3 }}>
+                  <Grid container spacing={2}>
+                    <Grid item xs={6}>
+                      <Typography variant="body1" gutterBottom>Mapa</Typography>
+                      <MapaInterferencia onData={(data) => setFormData(prev => ({ ...prev, mapa: data }))} />
                     </Grid>
                   </Grid>
                 </Paper>

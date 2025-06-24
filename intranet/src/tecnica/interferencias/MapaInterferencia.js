@@ -203,7 +203,7 @@ const MapaInterferencia = ({ onData }) => {
 
 
   return (
-    <div style={{ height: "400px", width: "100%", position: "relative", borderRadius: "8px", overflow: "hidden" }}>
+    <div style={{ height: "100vh", width: "100%", position: "relative" }}>
       <div
         id="map"
         ref={mapRef}
