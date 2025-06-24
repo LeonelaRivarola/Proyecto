@@ -64,15 +64,13 @@ const NuevaInterferencia = () => {
 
       if (!response.ok) {
         const errorText = await response.text();
-        alert("Error del servidor: " + errorText);
         return;
       }
 
-      alert("Interferencia creada con éxito.");
       navigate('/home/interferencias');
 
     } catch (err) {
-      alert("Error al guardar la interferencia");
+      console.log("error:" + err);
     }
   };
 
@@ -222,15 +220,6 @@ const NuevaInterferencia = () => {
                   </Grid>
                 </Grid>
               </Box>
-            </CardContent>
-          </Card>
-        </Grid>
-
-        {/* Columna derecha: Mapa */}
-        <Grid item xs={12} md={6}>
-          <Card>
-            <CardContent sx={{ p: 0 }}>
-              <MapaInterferencia />
             </CardContent>
           </Card>
         </Grid>
