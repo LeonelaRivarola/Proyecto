@@ -30,6 +30,7 @@ const Interferencias = () => {
                 }
             });
             const data = await respuesta.json();
+            console.log("INTERFERENCIAS" + data);
             setInterferencias(data);
         } catch (err) {
 
