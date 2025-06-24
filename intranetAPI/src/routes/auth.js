@@ -37,7 +37,7 @@ router.get('/tecnica/obrasElectricas/getPresupuestoPath/:usuario', verificarToke
 
 //interferencias
 router.get('/tecnica/interferencia/Interferencias', verificarToken, interferenciaController.index);
-router.post('/tecnica/interferencia/nueva', verificarToken, interferenciaController.store);
+router.post('/tecnica/interferencia/nueva',verificarToken, interferenciaController.store);
 
 
 // // Route:: get('tecnica/obrasElectricas/presupuestos/crear/{solicitud}', [PresupuestoController:: class, 'create']) -> name('presupuestar-solicitud');
