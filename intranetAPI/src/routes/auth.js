@@ -6,6 +6,7 @@ const verificarToken = require('../middlewares/authMiddleware');
 const tipoObraController = require('../controllers/tipoObraController');
 // const presupuestoController = require('../controllers/presupuestoController');
 const interferenciaController = require('../controllers/interferenciaController');
+const emailController = require('../controllers/emailController');
 
 //
 router.post('/login', authController.login);
@@ -21,6 +22,9 @@ router.post('/tecnica/obrasElectricas/nuevo-tipoObras', verificarToken, tipoObra
 router.put('/tecnica/obrasElectricas/editar-tipoObras/:id', verificarToken, tipoObraController.update);
 router.delete('/tecnica/obrasElectricas/eliminar-tipoObra/:id', verificarToken, tipoObraController.destroy);
 
+//E-mail de Solicitudes
+router.get('/tecnica/obrasElectricas/emails', verificarToken, emailController.index);
+router.get('tecnica/obrasElectricas/emails/mostrar/:id', verificarToken, emailController.show);
 
 // Presupuestos
 // router.get('/tecnica/obrasElectricas/presupuestos', verificarToken, presupuestoController.index);
@@ -84,9 +88,7 @@ router.post('/tecnica/interferencia/nueva',verificarToken, interferenciaControll
 // // // Observaciones
 // // Route:: get('tecnica/ObrasElectricas/observaciones/crear/{solicitud}', [ObservacionController:: class, 'create']) -> name('observar-solicitud');
 // // Route:: post('tecnica/ObrasElectricas/observaciones/guardar', [ObservacionController:: class, 'store']) -> name('crear-observacion');
-// // // E-mail de Solicitudes
-// // Route:: get('tecnica/obrasElectricas/emails', [EmailController:: class, 'index']) -> name('emails');
-// // Route:: get('tecnica/obrasElectricas/emails/mostrar/{email}', [EmailController:: class, 'show']) -> name('mostrar-email');
+
 // // // Tipo de Obra
 // // Route:: get('tecnica/obrasElectricas/tiposDeObras', [TipoObraController:: class, 'index']) -> name('tipos-obras');
 // // Route:: get('tecnica/obrasElectricas/tiposDeObras/editar/{tipoObra}', [TipoObraController:: class, 'edit']) -> name('editar-tipoObra');
