@@ -17,7 +17,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { API_URL } from '../../config';
 import { Send, Cancel } from '@mui/icons-material';
-import MapaInterferencia from './MapaInterferencia'; // Asegurate de que la ruta sea correcta
+import MapaInterferencia from './MapaInterferencia';
 
 const NuevaInterferencia = () => {
   const navigate = useNavigate();
@@ -89,9 +89,23 @@ const NuevaInterferencia = () => {
 
   return (
     <Container maxWidth="xl">
-      <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 2 }}>
-        Nueva Solicitud de Interferencia
-      </Typography>
+      <Paper
+        elevation={4}
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          p: 2,
+          borderRadius: 3,
+          background: 'linear-gradient(90deg, #43a047, #66bb6a)',
+          color: 'white',
+          mb: 2,
+        }}
+      >
+        <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+          Nueva Solicitud de Interferencia
+        </Typography>
+      </Paper>
       <Grid container spacing={2}>
         {/* Columna izquierda: Formularios */}
         <Grid item xs={12} md={6}>
