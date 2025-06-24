@@ -51,7 +51,7 @@ const Interferencias = () => {
     };
 
     const handleEliminar = (interferencia) => {
-        setInterferenciaEliminar(interferencia);
+        setInterferenciaAEliminar(interferencia);
         setDialogOpen(true);
     };
 
