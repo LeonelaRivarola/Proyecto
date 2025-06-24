@@ -22,7 +22,6 @@ import MapaInterferencia from './MapaInterferencia'; // Asegurate de que la ruta
 const NuevaInterferencia = () => {
   const navigate = useNavigate();
   const [localidades, setLocalidades] = useState([]);
-
   const [formData, setFormData] = useState({
     cuit: "",
     nombre: "",

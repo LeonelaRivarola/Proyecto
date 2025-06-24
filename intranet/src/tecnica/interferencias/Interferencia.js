@@ -18,6 +18,7 @@ const Interferencias = () => {
     const navigate = useNavigate();
     const [error, setError] = useState(false);
     const [interferencias, setInterferencias] = useState([]);
+    const [localidades, setLocalidades] = useState([]);
 
     const fetchInteferencias = async () => {
         try {
@@ -37,6 +38,14 @@ const Interferencias = () => {
 
     useEffect(() => {
         fetchInteferencias();
+        setLocalidades([
+            { LOC_ID: 9966, LOC_DESCRIPCION: "Dorila" },
+            { LOC_ID: 10041, LOC_DESCRIPCION: "Gral Pico" },
+            { LOC_ID: 10303, LOC_DESCRIPCION: "Metileo" },
+            { LOC_ID: 10341, LOC_DESCRIPCION: "Speluzzi" },
+            { LOC_ID: 10349, LOC_DESCRIPCION: "Trebolares" },
+            { LOC_ID: 10366, LOC_DESCRIPCION: "Vertiz" },
+        ]);
     }, []);
 
     return (
@@ -100,20 +109,23 @@ const Interferencias = () => {
                         </TableHead>
                         <Box sx={{ height: '12px' }} />
                         <TableBody>
-                        {interferencias
-                        .map((interferencia) => (
-                            <TableRow key={interferencia.ID}>
-                                <TableCell>{interferencia.ID}</TableCell>
-                                <TableCell>{interferencia.Nombre}</TableCell>
-                                <TableCell> {interferencia.Calle} <strong>,</strong> {interferencia.Dpto} <strong>Entre </strong>{interferencia.Entre1} <strong>y</strong> {interferencia.Entre2}</TableCell>
-                                <TableCell>Estado...</TableCell>
-                                <TableCell>{interferencia.Fecha_interf}</TableCell>
-                                <TableCell>{interferencia.Desde}</TableCell>
-                                <TableCell>{interferencia.Hasta}</TableCell>
-                                <TableCell>{interferencia.ID_Localidad}</TableCell>
-                            </TableRow>
-                        ))}
-                        </TableBody>       
+                            {interferencias
+                                .map((interferencia) => (
+                                    <TableRow key={interferencia.ID}>
+                                        <TableCell>{interferencia.ID}</TableCell>
+                                        <TableCell>{interferencia.Nombre}</TableCell>
+                                        <TableCell> {interferencia.Calle} <strong>,</strong> {interferencia.Dpto} <strong>Entre </strong>{interferencia.Entre1} <strong>y</strong> {interferencia.Entre2}</TableCell>
+                                        <TableCell>Estado...</TableCell>
+                                        <TableCell>{interferencia.Fecha_interf}</TableCell>
+                                        <TableCell>{interferencia.Desde}</TableCell>
+                                        <TableCell>{interferencia.Hasta}</TableCell>
+                                        <TableCell>
+                                            {localidades.find(loc => loc.LOC_ID === interferencia.ID_Localidad)?.LOC_DESCRIPCION || 'Sin localidad'}
+                                        </TableCell>
+
+                                    </TableRow>
+                                ))}
+                        </TableBody>
                     </Table>
                 </TableContainer>
             </Box>
