@@ -14,12 +14,13 @@ import {
 import { API_URL } from '../../config';
 import dayjs from 'dayjs';
 import { useNavigate } from 'react-router-dom';
+import EditDocumentIcon from '@mui/icons-material/EditDocument';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const Interferencias = () => {
     const navigate = useNavigate();
     const [error, setError] = useState(false);
     const [interferencias, setInterferencias] = useState([]);
-    const [localidades, setLocalidades] = useState([]);
 
     const fetchInteferencias = async () => {
         try {
@@ -37,17 +38,17 @@ const Interferencias = () => {
         }
     };
 
+    const handleEditar = (e) => {
+        //
+    };
+
+    const handleEliminar = (e) => {
+        //
+    };
+
     useEffect(() => {
         fetchInteferencias();
-        console.log(localStorage.getItem("token"));
-        setLocalidades([
-            { LOC_ID: 9966, LOC_DESCRIPCION: "Dorila" },
-            { LOC_ID: 10041, LOC_DESCRIPCION: "Gral Pico" },
-            { LOC_ID: 10303, LOC_DESCRIPCION: "Metileo" },
-            { LOC_ID: 10341, LOC_DESCRIPCION: "Speluzzi" },
-            { LOC_ID: 10349, LOC_DESCRIPCION: "Trebolares" },
-            { LOC_ID: 10366, LOC_DESCRIPCION: "Vertiz" },
-        ]);
+        //console.log(localStorage.getItem("token"));
     }, []);
 
     return (
@@ -90,7 +91,7 @@ const Interferencias = () => {
                     <Table size="small" sx={{ minWidth: '100%', tableLayout: 'auto' }}>
                         <TableHead>
                             <TableRow>
-                                {['Solicitud', 'Empresa / Particular', 'Dirección', 'Estado', 'Fecha de Solicitud', 'Fecha de Inicio', 'Fecha de Fin', 'Localidad'].map(header => (
+                                {['Solicitud', 'Empresa / Particular', 'Dirección', 'Estado', 'Fecha de Solicitud', 'Fecha de Inicio', 'Fecha de Fin', 'Localidad', 'Editar', 'Eliminar'].map(header => (
                                     <TableCell
                                         key={header}
                                         sx={{
@@ -123,6 +124,48 @@ const Interferencias = () => {
                                         <TableCell>{dayjs(interferencia.Hasta).format('YYYY-MM-DD')}</TableCell>
                                         <TableCell>
                                             {interferencia.Localidad}
+                                        </TableCell>
+                                        <TableCell>
+                                            <Box display="flex" gap={1.5}>
+                                                <Tooltip title="Editar" arrow>
+                                                    <IconButton
+                                                        onClick={() => handleEditar(interferencia)}
+                                                        size="small"
+                                                        sx={{
+                                                            backgroundColor: '#000080',
+                                                            color: 'white',
+                                                            '&:hover': {
+                                                                backgroundColor: '#0a0a5c',
+                                                            },
+                                                            borderRadius: 2,
+                                                            padding: '4px'
+                                                        }}
+                                                    >
+                                                        <EditDocumentIcon fontSize="small" />
+                                                    </IconButton>
+                                                </Tooltip>
+                                            </Box>
+                                        </TableCell>
+                                        <TableCell>
+                                            <Box display="flex" gap={1.5}>
+                                                <Tooltip title="Eliminar" arrow>
+                                                    <IconButton
+                                                        onClick={() => handleEliminar(interferencia)}
+                                                        size="small"
+                                                        sx={{
+                                                            backgroundColor: '#000080',
+                                                            color: 'white',
+                                                            '&:hover': {
+                                                                backgroundColor: '#0a0a5c',
+                                                            },
+                                                            borderRadius: 2,
+                                                            padding: '4px'
+                                                        }}
+                                                    >
+                                                        <DeleteIcon fontSize="small" />
+                                                    </IconButton>
+                                                </Tooltip>
+                                            </Box>
                                         </TableCell>
                                     </TableRow>
                                 ))}
