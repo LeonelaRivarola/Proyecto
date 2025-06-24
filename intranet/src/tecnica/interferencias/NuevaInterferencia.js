@@ -53,7 +53,7 @@ const NuevaInterferencia = () => {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`${API_URL}/api/interferencia/nueva`, {
+      const response = await fetch(`${API_URL}/api/tecnica/interferencia/nueva`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
