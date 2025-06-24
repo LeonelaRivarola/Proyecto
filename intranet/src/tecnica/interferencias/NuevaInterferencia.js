@@ -229,7 +229,7 @@ const NuevaInterferencia = () => {
 
                 <Paper variant="outlined" sx={{ p: 2, mb: 3 }}>
                   <Grid container spacing={2}>
-                    <Grid item xs={6}>
+                    <Grid item xs={12}>
                       <Typography variant="body1" gutterBottom>Mapa</Typography>
                       <MapaInterferencia onData={(data) => setFormData(prev => ({ ...prev, mapa: data }))} />
                     </Grid>
