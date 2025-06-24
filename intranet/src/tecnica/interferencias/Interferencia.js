@@ -28,7 +28,7 @@ const Interferencias = () => {
     const [error, setError] = useState(false);
     const [interferencias, setInterferencias] = useState([]);
     const [dialogOpen, setDialogOpen] = useState(false);
-    const [interferenciaEliminar, setInterferenciaEliminar] = useState(null);
+    const [interferenciaAEliminar, setInterferenciaEliminar] = useState(null);
 
     const fetchInteferencias = async () => {
         try {
