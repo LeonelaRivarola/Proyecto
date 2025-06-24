@@ -121,9 +121,8 @@ const Interferencias = () => {
                                         <TableCell>{interferencia.Desde}</TableCell>
                                         <TableCell>{interferencia.Hasta}</TableCell>
                                         <TableCell>
-                                            {localidades.find(loc => Number(loc.LOC_ID) === Number(interferencia.ID_Localidad))?.LOC_DESCRIPCION || 'Sin localidad'}
+                                            {localidades.find(loc => loc.LOC_ID === interferencia.Localidad)?.LOC_DESCRIPCION || 'Sin localidad'}
                                         </TableCell>
-
                                     </TableRow>
                                 ))}
                         </TableBody>
