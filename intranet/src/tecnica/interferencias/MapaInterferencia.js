@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 
-const MapaInterferencia = () => {
+const MapaInterferencia = ({ onData }) => {
   const mapRef = useRef(null);
   const deleteBtnRef = useRef(null);
 
@@ -128,6 +128,52 @@ const MapaInterferencia = () => {
         ) {
           overlay.setEditable(true);
           overlay.setDraggable(true);
+        }
+
+        // Extraer datos según el tipo de figura
+        let geometryData = null;
+
+        if (event.type === window.google.maps.drawing.OverlayType.POLYLINE) {
+          const path = overlay.getPath().getArray().map((latlng) => ({
+            lat: latlng.lat(),
+            lng: latlng.lng(),
+          }));
+          geometryData = {
+            type: "polyline",
+            path: path,
+          };
+        } else if (event.type === window.google.maps.drawing.OverlayType.MARKER) {
+          geometryData = {
+            type: "marker",
+            position: {
+              lat: overlay.getPosition().lat(),
+              lng: overlay.getPosition().lng(),
+            },
+          };
+        } else if (event.type === window.google.maps.drawing.OverlayType.CIRCLE) {
+          geometryData = {
+            type: "circle",
+            center: {
+              lat: overlay.getCenter().lat(),
+              lng: overlay.getCenter().lng(),
+            },
+            radius: overlay.getRadius(),
+          };
+        } else if (event.type === window.google.maps.drawing.OverlayType.RECTANGLE) {
+          const bounds = overlay.getBounds();
+          geometryData = {
+            type: "rectangle",
+            bounds: {
+              north: bounds.getNorthEast().lat(),
+              east: bounds.getNorthEast().lng(),
+              south: bounds.getSouthWest().lat(),
+              west: bounds.getSouthWest().lng(),
+            },
+          };
+        }
+
+        if (geometryData && onData) {
+          onData(JSON.stringify(geometryData)); // lo pasamos como string al formulario
         }
       }
     );

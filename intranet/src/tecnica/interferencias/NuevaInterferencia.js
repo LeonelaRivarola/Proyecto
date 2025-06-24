@@ -49,17 +49,36 @@ const NuevaInterferencia = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleMapData = (data) => {
+    setFormData((prev) => ({ ...prev, mapa: data }));
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setFormData((prev) => ({ ...prev, path: file }));
+    }
+  };
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
+      const dataToSend = new FormData();
+
+      // Agregamos cada campo
+      for (const key in formData) {
+        dataToSend.append(key, formData[key]);
+      }
+
       const response = await fetch(`${API_URL}/api/tecnica/interferencia/nueva`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify(formData),
+        body: dataToSend,
       });
 
       if (!response.ok) {
@@ -201,11 +220,13 @@ const NuevaInterferencia = () => {
                     <Grid item xs={6}>
                       <TextField type="date" label="Hasta" name="hasta" value={formData.hasta} onChange={handleChange} fullWidth InputLabelProps={{ shrink: true }} />
                     </Grid>
-                    <Grid item xs={6}>
-                      <TextField label="Mapa (URL)" name="mapa" value={formData.mapa} onChange={handleChange} fullWidth />
+                    <Grid item xs={12}>
+                      <Typography variant="body1" gutterBottom>Mapa con herramientas de dibujo</Typography>
+                      <MapaInterferencia onData={(data) => setFormData(prev => ({ ...prev, mapa: data }))} />
                     </Grid>
-                    <Grid item xs={6}>
-                      <TextField label="Path (URL)" name="path" value={formData.path} onChange={handleChange} fullWidth />
+                    <Grid item xs={12}>
+                      <Typography variant="body1" gutterBottom>Archivo relacionado (Path)</Typography>
+                      <input type="file" name="path" accept=".pdf,.jpg,.jpeg,.png,.kml" onChange={handleFileChange} />
                     </Grid>
                   </Grid>
                 </Paper>
