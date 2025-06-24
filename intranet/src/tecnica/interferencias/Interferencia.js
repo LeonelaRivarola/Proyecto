@@ -38,6 +38,7 @@ const Interferencias = () => {
 
     useEffect(() => {
         fetchInteferencias();
+        console.log(localStorage.getItem("token"));
         setLocalidades([
             { LOC_ID: 9966, LOC_DESCRIPCION: "Dorila" },
             { LOC_ID: 10041, LOC_DESCRIPCION: "Gral Pico" },
