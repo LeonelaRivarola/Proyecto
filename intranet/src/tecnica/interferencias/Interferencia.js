@@ -117,9 +117,9 @@ const Interferencias = () => {
                                         <TableCell>{interferencia.Nombre}</TableCell>
                                         <TableCell> {interferencia.Calle} <strong>,</strong> {interferencia.Dpto} <strong>Entre </strong>{interferencia.Entre1} <strong>y</strong> {interferencia.Entre2}</TableCell>
                                         <TableCell>Estado...</TableCell>
-                                        <TableCell>{interferencia.Fecha_interf}</TableCell>
-                                        <TableCell>{interferencia.Desde}</TableCell>
-                                        <TableCell>{interferencia.Hasta}</TableCell>
+                                        <TableCell>{dayjs(interferencia.Fecha_interf).format('YYYY-MM-DD')}</TableCell>
+                                        <TableCell>{dayjs(interferencia.Desde).format('YYYY-MM-DD')}</TableCell>
+                                        <TableCell>{dayjs(interferencia.Hasta).format('YYYY-MM-DD')}</TableCell>
                                         <TableCell>
                                             {interferencia.Localidad}
                                         </TableCell>
