@@ -12,6 +12,10 @@ import {
     Box,
     Tooltip,
     IconButton,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogActions
 } from '@mui/material';
 import { API_URL } from '../../config';
 import dayjs from 'dayjs';
@@ -23,6 +27,8 @@ const Interferencias = () => {
     const navigate = useNavigate();
     const [error, setError] = useState(false);
     const [interferencias, setInterferencias] = useState([]);
+    const [dialogOpen, setDialogOpen] = useState(false);
+    const [interferenciaEliminar, setInterferenciaEliminar] = useState(null);
 
     const fetchInteferencias = async () => {
         try {
@@ -45,8 +51,39 @@ const Interferencias = () => {
     };
 
     const handleEliminar = (e) => {
-        //
+        setInterferenciaEliminar(interferencia);
+        setDialogOpen(true);
     };
+
+    const confirmarEliminacion = async () => {
+        if (!interferenciaAEliminar) return;
+
+        try {
+            const token = localStorage.getItem('token');
+            const respuesta = await fetch(`${API_URL}/api/tecnica/interferencia/eliminar/${interferenciaAEliminar.ID}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            if (respuesta.ok) {
+                setInterferencias((prev) => prev.filter(i => i.ID !== interferenciaAEliminar.ID));
+            } else {
+                const errorData = await respuesta.json();
+                console.error('Error al eliminar:', errorData);
+                alert('No se pudo eliminar la interferencia.');
+            }
+        } catch (error) {
+            console.error('Error al eliminar:', error);
+            alert('Ocurrió un error al intentar eliminar.');
+        } finally {
+            setDialogOpen(false);
+            setInterferenciaAEliminar(null);
+        }
+    };
+
 
     useEffect(() => {
         fetchInteferencias();
@@ -175,6 +212,24 @@ const Interferencias = () => {
                     </Table>
                 </TableContainer>
             </Box>
+            <Dialog
+                open={dialogOpen}
+                onClose={() => setDialogOpen(false)}
+            >
+                <DialogTitle>Confirmar eliminación</DialogTitle>
+                <DialogContent>
+                    ¿Estás seguro que querés eliminar la interferencia #{interferenciaAEliminar?.ID}?
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => setDialogOpen(false)} color="inherit">
+                        Cancelar
+                    </Button>
+                    <Button onClick={confirmarEliminacion} color="error" variant="contained">
+                        Eliminar
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
         </Box>
     );
 };
