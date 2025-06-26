@@ -239,25 +239,25 @@ const NuevaInterferencia = () => {
                   <Typography variant="h6" gutterBottom>Subir Archivo</Typography>
                   <Grid container spacing={2}>
                     <Grid item xs={12}>
-                      <FormControl>
-                          <Button
-                            variant='outlined'
-                            component="label"
-                            startIcon={<AttachFileIcon/>}
-                            sx={{textTransform: 'none', mt: 1}}
-                          />
-                          Seleccionar Archivo 
+                      <FormControl fullWidth>
+                        <Button
+                          variant="outlined"
+                          component="label"
+                          startIcon={<AttachFileIcon />}
+                          sx={{ textTransform: 'none', mt: 1 }}
+                        >
+                          Seleccionar archivo
                           <input
                             type="file"
                             hidden
                             name="path"
-                            accept=".pdf,.jpg,.png,.kml"
+                            accept=".pdf,.jpg,.jpeg,.png,.kml"
                             onChange={handleFileChange}
                           />
-                        <Button/>
+                        </Button>
                         {formData.path && (
-                          <Typography variant='body2' sx={{mt:1}}>
-                          Archivo Seleccionado: {formData.path.name}
+                          <Typography variant="body2" sx={{ mt: 1 }}>
+                            Archivo seleccionado: {formData.path.name}
                           </Typography>
                         )}
                       </FormControl>
