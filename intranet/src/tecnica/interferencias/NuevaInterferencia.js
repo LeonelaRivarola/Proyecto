@@ -244,7 +244,7 @@ const NuevaInterferencia = () => {
                           variant="outlined"
                           component="label"
                           startIcon={<AttachFileIcon />}
-                          sx={{ textTransform: 'none', mt: 1 }}
+                          sx={{ textTransform: 'none', mt: 1, color: 'black' }}
                         >
                           Seleccionar archivo
                           <input
