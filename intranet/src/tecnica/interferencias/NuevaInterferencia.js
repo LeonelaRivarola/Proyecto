@@ -240,7 +240,6 @@ const NuevaInterferencia = () => {
                   <Grid container spacing={2}>
                     <Grid item xs={12}>
                       <FormControl>
-                        <InputLabel shrink>Subir Archivo</InputLabel>
                           <Button
                             variant='outlined'
                             component="label"
