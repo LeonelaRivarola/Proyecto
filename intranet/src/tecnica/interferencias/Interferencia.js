@@ -89,7 +89,7 @@ const Interferencias = () => {
     }, []);
 
     return (
-        <Box>
+        <Box style={{ zoom: 0.9 }}>
             <Paper
                 elevation={4}
                 sx={{
