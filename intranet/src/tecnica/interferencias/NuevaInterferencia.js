@@ -18,6 +18,7 @@ import { useNavigate } from 'react-router-dom';
 import { API_URL } from '../../config';
 import { Send, Cancel } from '@mui/icons-material';
 import MapaInterferencia from './MapaInterferencia';
+import AttachFileIcon from '@mui/icons-material/AttachFile';
 
 const NuevaInterferencia = () => {
   const navigate = useNavigate();
@@ -238,7 +239,29 @@ const NuevaInterferencia = () => {
                   <Typography variant="h6" gutterBottom>Subir Archivo</Typography>
                   <Grid container spacing={2}>
                     <Grid item xs={12}>
-                      <input type="file" name="path" accept=".pdf,.jpg,.jpeg,.png,.kml" onChange={handleFileChange} />
+                      <FormControl>
+                        <InputLabel shrink>Subir Archivo</InputLabel>
+                          <Button
+                            variant='outlined'
+                            component="label"
+                            startIcon={<AttachFileIcon/>}
+                            sx={{textTransform: 'none', mt: 1}}
+                          />
+                          Seleccionar Archivo 
+                          <input
+                            type="file"
+                            hidden
+                            name="path"
+                            accept=".pdf,.jpg,.png,.kml"
+                            onChange={handleFileChange}
+                          />
+                        <Button/>
+                        {formData.path && (
+                          <Typography variant='body2' sx={{mt:1}}>
+                          Archivo Seleccionado: {formData.path.name}
+                          </Typography>
+                        )}
+                      </FormControl>
                     </Grid>
                   </Grid>
                 </Paper>
