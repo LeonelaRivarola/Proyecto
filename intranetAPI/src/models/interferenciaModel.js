@@ -94,3 +94,63 @@ exports.remove = async (id) => {
     return result.rowsAffected[0];
 };
 
+exports.update = async (id, data) => {
+    const {
+        cuit, nombre, apellido, es_persona, email, calle, altura, piso, dpto, vereda,
+        entre1, entre2, localidad, latitud, longitud, desde, hasta,
+        mapa, path
+    } = data;
+
+    const fechaActual = new Date();
+    const pool = await connectToGeaCorpico();
+
+    const result = await pool.request()
+        .input('id', sql.Int, id)
+        .input('cuit', sql.VarChar, cuit)
+        .input('nombre', sql.VarChar, nombre)
+        .input('apellido', sql.VarChar, apellido)
+        .input('es_persona', sql.Char, es_persona)
+        .input('email', sql.VarChar, email)
+        .input('calle', sql.VarChar, calle)
+        .input('altura', sql.VarChar, altura)
+        .input('piso', sql.VarChar, piso || null)
+        .input('dpto', sql.VarChar, dpto || null)
+        .input('vereda', sql.Char, vereda)
+        .input('entre1', sql.VarChar, entre1)
+        .input('entre2', sql.VarChar, entre2)
+        .input('localidad', sql.Int, localidad)
+        .input('latitud', sql.Decimal, latitud)
+        .input('longitud', sql.Decimal, longitud)
+        .input('desde', sql.Date, desde)
+        .input('hasta', sql.Date, hasta)
+        .input('fecha', sql.DateTime, fechaActual)
+        .input('mapa', sql.VarChar, mapa)
+        .input('path', sql.VarChar, path)
+        .query(`
+            UPDATE SOLICITUD_INTERFERENCIA SET
+                SOI_CUIT = @cuit,
+                SOI_NOMBRE = @nombre,
+                SOI_APELLIDO = @apellido,
+                SOI_PERSONA = @es_persona,
+                SOI_EMAIL = @email,
+                SOI_CALLE = @calle,
+                SOI_ALTURA = @altura,
+                SOI_PISO = @piso,
+                SOI_DPTO = @dpto,
+                SOI_VEREDA = @vereda,
+                SOI_ENTRE1 = @entre1,
+                SOI_ENTRE2 = @entre2,
+                SOI_LOCALIDAD_ID = @localidad,
+                SOI_LATITUD = @latitud,
+                SOI_LONGITUD = @longitud,
+                SOI_DESDE = @desde,
+                SOI_HASTA = @hasta,
+                SOI_FECHA = @fecha,
+                SOI_MAPA = @mapa,
+                SOI_PATH = @path
+            WHERE SOI_ID = @id
+        `);
+
+    return result.rowsAffected[0]; // Devuelve cuántas filas se actualizaron
+};
+

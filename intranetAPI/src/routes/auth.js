@@ -50,6 +50,7 @@ router.get('tecnica/obrasElectricas/emails/mostrar/:id', verificarToken, emailCo
 //interferencias
 router.get('/tecnica/interferencia/Interferencias', verificarToken, interferenciaController.index);
 router.post('/tecnica/interferencia/nueva',verificarToken, interferenciaController.store);
+router.put('/tecnica/interferencia/editar',verificarToken, interferenciaController.update);
 // router.delete('/tecnica/interferencia/eliminar-interf/:id', verificarToken, interferenciaController.destroy);
 
 // router.get('/', authMiddleware, dashboardController);
@@ -60,11 +61,6 @@ router.post('/tecnica/interferencia/nueva',verificarToken, interferenciaControll
 // // Route:: post('verify', [SessionsController:: class, 'show']) -> middleware('guest');
 // router.post('sign-out', authMiddleware, sessionsController.destroy);
 // // Route:: post('tecnica/obrasElectricas/solicitudes/path', [SolicitudController:: class, 'path']) -> name('path');
-
-// // Solicitudes
-// router.post('/tecnica/obrasElectricas/solicitudes/guardar', authMiddleware, solicitudController.store);
-// router.get('/tecnica/obrasElectricas/solicitudes/mostrar/:solicitud', authMiddleware, solicitudController.show);
-// router.delete('/tecnica/obrasElectricas/solicitudes/eliminar/:solicitud', authMiddleware, solicitudController.destroy);
 
 // // Route:: get('tecnica/obrasElectricas/solicitudes/crear', [SolicitudController:: class, 'create']) -> name('nueva-solicitud');
 // // Route:: get('tecnica/obrasElectricas/solicitudes/editar/{solicitud}', [SolicitudController:: class, 'edit']) -> name('editar-solicitud');
