@@ -73,11 +73,9 @@ const Interferencias = () => {
             } else {
                 const errorData = await respuesta.json();
                 console.error('Error al eliminar:', errorData);
-                alert('No se pudo eliminar la interferencia.');
             }
         } catch (error) {
             console.error('Error al eliminar:', error);
-            alert('Ocurrió un error al intentar eliminar.');
         } finally {
             setDialogOpen(false);
             setInterferenciaAEliminar(null);
