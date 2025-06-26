@@ -47,7 +47,7 @@ const Interferencias = () => {
     };
 
     const handleEditar = (interferencia) => {
-        //
+        navigate(`/home/editar-interferencia/${interferencia.ID}`);
     };
 
     const handleEliminar = (interferencia) => {
@@ -227,7 +227,7 @@ const Interferencias = () => {
                     </Button>
                 </DialogActions>
             </Dialog>
-
+            <Outlet />
         </Box>
     );
 };
