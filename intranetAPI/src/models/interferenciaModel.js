@@ -38,7 +38,7 @@ exports.getAll = async (res, req) => {
 exports.create = async (data) => {
     const {
         cuit, nombre, apellido, es_persona, email, calle, altura, piso, dpto, vereda,
-        entre1, entre2, localidad, latitud, longitud,  desde, hasta, //fecha_interf, 
+        entre1, entre2, localidad, latitud, longitud, desde, hasta, //fecha_interf, 
         mapa, path
     } = data;
 
@@ -55,7 +55,7 @@ exports.create = async (data) => {
         .input('altura', sql.VarChar, altura)
         .input('piso', sql.VarChar, piso || null)
         .input('dpto', sql.VarChar, dpto || null)
-        .input('vereda',sql.Char, vereda)
+        .input('vereda', sql.Char, vereda)
         .input('entre1', sql.VarChar, entre1)
         .input('entre2', sql.VarChar, entre2)
         .input('localidad', sql.Int, localidad)
@@ -81,7 +81,7 @@ exports.create = async (data) => {
         `);
 
     const solicitudId = result.recordset[0].SOI_ID;
-    
+
     return solicitudId;
 };
 
@@ -152,5 +152,13 @@ exports.update = async (id, data) => {
         `);
 
     return result.rowsAffected[0]; // Devuelve cuántas filas se actualizaron
+};
+
+exports.getLocalidades = async () => {
+    const pool = await connectToGeaCorpico();
+    const result = await pool.request().query(`
+        SELECT LOC_ID, LOC_DESCRIPCION FROM LOCALIDAD ORDER BY LOC_DESCRIPCION
+  `);
+  return result.recordset;
 };
 

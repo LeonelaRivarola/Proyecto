@@ -6,8 +6,8 @@ import Container from '@mui/material/Container';
 import { useNavigate } from 'react-router-dom';
 import '../css/tecnica.css'
 import Footer from "../componentes/footer/Footer";
-// import { API_URL } from "../config";
-// import axios from "axios";
+import { API_URL } from "../config";
+import axios from "axios";
 
 const estiloFondo = {
     backgroundImage: 'url(/assets/corpico_central.jpg)',
@@ -33,32 +33,22 @@ const Ingresar = () => {
             return;
         }
 
-        // Simulación de login local
-        if (username === 'demo' && password === '1234') {
-            localStorage.setItem('token', 'token-falso-demo');
-            localStorage.setItem('username', username);
+        try {
+            const response = await axios.post(`${API_URL}/api/login`, { username, password });
+
+            localStorage.setItem('token', response.data.token);
+            // IMPRIME TOKEN
+            //console.log(response.data.token);
+            localStorage.setItem('username', response.data.username)
             navigate('/Home');
-        } else {
-            setError('Usuario o contraseña incorrectos');
+
+        } catch (err) {
+            if (err.response) {
+                setError(err.response.data.message || 'Error al iniciar sesión');
+            } else {
+                setError('Error de conexión al servidor');
+            }
         }
-        
-
-        // try {
-        //     const response = await axios.post(`${API_URL}/api/login`, { username, password });
-
-        //     localStorage.setItem('token', response.data.token);
-        //     // IMPRIME TOKEN
-        //     //console.log(response.data.token);
-        //     localStorage.setItem('username', response.data.username)
-        //     navigate('/Home');
-
-        // } catch (err) {
-        //     if (err.response) {
-        //         setError(err.response.data.message || 'Error al iniciar sesión');
-        //     } else {
-        //         setError('Error de conexión al servidor');
-        //     }
-        // }
     };
 
     return (

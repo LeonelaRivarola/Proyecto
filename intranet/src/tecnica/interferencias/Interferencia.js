@@ -10,21 +10,32 @@ import {
     Paper,
     Button,
     Box,
+    Tooltip,
+    IconButton,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogActions
 } from '@mui/material';
 import { API_URL } from '../../config';
+import dayjs from 'dayjs';
 import { useNavigate } from 'react-router-dom';
+import EditDocumentIcon from '@mui/icons-material/EditDocument';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const Interferencias = () => {
     const navigate = useNavigate();
     const [error, setError] = useState(false);
     const [interferencias, setInterferencias] = useState([]);
+    const [dialogOpen, setDialogOpen] = useState(false);
+    const [interferenciaAEliminar, setInterferenciaAEliminar] = useState(null);
 
     const fetchInteferencias = async () => {
         try {
             const token = localStorage.getItem('token');
             const respuesta = await fetch(`${API_URL}/api/tecnica/interferencia/Interferencias`, {
                 headers: {
-                    'Content-Type': 'application/json',
+                    // 'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
                 }
             });
@@ -35,8 +46,48 @@ const Interferencias = () => {
         }
     };
 
+    const handleEditar = (interferencia) => {
+        //
+    };
+
+    const handleEliminar = (interferencia) => {
+        setInterferenciaAEliminar(interferencia);
+        setDialogOpen(true);
+    };
+
+    const confirmarEliminacion = async () => {
+        if (!interferenciaAEliminar) return;
+
+        try {
+            const token = localStorage.getItem('token');
+            const respuesta = await fetch(`${API_URL}/api/tecnica/interferencia/eliminar/${interferenciaAEliminar.ID}`, {
+                method: 'DELETE',
+                headers: {
+                    // 'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            if (respuesta.ok) {
+                setInterferencias((prev) => prev.filter(i => i.ID !== interferenciaAEliminar.ID));
+            } else {
+                const errorData = await respuesta.json();
+                console.error('Error al eliminar:', errorData);
+                alert('No se pudo eliminar la interferencia.');
+            }
+        } catch (error) {
+            console.error('Error al eliminar:', error);
+            alert('Ocurrió un error al intentar eliminar.');
+        } finally {
+            setDialogOpen(false);
+            setInterferenciaAEliminar(null);
+        }
+    };
+
+
     useEffect(() => {
         fetchInteferencias();
+        //console.log(localStorage.getItem("token"));
     }, []);
 
     return (
@@ -79,7 +130,7 @@ const Interferencias = () => {
                     <Table size="small" sx={{ minWidth: '100%', tableLayout: 'auto' }}>
                         <TableHead>
                             <TableRow>
-                                {['Solicitud', 'Empresa / Particular', 'Dirección', 'Estado', 'Fecha de Solicitud', 'Fecha de Inicio', 'Fecha de Fin', 'Localidad'].map(header => (
+                                {['Solicitud', 'Empresa / Particular', 'Dirección', 'Estado', 'Fecha de Solicitud', 'Fecha de Inicio', 'Fecha de Fin', 'Localidad', 'Editar', 'Eliminar'].map(header => (
                                     <TableCell
                                         key={header}
                                         sx={{
@@ -100,23 +151,85 @@ const Interferencias = () => {
                         </TableHead>
                         <Box sx={{ height: '12px' }} />
                         <TableBody>
-                        {interferencias
-                        .map((interferencia) => (
-                            <TableRow key={interferencia.ID}>
-                                <TableCell>{interferencia.ID}</TableCell>
-                                <TableCell>{interferencia.Nombre}</TableCell>
-                                <TableCell> {interferencia.Calle} <strong>,</strong> {interferencia.Dpto} <strong>Entre </strong>{interferencia.Entre1} <strong>y</strong> {interferencia.Entre2}</TableCell>
-                                <TableCell>Estado...</TableCell>
-                                <TableCell>{interferencia.Fecha_interf}</TableCell>
-                                <TableCell>{interferencia.Desde}</TableCell>
-                                <TableCell>{interferencia.Hasta}</TableCell>
-                                <TableCell>{interferencia.ID_Localidad}</TableCell>
-                            </TableRow>
-                        ))}
-                        </TableBody>       
+                            {interferencias
+                                .map((interferencia) => (
+                                    <TableRow key={interferencia.ID}>
+                                        <TableCell>{interferencia.ID}</TableCell>
+                                        <TableCell>{interferencia.Nombre}</TableCell>
+                                        <TableCell> {interferencia.Calle} <strong>,</strong> {interferencia.Dpto} <strong>Entre </strong>{interferencia.Entre1} <strong>y</strong> {interferencia.Entre2}</TableCell>
+                                        <TableCell>Estado...</TableCell>
+                                        <TableCell>{dayjs(interferencia.Fecha_interf).format('YYYY-MM-DD')}</TableCell>
+                                        <TableCell>{dayjs(interferencia.Desde).format('YYYY-MM-DD')}</TableCell>
+                                        <TableCell>{dayjs(interferencia.Hasta).format('YYYY-MM-DD')}</TableCell>
+                                        <TableCell>
+                                            {interferencia.Localidad}
+                                        </TableCell>
+                                        <TableCell>
+                                            <Box display="flex" gap={1.5}>
+                                                <Tooltip title="Editar" arrow>
+                                                    <IconButton
+                                                        onClick={() => handleEditar(interferencia)}
+                                                        size="xl"
+                                                        sx={{
+                                                            backgroundColor: '#1565c0',
+                                                            color: 'white',
+                                                            '&:hover': {
+                                                                backgroundColor: '#0d47a1',
+                                                            },
+                                                            borderRadius: 2,
+                                                            padding: '4px'
+                                                        }}
+                                                    >
+                                                        <EditDocumentIcon fontSize="xl" />
+                                                    </IconButton>
+                                                </Tooltip>
+                                            </Box>
+                                        </TableCell>
+                                        <TableCell>
+                                            <Box display="flex" gap={1.5}>
+                                                <Tooltip title="Eliminar" arrow>
+                                                    <IconButton
+                                                        onClick={() => handleEliminar(interferencia)}
+                                                        size="xl"
+                                                        sx={{
+                                                            backgroundColor: '#e53935',
+                                                            color: 'white',
+                                                            '&:hover': {
+                                                                backgroundColor: '#c62828',
+                                                            },
+                                                            borderRadius: 2,
+                                                            padding: '4px'
+                                                        }}
+                                                    >
+                                                        <DeleteIcon fontSize="xl" />
+                                                    </IconButton>
+                                                </Tooltip>
+                                            </Box>
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
+                        </TableBody>
                     </Table>
                 </TableContainer>
             </Box>
+            <Dialog
+                open={dialogOpen}
+                onClose={() => setDialogOpen(false)}
+            >
+                <DialogTitle>Confirmar eliminación</DialogTitle>
+                <DialogContent>
+                    ¿Estás seguro que querés eliminar la interferencia #{interferenciaAEliminar?.ID}?
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => setDialogOpen(false)} color="inherit">
+                        Cancelar
+                    </Button>
+                    <Button onClick={confirmarEliminacion} color="error" variant="contained">
+                        Eliminar
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
         </Box>
     );
 };

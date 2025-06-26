@@ -7,6 +7,21 @@ const tipoObraController = require('../controllers/tipoObraController');
 // const presupuestoController = require('../controllers/presupuestoController');
 const interferenciaController = require('../controllers/interferenciaController');
 const emailController = require('../controllers/emailController');
+//subir archivo pdf
+const multer = require('multer');
+const path = require('path');
+//esto es la configuraicon para almacenar el archivo
+const storage = multer.diskStorage({
+    destination: function(req, file, cb){
+        cb(null, 'uploads/'); //hacer esta carpeta
+    },
+    filename: function (req, file, cb){
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+        const ext = path.extname(file.originalname);
+        cb(null, file.fieldname + '-' + uniqueSuffix + ext);
+    }
+});
+const upload = multer({ storage });
 
 //
 router.post('/login', authController.login);
@@ -49,7 +64,22 @@ router.get('tecnica/obrasElectricas/emails/mostrar/:id', verificarToken, emailCo
 
 //interferencias
 router.get('/tecnica/interferencia/Interferencias', verificarToken, interferenciaController.index);
-router.post('/tecnica/interferencia/nueva',verificarToken, interferenciaController.store);
+// router.post('/tecnica/interferencia/nueva',verificarToken, interferenciaController.store);
+//para el path subir archivo pdf
+router.post('/tecnica/interferencia/nueva', verificarToken, upload.single('path'), async (req, res) => {
+    try{
+        const filePath = requestAnimationFrame.file?.filename || null;
+        const data = {
+            ...req.body,
+            path: filePath
+        };
+        const id = await interferenciaController.create(data);
+        resizeBy.status(201).json({id});
+    }catch(err){
+        console.error(err);
+        resizeBy.status(500).send('Error al crear interferencia');
+    }
+});
 router.put('/tecnica/interferencia/editar',verificarToken, interferenciaController.update);
 // router.delete('/tecnica/interferencia/eliminar-interf/:id', verificarToken, interferenciaController.destroy);
 
