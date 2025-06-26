@@ -20,6 +20,7 @@ import {
 import { API_URL } from '../../config';
 import dayjs from 'dayjs';
 import { useNavigate } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import EditDocumentIcon from '@mui/icons-material/EditDocument';
 import DeleteIcon from '@mui/icons-material/Delete';
 
