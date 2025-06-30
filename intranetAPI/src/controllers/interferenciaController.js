@@ -11,6 +11,22 @@ module.exports = {
         }
     },
 
+    async show(req, res) {
+        try {
+            const { id } = req.params;
+            const interferencia = await interfModel.getById(id);
+
+            if (!interferencia) {
+                return res.status(404).json({ error: 'Interferencia no encontrada.' });
+            }
+
+            res.json(interferencia);
+        } catch (error) {
+            console.error('Error al obtener la interferencia:', error);
+            res.status(500).json({ error: 'Error al obtener la interferencia.' });
+        }
+    },
+
     async store(req, res) {
         try {
             const solicitudId = await interfModel.create(req.body);
@@ -38,5 +54,23 @@ module.exports = {
             console.error('Error al eliminar la interferencia:', error);
             res.status(500).json({ error: 'Error al eliminar la interferencia.' });
         }
+    },
+
+    async update(req, res) {
+        try {
+            const { id } = req.params;
+            const data = req.body;
+
+            const updated = await interfModel.update(id, data);
+
+            if (updated === 0) {
+                return res.status(404).json({ message: 'Solicitud no encontrada.' });
+            }
+
+            res.json({ message: 'Solicitud actualizada correctamente.' });
+        } catch (error) {
+            console.error('Error al actualizar la solicitud:', error);
+            res.status(500).json({ error: 'Error al actualizar la solicitud.' });
+        }
     }
-}
+};

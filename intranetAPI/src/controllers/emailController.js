@@ -1,15 +1,41 @@
-const emailsModel = require('../models/emailsModel');
+const EmailModel = require('../models/emailsModel');
 
 module.exports = {
+  index: async (req, res) => {
+    const page = parseInt(req.query.page) || 1;
+    const limit = 50;
+    const offset = (page - 1) * limit;
 
-    async index(req, res) {
-        try {
-            const emails = await emailsModel.getAll();
-            res.json(emails);
-        } catch (err) {
-            console.error('Error al obtener los Emails:', err);
-            res.status(500).json({ error: 'Error al obtener Emails' });
-        }
+    try {
+      const emails = await EmailModel.getPaginatedEmails(limit, offset);
+      const total = await EmailModel.getEmailCount();
+
+      res.render('tecnica/obrasElectricas/emails/index', {
+        emails,
+        currentPage: page,
+        totalPages: Math.ceil(total / limit),
+      });
+    } catch (err) {
+      console.error('Error al obtener emails:', err);
+      res.status(500).send('Error del servidor');
     }
+  },
 
-}
+  show: async (req, res) => {
+    try {
+      const email = await EmailModel.getEmailById(req.params.id);
+
+      if (!email) {
+        return res.status(404).send('Email no encontrado');
+      }
+
+      const solicitud = await EmailModel.getSolicitudById(email.solicitud_id); // Cambiar nombre del campo si es distinto
+      email.solicitud = solicitud || null;
+
+      res.render('tecnica/obrasElectricas/emails/show', { email });
+    } catch (err) {
+      console.error('Error al obtener email:', err);
+      res.status(500).send('Error del servidor');
+    }
+  },
+};

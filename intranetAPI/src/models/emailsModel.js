@@ -1,13 +1,31 @@
-const { connectToAlum, sql } = require('../config/db');
+const db = require('../config/db');
 
-exports.getAll = async () => {
-    const pool = await connectToAlum();
-    const result = await pool.request().query(`
-        SELECT EMSO_DESTINO, EMSO_USUARIO, EMSO_FECHA
-        FROM EMAIL_SOLICITUD_OBRA
-        ORDER BY EMSO_ID DESC
-        `
-    );
+const getPaginatedEmails = async (limit, offset) => {
+  const [rows] = await db.query(
+    'SELECT * FROM EmailSolicitud LIMIT ? OFFSET ?',
+    [limit, offset]
+  );
+  return rows;
+};
 
-    return result.recordset;
-}
+const getEmailCount = async () => {
+  const [[{ total }]] = await db.query('SELECT COUNT(*) as total FROM EmailSolicitud');
+  return total;
+};
+
+const getEmailById = async (id) => {
+  const [rows] = await db.query('SELECT * FROM EmailSolicitud WHERE id = ?', [id]);
+  return rows[0];
+};
+
+const getSolicitudById = async (id) => {
+  const [rows] = await db.query('SELECT * FROM Solicitud WHERE id = ?', [id]);
+  return rows[0];
+};
+
+module.exports = {
+  getPaginatedEmails,
+  getEmailCount,
+  getEmailById,
+  getSolicitudById,
+};
