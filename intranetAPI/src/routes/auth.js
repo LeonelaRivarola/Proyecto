@@ -72,7 +72,7 @@ router.get('/tecnica/interferencia/interferenciaID/:id', verificarToken, interfe
     }
 });
 */
-router.put('/tecnica/interferencia/editar', verificarToken, interferenciaController.update);
+router.put('/tecnica/interferencia/editar/:id', verificarToken, interferenciaController.update);
 router.delete('/tecnica/interferencia/eliminar/:id', verificarToken, interferenciaController.destroy);
 
 
