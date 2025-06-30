@@ -5,7 +5,7 @@ import {
   TextField,
   FormControlLabel,
   Switch,
-  Buttom,
+  Button,
   Grid,
   Box,
   Typography,
@@ -159,9 +159,9 @@ const EditarInterferencia = () => {
               />
             </Grid>
             <Grid item xs={12}>
-              <Buttom type="submit" variant="contained" color="primary">
+              <Button type="submit" variant="contained" color="primary">
                  Guardar Cambios
-              </Buttom>
+              </Button>
             </Grid>
           </Grid>
         </Box>
