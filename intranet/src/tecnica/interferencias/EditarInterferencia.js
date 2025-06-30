@@ -9,7 +9,8 @@ import {
   Grid,
   Box,
   Typography,
-  Paper
+  Paper,
+  Divider
 } from '@mui/material';
 
 const EditarInterferencia = () => {
@@ -44,7 +45,7 @@ const EditarInterferencia = () => {
 
   const handleSwitchChange = (e) => {
     const { name, checked } = e.target;
-    setFormData(prev => ({ ...prev, [name]: checked ? "S" : "N" }))
+    setFormData(prev => ({ ...prev, [name]: checked ? "S" : "N" }));
   };
 
   useEffect(() => {
@@ -106,7 +107,6 @@ const EditarInterferencia = () => {
     }
   };
 
-
   return (
     <Box>
       <Paper
@@ -123,22 +123,52 @@ const EditarInterferencia = () => {
         }}
       >
         <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
-          Editar Interferencia 
+          Editar Interferencia
         </Typography>
       </Paper>
-      <Paper elevation={3} sx={{ padding: 4, maxWidth: 800, margin: 'auto', marginTop: 6 }}>
+
+      <Paper elevation={3} sx={{ padding: 4, maxWidth: 900, margin: 'auto', marginTop: 4 }}>
         <Box component="form" onSubmit={handleSubmit}>
           <Grid container spacing={2}>
-            {[
-              "cuit", "nombre", "apellido", "email", "calle", "altura",
-              "piso", "dpto", "entre1", "entre2", "localidad",
-              "latitud", "longitud", "desde", "hasta", "mapa", "path"
-            ].map((field) => (
-              <Grid item xs={12} sm={field.length > 5 ? 12 : 6} key={field}>
+            <Grid item xs={12}><Typography variant="h6">Datos del Solicitante</Typography></Grid>
+            {["cuit", "nombre", "apellido", "email"].map((field) => (
+              <Grid item xs={12} sm={6} key={field}>
                 <TextField
                   fullWidth
                   name={field}
                   label={field.charAt(0).toUpperCase() + field.slice(1)}
+                  value={formData[field]}
+                  onChange={handleChange}
+                />
+              </Grid>
+            ))}
+
+            <Grid item xs={12}><Divider /></Grid>
+            <Grid item xs={12}><Typography variant="h6">Ubicación</Typography></Grid>
+
+            {["calle", "altura", "piso", "dpto", "entre1", "entre2", "localidad", "latitud", "longitud"].map((field) => (
+              <Grid item xs={12} sm={field.length > 6 ? 12 : 6} key={field}>
+                <TextField
+                  fullWidth
+                  name={field}
+                  label={field.charAt(0).toUpperCase() + field.slice(1)}
+                  value={formData[field]}
+                  onChange={handleChange}
+                />
+              </Grid>
+            ))}
+
+            <Grid item xs={12}><Divider /></Grid>
+            <Grid item xs={12}><Typography variant="h6">Periodo de Obra</Typography></Grid>
+
+            {["desde", "hasta"].map((field) => (
+              <Grid item xs={12} sm={6} key={field}>
+                <TextField
+                  fullWidth
+                  name={field}
+                  type="date"
+                  label={field.charAt(0).toUpperCase() + field.slice(1)}
+                  InputLabelProps={{ shrink: true }}
                   value={formData[field]}
                   onChange={handleChange}
                 />
@@ -172,8 +202,48 @@ const EditarInterferencia = () => {
                 label={`Vereda: ${formData.vereda === "P" ? "Par" : "Impar"}`}
               />
             </Grid>
+
+            <Grid item xs={12}><Divider /></Grid>
+            <Grid item xs={12}><Typography variant="h6">Archivos y Mapa</Typography></Grid>
+
             <Grid item xs={12}>
-              <Button type="submit" variant="contained" color="primary">
+              <TextField
+                fullWidth
+                name="mapa"
+                label="Mapa (URL)"
+                value={formData.mapa}
+                onChange={handleChange}
+              />
+              {formData.mapa && (
+                <Box mt={2}>
+                  {formData.mapa.includes('http') ? (
+                    <img src={formData.mapa} alt="Mapa" style={{ maxWidth: '100%', height: 'auto', borderRadius: 8 }} />
+                  ) : (
+                    <Button variant="outlined" href={formData.mapa} target="_blank">Ver Mapa</Button>
+                  )}
+                </Box>
+              )}
+            </Grid>
+
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                name="path"
+                label="Archivo (Path)"
+                value={formData.path}
+                onChange={handleChange}
+              />
+              {formData.path && (
+                <Box mt={1}>
+                  <Button variant="outlined" href={formData.path} target="_blank">
+                    Ver Archivo
+                  </Button>
+                </Box>
+              )}
+            </Grid>
+
+            <Grid item xs={12}>
+              <Button type="submit" variant="contained" color="success" fullWidth sx={{ mt: 2 }}>
                 Guardar Cambios
               </Button>
             </Grid>
@@ -181,7 +251,7 @@ const EditarInterferencia = () => {
         </Box>
       </Paper>
     </Box>
-  )
-}
+  );
+};
 
-export default EditarInterferencia
+export default EditarInterferencia;
