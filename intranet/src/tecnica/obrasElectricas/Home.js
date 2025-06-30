@@ -4,7 +4,6 @@ import HeaderUsu from '../../componentes/headerUsu/HeaderUsu'
 import SideBar from '../../componentes/sideBar/SideBar'
 import Footer from '../../componentes/footer/Footer'
 import { Outlet } from 'react-router-dom'
-import '../../../public/assets/corpico-icon.png'
 import '../../css/tecnica.css';
 
 const Home = () => {
