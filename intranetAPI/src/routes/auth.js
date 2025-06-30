@@ -7,7 +7,7 @@ const tipoObraController = require('../controllers/tipoObraController');
 const emailController = require('../controllers/emailController');
 const presupuestoController = require('../controllers/presupuestoController');
 const interferenciaController = require('../controllers/interferenciaController');
-const emailController = require('../controllers/emailController');
+
 //subir archivo pdf
 const multer = require('multer');
 const path = require('path');
