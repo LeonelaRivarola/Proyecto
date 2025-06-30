@@ -109,9 +109,23 @@ const EditarInterferencia = () => {
 
   return (
     <Box>
-      <Typography variant="6" gutterBottom>
-        Editar Interferencia
-      </Typography>
+      <Paper
+        elevation={4}
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          p: 2,
+          borderRadius: 3,
+          background: 'linear-gradient(90deg, #43a047, #66bb6a)',
+          color: 'white',
+          mb: 2,
+        }}
+      >
+        <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+          Editar Interferencia 
+        </Typography>
+      </Paper>
       <Paper elevation={3} sx={{ padding: 4, maxWidth: 800, margin: 'auto', marginTop: 6 }}>
         <Box component="form" onSubmit={handleSubmit}>
           <Grid container spacing={2}>
