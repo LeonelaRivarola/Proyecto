@@ -4,6 +4,7 @@ import HeaderUsu from '../../componentes/headerUsu/HeaderUsu'
 import SideBar from '../../componentes/sideBar/SideBar'
 import Footer from '../../componentes/footer/Footer'
 import { Outlet } from 'react-router-dom'
+import '../../../public/assets/corpico-icon.png'
 import '../../css/tecnica.css';
 
 const Home = () => {
@@ -43,7 +44,27 @@ const Home = () => {
           }}
         >
           {/* CONTENIDO DINÁMICO */}
-          <Box sx={{ flexGrow: 1 }}>
+          <Box sx={{ flexGrow: 1, position: 'relative' }}>
+            <Box
+              sx={{
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                width: '300px',
+                height: '300px',
+                opacity: 0.05,
+                zIndex: 0,
+                filter: 'grayscale(100%)',
+                pointerEvents: 'none',
+              }}
+            >
+              <img
+                src="/assets/corpico-icon.png"
+                alt="Corpico Icon"
+                style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+              />
+            </Box>
             <Outlet />
           </Box>
 
