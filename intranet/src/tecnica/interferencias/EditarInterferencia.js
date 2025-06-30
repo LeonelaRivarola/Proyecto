@@ -140,7 +140,7 @@ const EditarInterferencia = () => {
                   name="es_persona"
                 />
               }
-              label="¿Es Personal o Empresa?"
+              label={`${formData.es_persona === "S" ? "Personal" : "Empresa"}`}
             />
             </Grid>
 
@@ -148,14 +148,14 @@ const EditarInterferencia = () => {
               <FormControlLabel
               control={
                 <Switch
-                checked={formData.vereda === "D"}
+                checked={formData.vereda === "P"}
                 onChange={(e) =>
-                  setFormData({...formData, vereda: e.target.checked ? "D" : "I"})
+                  setFormData({...formData, vereda: e.target.checked ? "P" : "I"})
                 }
                 name="vereda" 
                 />
               }
-              label={`Vereda: ${formData.vereda === "D" ? "Derecha" : "Izquierda"}`}
+              label={`Vereda: ${formData.vereda === "P" ? "Par" : "Impar"}`}
               />
             </Grid>
             <Grid item xs={12}>
