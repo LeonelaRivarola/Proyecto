@@ -109,10 +109,10 @@ const EditarInterferencia = () => {
 
   return (
     <Box>
+      <Typography variant="6" gutterBottom>
+        Editar Interferencia
+      </Typography>
       <Paper elevation={3} sx={{ padding: 4, maxWidth: 800, margin: 'auto', marginTop: 6 }}>
-        <Typography variant="6" gutterBottom>
-          Editar Interferencia
-        </Typography>
         <Box component="form" onSubmit={handleSubmit}>
           <Grid container spacing={2}>
             {[
@@ -132,35 +132,35 @@ const EditarInterferencia = () => {
             ))}
 
             <Grid item xs={12} sm={6}>
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={formData.es_persona === 'S'}
-                  onChange={handleSwitchChange}
-                  name="es_persona"
-                />
-              }
-              label={`${formData.es_persona === "S" ? "Personal" : "Empresa"}`}
-            />
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={formData.es_persona === 'S'}
+                    onChange={handleSwitchChange}
+                    name="es_persona"
+                  />
+                }
+                label={`${formData.es_persona === "S" ? "Personal" : "Empresa"}`}
+              />
             </Grid>
 
             <Grid item xs={12} sm={6}>
               <FormControlLabel
-              control={
-                <Switch
-                checked={formData.vereda === "P"}
-                onChange={(e) =>
-                  setFormData({...formData, vereda: e.target.checked ? "P" : "I"})
+                control={
+                  <Switch
+                    checked={formData.vereda === "P"}
+                    onChange={(e) =>
+                      setFormData({ ...formData, vereda: e.target.checked ? "P" : "I" })
+                    }
+                    name="vereda"
+                  />
                 }
-                name="vereda" 
-                />
-              }
-              label={`Vereda: ${formData.vereda === "P" ? "Par" : "Impar"}`}
+                label={`Vereda: ${formData.vereda === "P" ? "Par" : "Impar"}`}
               />
             </Grid>
             <Grid item xs={12}>
               <Button type="submit" variant="contained" color="primary">
-                 Guardar Cambios
+                Guardar Cambios
               </Button>
             </Grid>
           </Grid>
