@@ -85,7 +85,7 @@ const EditarInterferencia = () => {
           vereda: data.Vereda || 'I',
           entre1: data.Entre1 || '',
           entre2: data.Entre2 || '',
-          localidad: data.Localidad ? parseInt(data.Localidad) : '',
+          localidad: data.Localidad,
           latitud: data.Latitud !== null ? parseFloat(data.Latitud) : '',
           longitud: data.Longitud !== null ? parseFloat(data.Longitud) : '',
           desde: data.Desde || '',
