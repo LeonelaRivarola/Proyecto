@@ -52,6 +52,7 @@ const EditarInterferencia = () => {
       try {
         const token = localStorage.getItem('token');
         const res = await fetch(`${API_URL}/api/tecnica/interferencia/interferenciaID/${id}`, {
+          method: 'GET',
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
@@ -65,17 +66,17 @@ const EditarInterferencia = () => {
           es_persona: data.Es_persona || 'N',
           email: data.Email || '',
           calle: data.Calle || '',
-          altura: data.Altura || '',
+          altura: data.Altura ? String(data.Altura) : '',
           piso: data.Piso || '',
           dpto: data.Dpto || '',
           vereda: data.Vereda || 'I',
           entre1: data.Entre1 || '',
           entre2: data.Entre2 || '',
           localidad: data.Localidad || '',
-          latitud: data.Latitud || '',
-          longitud: data.Longitud || '',
-          desde: data.Desde || '',
-          hasta: data.Hasta || '',
+          latitud: data.Latitud !== null ? String(data.Latitud) : '',
+          longitud: data.Longitud !== null ? String(data.Longitud) : '',
+          desde: data.Desde ? data.Desde.slice(0, 10) : '', // para input type date
+          hasta: data.Hasta ? data.Hasta.slice(0, 10) : '',
           mapa: data.Mapa || '',
           path: data.Path || ''
         });
@@ -92,7 +93,7 @@ const EditarInterferencia = () => {
 
     try {
       const token = localStorage.getItem('token');
-      await fetch(`${API_URL}/api/tecnica/interferencia/interferenciaID/editar/${id}`, {
+      await fetch(`${API_URL}/api/tecnica/interferencia/editar/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -137,6 +138,7 @@ const EditarInterferencia = () => {
               <Grid item xs={12} sm={field.length > 5 ? 12 : 6} key={field}>
                 <TextField
                   fullWidth
+                  type={field === 'desde' || field === 'hasta' ? 'date' : 'text'}
                   name={field}
                   label={field.charAt(0).toUpperCase() + field.slice(1)}
                   value={formData[field]}
