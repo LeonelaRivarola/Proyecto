@@ -9,7 +9,11 @@ import {
   Grid,
   Box,
   Typography,
-  Paper
+  Paper,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem
 } from '@mui/material';
 
 const EditarInterferencia = () => {
