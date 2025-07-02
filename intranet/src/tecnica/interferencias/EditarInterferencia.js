@@ -140,7 +140,7 @@ const EditarInterferencia = () => {
           Editar Interferencia
         </Typography>
       </Paper>
-      <Paper elevation={3} sx={{ padding: 4, maxWidth: 800, margin: 'auto', marginTop: 6 }}>
+      <Paper elevation={3} sx={{ padding: 4, maxWidth: 900, margin: 'auto', marginTop: 6 }}>
         <Box component="form" onSubmit={handleSubmit}>
           <Grid container spacing={2}>
             {[
@@ -151,7 +151,6 @@ const EditarInterferencia = () => {
               <Grid item xs={12} sm={field.length > 5 ? 12 : 6} key={field}>
                 <TextField
                   fullWidth
-                  type={["latitud", "longitud"].includes(field) ? "number" : "text"}
                   name={field}
                   label={field.charAt(0).toUpperCase() + field.slice(1)}
                   value={formData[field]}
@@ -170,6 +169,7 @@ const EditarInterferencia = () => {
                   value={formData.localidad}
                   label="Localidad"
                   onChange={handleChange}
+                  defaultValue={formData.localidad}
                 >
                   {localidades.map((loc) => (
                     <MenuItem key={loc.LOC_ID} value={loc.LOC_ID}>
