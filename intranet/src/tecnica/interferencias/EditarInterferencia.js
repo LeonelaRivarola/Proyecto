@@ -37,6 +37,15 @@ const EditarInterferencia = () => {
     path: ""
   });
 
+  const localidades = [
+    { LOC_ID: 9966, LOC_DESCRIPCION: "Dorila" },
+    { LOC_ID: 10041, LOC_DESCRIPCION: "Gral Pico" },
+    { LOC_ID: 10303, LOC_DESCRIPCION: "Metileo" },
+    { LOC_ID: 10341, LOC_DESCRIPCION: "Speluzzi" },
+    { LOC_ID: 10349, LOC_DESCRIPCION: "Trebolares" },
+    { LOC_ID: 10366, LOC_DESCRIPCION: "Vertiz" },
+  ];
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
@@ -131,7 +140,7 @@ const EditarInterferencia = () => {
           <Grid container spacing={2}>
             {[
               "cuit", "nombre", "apellido", "email", "calle", "altura",
-              "piso", "dpto", "entre1", "entre2", "localidad",
+              "piso", "dpto", "entre1", "entre2",
               "latitud", "longitud", "desde", "hasta", "mapa", "path"
             ].map((field) => (
               <Grid item xs={12} sm={field.length > 5 ? 12 : 6} key={field}>
@@ -144,6 +153,26 @@ const EditarInterferencia = () => {
                 />
               </Grid>
             ))}
+
+            <Grid item xs={12} sm={6}>
+              <FormControl fullWidth>
+                <InputLabel id="localidad-label">Localidad</InputLabel>
+                <Select
+                  labelId="localidad-label"
+                  id="localidad"
+                  name="localidad"
+                  value={formData.localidad}
+                  label="Localidad"
+                  onChange={handleChange}
+                >
+                  {localidades.map((loc) => (
+                    <MenuItem key={loc.LOC_ID} value={loc.LOC_ID}>
+                      {loc.LOC_DESCRIPCION}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
 
             <Grid item xs={12} sm={6}>
               <FormControlLabel
