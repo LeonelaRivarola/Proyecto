@@ -32,9 +32,9 @@ const EditarInterferencia = () => {
     vereda: "I",
     entre1: "",
     entre2: "",
-    localidad: "",
-    latitud: "",
-    longitud: "",
+    localidad: data.Localidad ? parseInt(data.Localidad) : '',
+    latitud: data.Latitud !== null ? parseFloat(data.Latitud) : '',
+    longitud: data.Longitud !== null ? parseFloat(data.Longitud) : '',
     desde: "",
     hasta: "",
     mapa: "",
@@ -52,7 +52,8 @@ const EditarInterferencia = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    const newValue = name === 'localidad' ? parseInt(value) : value;
+    setFormData(prev => ({ ...prev, [name]: newValue }));
   };
 
   const handleSwitchChange = (e) => {
@@ -150,6 +151,7 @@ const EditarInterferencia = () => {
               <Grid item xs={12} sm={field.length > 5 ? 12 : 6} key={field}>
                 <TextField
                   fullWidth
+                  type={["latitud", "longitud"].includes(field) ? "number" : "text"}
                   name={field}
                   label={field.charAt(0).toUpperCase() + field.slice(1)}
                   value={formData[field]}
@@ -165,7 +167,7 @@ const EditarInterferencia = () => {
                   labelId="localidad-label"
                   id="localidad"
                   name="localidad"
-                  value={formData.Localidad}
+                  value={formData.localidad}
                   label="Localidad"
                   onChange={handleChange}
                 >
