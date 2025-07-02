@@ -58,27 +58,26 @@ const EditarInterferencia = () => {
           }
         });
         const data = await res.json();
-        console.log("interferencia 1: " + data.SOI_CUIT);
         setFormData({
-          cuit: data.cuit || '',
-          nombre: data.nombre || '',
-          apellido: data.apellido || '',
-          es_persona: data.es_persona || 'N',
-          email: data.email || '',
-          calle: data.calle || '',
-          altura: data.altura || '',
-          piso: data.piso || '',
-          dpto: data.dpto || '',
-          vereda: data.vereda || 'I',
-          entre1: data.entre1 || '',
-          entre2: data.entre2 || '',
-          localidad: data.localidad || '',
-          latitud: data.latitud || '',
-          longitud: data.longitud || '',
-          desde: data.desde || '',
-          hasta: data.hasta || '',
-          mapa: data.mapa || '',
-          path: data.path || ''
+          cuit: data.CUIT_DNI || '',
+          nombre: data.Nombre || '',
+          apellido: data.Apellido || '',
+          es_persona: data.Es_persona || 'N',
+          email: data.Email || '',
+          calle: data.Calle || '',
+          altura: data.Altura || '',
+          piso: data.Piso || '',
+          dpto: data.Dpto || '',
+          vereda: data.Vereda || 'I',
+          entre1: data.Entre1 || '',
+          entre2: data.Entre2 || '',
+          localidad: data.Localidad || '',
+          latitud: data.Latitud || '',
+          longitud: data.Longitud || '',
+          desde: data.Desde || '',
+          hasta: data.Hasta || '',
+          mapa: data.Mapa || '',
+          path: data.Path || ''
         });
       } catch (err) {
         console.error('Error al cargar datos:', err);

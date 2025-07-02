@@ -1,12 +1,32 @@
 import React, { useEffect, useRef, useState } from "react";
 
-const MapaInterferencia = ({ onData }) => {
+const MapaInterferencia = ({ onData, initialPosition }) => {
   const mapRef = useRef(null);
   const deleteBtnRef = useRef(null);
 
   const [map, setMap] = useState(null);
   const [drawingManager, setDrawingManager] = useState(null);
   const [selectedOverlay, setSelectedOverlay] = useState(null);
+
+  useEffect(() => {
+    if (initialPosition && map) {
+      map.setCenter(initialPosition);
+      map.setZoom(17);
+
+      // Opcional: poner marcador en la nueva posición
+      if (!window.positionMarker) {
+        window.positionMarker = new window.google.maps.Marker({
+          map: map,
+          position: initialPosition,
+          title: "Ubicación manual",
+        });
+      } else {
+        window.positionMarker.setPosition(initialPosition);
+      }
+    }
+  }, [initialPosition, map]);
+
+
 
   useEffect(() => {
     if (!window.google) {
@@ -35,7 +55,7 @@ const MapaInterferencia = ({ onData }) => {
   }, []);
 
   const initMap = () => {
-    const defaultPos = { lat: -34.6037, lng: -58.3816 };
+    const defaultPos = initialPosition || { lat: -34.6037, lng: -58.3816 };
 
     const mapInstance = new window.google.maps.Map(mapRef.current, {
       center: defaultPos,
@@ -43,7 +63,7 @@ const MapaInterferencia = ({ onData }) => {
     });
 
     // Geolocalización
-    if (navigator.geolocation) {
+    if (!initialPosition && navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const userPos = {
