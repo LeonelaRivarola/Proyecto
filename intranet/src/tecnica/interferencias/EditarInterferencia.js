@@ -71,7 +71,6 @@ const EditarInterferencia = () => {
           }
         });
         const data = await res.json();
-        console.log(data.Localidad);
         setFormData({
           cuit: data.CUIT_DNI || '',
           nombre: data.Nombre || '',
@@ -166,7 +165,7 @@ const EditarInterferencia = () => {
                   labelId="localidad-label"
                   id="localidad"
                   name="localidad"
-                  value={formData.localidad}
+                  value={formData.Localidad}
                   label="Localidad"
                   onChange={handleChange}
                 >
