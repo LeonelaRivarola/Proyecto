@@ -18,6 +18,7 @@ import { useNavigate } from 'react-router-dom';
 import { API_URL } from '../../config';
 import { Send, Cancel } from '@mui/icons-material';
 import MapaInterferencia from './MapaInterferencia';
+import AttachFileIcon from '@mui/icons-material/AttachFile';
 
 const NuevaInterferencia = () => {
   const navigate = useNavigate();
@@ -75,7 +76,7 @@ const NuevaInterferencia = () => {
       const response = await fetch(`${API_URL}/api/tecnica/interferencia/nueva`, {
         method: 'POST',
         headers: {
-          // 'Content-Type': 'application/json',
+          'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
         body: dataToSend,
@@ -92,15 +93,6 @@ const NuevaInterferencia = () => {
       console.log("error:" + err);
     }
   };
-
-  useEffect(() => {
-    const fetchLocalidades = async () => {
-      const response  = await fetch(`${API_URL}/api/localidades`);
-      const data = await response.json();
-      setLocalidades(data);
-    };
-    fetchLocalidades();
-  }, []);
 
   useEffect(() => {
     setLocalidades([
@@ -247,7 +239,28 @@ const NuevaInterferencia = () => {
                   <Typography variant="h6" gutterBottom>Subir Archivo</Typography>
                   <Grid container spacing={2}>
                     <Grid item xs={12}>
-                      <input type="file" name="path" accept=".pdf,.jpg,.jpeg,.png,.kml" onChange={handleFileChange} />
+                      <FormControl fullWidth>
+                        <Button
+                          variant="outlined"
+                          component="label"
+                          startIcon={<AttachFileIcon />}
+                          sx={{ textTransform: 'none', mt: 1, color: 'green' }}
+                        >
+                          Seleccionar archivo
+                          <input
+                            type="file"
+                            hidden
+                            name="path"
+                            accept=".pdf,.jpg,.jpeg,.png,.kml"
+                            onChange={handleFileChange}
+                          />
+                        </Button>
+                        {formData.path && (
+                          <Typography variant="body2" sx={{ mt: 1 }}>
+                            Archivo seleccionado: {formData.path.name}
+                          </Typography>
+                        )}
+                      </FormControl>
                     </Grid>
                   </Grid>
                 </Paper>

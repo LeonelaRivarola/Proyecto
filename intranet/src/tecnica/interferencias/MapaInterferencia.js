@@ -1,34 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 
-const MapaInterferencia = ({ onData , latitud, longitud }) => {
+const MapaInterferencia = ({ onData }) => {
   const mapRef = useRef(null);
   const deleteBtnRef = useRef(null);
 
   const [map, setMap] = useState(null);
   const [drawingManager, setDrawingManager] = useState(null);
   const [selectedOverlay, setSelectedOverlay] = useState(null);
-
-  useEffect(() => {
-    if(map && latitud && longitud){
-      const nuevoPos = { lat: parseFloat(latitud), lng: parseFloat(longitud) }
-
-      map.setCenter(nuevoPos);
-      map.setZoom(17);
-
-      //borra marcador anterior si es que hay
-      if(selectedOverlay){
-        selectedOverlay.setMap(null);
-      }
-
-      const marker = new window.google.maps.Marker({
-        position: nuevoPos,
-        map: map,
-        title: "Ubicacion seleccionada",
-      });
-
-      setSelectedOverlay(marker);
-    }
-  }, [latitud, longitud, map]);
 
   useEffect(() => {
     if (!window.google) {

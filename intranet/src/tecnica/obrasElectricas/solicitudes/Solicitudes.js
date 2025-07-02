@@ -110,7 +110,7 @@ const Solicitudes = () => {
   }
 
   return (
-    <Box>
+    <Box style={{ zoom: 0.8 }}>
       <FormControl variant="outlined" size="small" sx={{ minWidth: 200, mb: 2 }}>
         <InputLabel id="estado-label">Filtrar por Estado</InputLabel>
         <Select

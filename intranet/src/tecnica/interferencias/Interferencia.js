@@ -20,6 +20,7 @@ import {
 import { API_URL } from '../../config';
 import dayjs from 'dayjs';
 import { useNavigate } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import EditDocumentIcon from '@mui/icons-material/EditDocument';
 import DeleteIcon from '@mui/icons-material/Delete';
 
@@ -35,7 +36,7 @@ const Interferencias = () => {
             const token = localStorage.getItem('token');
             const respuesta = await fetch(`${API_URL}/api/tecnica/interferencia/Interferencias`, {
                 headers: {
-                    // 'Content-Type': 'application/json',
+                    'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
                 }
             });
@@ -47,7 +48,7 @@ const Interferencias = () => {
     };
 
     const handleEditar = (interferencia) => {
-        //
+        navigate(`/home/editar-interferencia/${interferencia.ID}`);
     };
 
     const handleEliminar = (interferencia) => {
@@ -63,7 +64,7 @@ const Interferencias = () => {
             const respuesta = await fetch(`${API_URL}/api/tecnica/interferencia/eliminar/${interferenciaAEliminar.ID}`, {
                 method: 'DELETE',
                 headers: {
-                    // 'Content-Type': 'application/json',
+                    'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
                 }
             });
@@ -73,11 +74,9 @@ const Interferencias = () => {
             } else {
                 const errorData = await respuesta.json();
                 console.error('Error al eliminar:', errorData);
-                alert('No se pudo eliminar la interferencia.');
             }
         } catch (error) {
             console.error('Error al eliminar:', error);
-            alert('Ocurrió un error al intentar eliminar.');
         } finally {
             setDialogOpen(false);
             setInterferenciaAEliminar(null);
@@ -91,7 +90,7 @@ const Interferencias = () => {
     }, []);
 
     return (
-        <Box>
+        <Box style={{ zoom: 0.9 }}>
             <Paper
                 elevation={4}
                 sx={{
@@ -229,7 +228,7 @@ const Interferencias = () => {
                     </Button>
                 </DialogActions>
             </Dialog>
-
+            <Outlet />
         </Box>
     );
 };
