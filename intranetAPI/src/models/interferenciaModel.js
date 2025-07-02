@@ -1,6 +1,7 @@
 const { request } = require('express');
 const { connectToGeaCorpico, sql } = require('../config/db');
 
+
 exports.getAll = async (res, req) => {
     const pool = await connectToGeaCorpico();
 
