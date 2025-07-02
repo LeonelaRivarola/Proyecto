@@ -63,7 +63,7 @@ const Interferencias = () => {
       const token = localStorage.getItem('token');
       const respuesta = await fetch(`${API_URL}/api/tecnica/interferencia/Interferencias`, {
         headers: {
-          'Content-Type': 'application/json',
+          // 'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         }
       });

@@ -96,7 +96,7 @@ const NuevaInterferencia = () => {
   useEffect(() => {
     const fetchLocalidades = async () => {
       const response  = await fetch(`${API_URL}/api/localidades`);
-      const daata = await response.json();
+      const data = await response.json();
       setLocalidades(data);
     };
     fetchLocalidades();

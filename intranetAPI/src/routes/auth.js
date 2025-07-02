@@ -68,16 +68,16 @@ router.get('/tecnica/interferencia/Interferencias', verificarToken, interferenci
 //para el path subir archivo pdf
 router.post('/tecnica/interferencia/nueva', verificarToken, upload.single('path'), async (req, res) => {
     try{
-        const filePath = requestAnimationFrame.file?.filename || null;
+        const filePath = req.file?.filename || null;
         const data = {
             ...req.body,
             path: filePath
         };
         const id = await interferenciaController.create(data);
-        resizeBy.status(201).json({id});
+        res.status(201).json({id});
     }catch(err){
         console.error(err);
-        resizeBy.status(500).send('Error al crear interferencia');
+        res.status(500).send('Error al crear interferencia');
     }
 });
 router.put('/tecnica/interferencia/editar',verificarToken, interferenciaController.update);
