@@ -71,6 +71,7 @@ const EditarInterferencia = () => {
           }
         });
         const data = await res.json();
+        console.log(data.Localidad);
         setFormData({
           cuit: data.CUIT_DNI || '',
           nombre: data.Nombre || '',
@@ -84,7 +85,7 @@ const EditarInterferencia = () => {
           vereda: data.Vereda || 'I',
           entre1: data.Entre1 || '',
           entre2: data.Entre2 || '',
-          localidad: data.Localidad  ? Number(data.Localidad) : '',
+          localidad: data.Localidad || '',
           latitud: data.Latitud || '',
           longitud: data.Longitud || '',
           desde: data.Desde || '',
