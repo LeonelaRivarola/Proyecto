@@ -58,7 +58,7 @@ const EditarInterferencia = () => {
           }
         });
         const data = await res.json();
-        console.log("interferencia 1: " + data.cuit);
+        console.log("interferencia 1: " + data.SOI_CUIT);
         setFormData({
           cuit: data.cuit || '',
           nombre: data.nombre || '',
