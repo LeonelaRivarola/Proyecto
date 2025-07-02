@@ -92,7 +92,7 @@ const EditarInterferencia = () => {
 
     try {
       const token = localStorage.getItem('token');
-      await fetch(`${API_URL}/api/tecnica/interferencia/editar/${id}`, {
+      await fetch(`${API_URL}/api/tecnica/interferencia/interferenciaID/editar/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
