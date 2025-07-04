@@ -186,33 +186,35 @@ const EditarInterferencia = () => {
                 </Select>
               </FormControl>
             </Grid>
-
-            <Grid item xs={12} sm={6}>
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={formData.es_persona === 'S'}
-                    onChange={handleSwitchChange}
-                    name="es_persona"
-                  />
-                }
-                label={`${formData.es_persona === "S" ? "Personal" : "Empresa"}`}
-              />
-            </Grid>
-
-            <Grid item xs={12} sm={6}>
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={formData.vereda === "P"}
-                    onChange={(e) =>
-                      setFormData({ ...formData, vereda: e.target.checked ? "P" : "I" })
+            <Grid item xs={12}>
+              <Grid container spacing={2}>
+                <Grid item>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.vereda === "P"}
+                        onChange={(e) =>
+                          setFormData({ ...formData, vereda: e.target.checked ? "P" : "I" })
+                        }
+                        name="vereda"
+                      />
                     }
-                    name="vereda"
+                    label={`Vereda: ${formData.vereda === "P" ? "Par" : "Impar"}`}
                   />
-                }
-                label={`Vereda: ${formData.vereda === "P" ? "Par" : "Impar"}`}
-              />
+                </Grid>
+                <Grid item>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.es_persona === 'S'}
+                        onChange={handleSwitchChange}
+                        name="es_persona"
+                      />
+                    }
+                    label={`${formData.es_persona === "S" ? "Personal" : "Empresa"}`}
+                  />
+                </Grid>
+              </Grid>
             </Grid>
             <Grid item xs={12} sx={{ mt: 4 }}>
               <Typography variant="subtitle1" gutterBottom>
