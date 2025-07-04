@@ -72,11 +72,12 @@ const NuevaInterferencia = () => {
       for (const key in formData) {
         dataToSend.append(key, formData[key]);
       }
+      console.log("TOKEN:", token);
 
       const response = await fetch(`${API_URL}/api/tecnica/interferencia/nueva`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          // 'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
         body: dataToSend,
@@ -104,6 +105,8 @@ const NuevaInterferencia = () => {
       { LOC_ID: 10366, LOC_DESCRIPCION: "Vertiz" },
     ]);
   }, []);
+
+  
 
   return (
     <Container maxWidth="xl">
@@ -229,7 +232,14 @@ const NuevaInterferencia = () => {
                   <Grid container spacing={2}>
                     <Grid item xs={12}>
                       <Box sx={{ width: '1000px', height: 400 }}>
-                        <MapaInterferencia onData={(data) => setFormData(prev => ({ ...prev, mapa: data }))} />
+                        <MapaInterferencia
+                        onData={(data) => setFormData(prev => ({ ...prev, mapa: data }))}
+                        initialPosition={
+                          formData.latitud && formData.longitud
+                          ? {lat: parseFloat(formData.latitud), lng: parseFloat(formData.longitud)}
+                          : null
+                        }
+                        />
                       </Box>
                     </Grid>
                   </Grid>

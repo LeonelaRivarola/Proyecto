@@ -12,10 +12,10 @@ const multer = require('multer');
 const path = require('path');
 //esto es la configuraicon para almacenar el archivo
 const storage = multer.diskStorage({
-    destination: function(req, file, cb){
+    destination: function (req, file, cb) {
         cb(null, 'uploads/'); //hacer esta carpeta
     },
-    filename: function (req, file, cb){
+    filename: function (req, file, cb) {
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
         const ext = path.extname(file.originalname);
         cb(null, file.fieldname + '-' + uniqueSuffix + ext);
@@ -28,7 +28,7 @@ router.post('/login', authController.login);
 
 //Solicitudes
 router.get('/tecnica/obrasElectricas/solicitudes', verificarToken, solicitudController.index);
-router.post('/tecnica/obrasElectricas/nueva-solicitud',verificarToken, solicitudController.store);
+router.post('/tecnica/obrasElectricas/nueva-solicitud', verificarToken, solicitudController.store);
 router.delete('/tecnica/obrasElectricas/eliminar/:id', verificarToken, solicitudController.destroy);
 
 //Tipo de obras
@@ -64,24 +64,25 @@ router.get('tecnica/obrasElectricas/emails/mostrar/:id', verificarToken, emailCo
 
 //interferencias
 router.get('/tecnica/interferencia/Interferencias', verificarToken, interferenciaController.index);
-// router.post('/tecnica/interferencia/nueva',verificarToken, interferenciaController.store);
 //para el path subir archivo pdf
 router.post('/tecnica/interferencia/nueva', verificarToken, upload.single('path'), async (req, res) => {
-    try{
+    try {
         const filePath = req.file?.filename || null;
-        const data = {
+        req.body = {
             ...req.body,
             path: filePath
         };
-        const id = await interferenciaController.create(data);
-        res.status(201).json({id});
-    }catch(err){
+
+        await interferenciaController.store(req, res); // ⬅️ el controlador responde
+
+    } catch (err) {
         console.error(err);
         res.status(500).send('Error al crear interferencia');
     }
 });
-router.put('/tecnica/interferencia/editar',verificarToken, interferenciaController.update);
-// router.delete('/tecnica/interferencia/eliminar-interf/:id', verificarToken, interferenciaController.destroy);
+
+router.put('/tecnica/interferencia/editar', verificarToken, interferenciaController.update);
+router.delete('/tecnica/interferencia/eliminar/:id', verificarToken, interferenciaController.destroy);
 
 // router.get('/', authMiddleware, dashboardController);
 // router.get('sign-up', registerController.create);

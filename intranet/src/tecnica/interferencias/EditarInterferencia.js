@@ -9,7 +9,11 @@ import {
   Grid,
   Box,
   Typography,
-  Paper
+  Paper,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem
 } from '@mui/material';
 
 const EditarInterferencia = () => {
@@ -37,9 +41,19 @@ const EditarInterferencia = () => {
     path: ""
   });
 
+  const localidades = [
+    { LOC_ID: 9966, LOC_DESCRIPCION: "Dorila" },
+    { LOC_ID: 10041, LOC_DESCRIPCION: "Gral Pico" },
+    { LOC_ID: 10303, LOC_DESCRIPCION: "Metileo" },
+    { LOC_ID: 10341, LOC_DESCRIPCION: "Speluzzi" },
+    { LOC_ID: 10349, LOC_DESCRIPCION: "Trebolares" },
+    { LOC_ID: 10366, LOC_DESCRIPCION: "Vertiz" },
+  ];
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    const newValue = name === 'localidad' ? parseInt(value) : value;
+    setFormData(prev => ({ ...prev, [name]: newValue }));
   };
 
   const handleSwitchChange = (e) => {
@@ -58,27 +72,26 @@ const EditarInterferencia = () => {
           }
         });
         const data = await res.json();
-        console.log("interferencia 1: " + data.SOI_CUIT);
         setFormData({
-          cuit: data.cuit || '',
-          nombre: data.nombre || '',
-          apellido: data.apellido || '',
-          es_persona: data.es_persona || 'N',
-          email: data.email || '',
-          calle: data.calle || '',
-          altura: data.altura || '',
-          piso: data.piso || '',
-          dpto: data.dpto || '',
-          vereda: data.vereda || 'I',
-          entre1: data.entre1 || '',
-          entre2: data.entre2 || '',
-          localidad: data.localidad || '',
-          latitud: data.latitud || '',
-          longitud: data.longitud || '',
-          desde: data.desde || '',
-          hasta: data.hasta || '',
-          mapa: data.mapa || '',
-          path: data.path || ''
+          cuit: data.CUIT_DNI || '',
+          nombre: data.Nombre || '',
+          apellido: data.Apellido || '',
+          es_persona: data.Es_persona || 'N',
+          email: data.Email || '',
+          calle: data.Calle || '',
+          altura: data.Altura || '',
+          piso: data.Piso || '',
+          dpto: data.Dpto || '',
+          vereda: data.Vereda || 'I',
+          entre1: data.Entre1 || '',
+          entre2: data.Entre2 || '',
+          localidad: data.Localidad,
+          latitud: data.Latitud !== null ? parseFloat(data.Latitud) : '',
+          longitud: data.Longitud !== null ? parseFloat(data.Longitud) : '',
+          desde: data.Desde || '',
+          hasta: data.Hasta || '',
+          mapa: data.Mapa || '',
+          path: data.Path || ''
         });
       } catch (err) {
         console.error('Error al cargar datos:', err);
@@ -127,12 +140,12 @@ const EditarInterferencia = () => {
           Editar Interferencia
         </Typography>
       </Paper>
-      <Paper elevation={3} sx={{ padding: 4, maxWidth: 800, margin: 'auto', marginTop: 6 }}>
+      <Paper elevation={3} sx={{ padding: 4, maxWidth: 900, margin: 'auto', marginTop: 6 }}>
         <Box component="form" onSubmit={handleSubmit}>
           <Grid container spacing={2}>
             {[
               "cuit", "nombre", "apellido", "email", "calle", "altura",
-              "piso", "dpto", "entre1", "entre2", "localidad",
+              "piso", "dpto", "entre1", "entre2",
               "latitud", "longitud", "desde", "hasta", "mapa", "path"
             ].map((field) => (
               <Grid item xs={12} sm={field.length > 5 ? 12 : 6} key={field}>
@@ -145,6 +158,27 @@ const EditarInterferencia = () => {
                 />
               </Grid>
             ))}
+
+            <Grid item xs={12} sm={6}>
+              <FormControl fullWidth>
+                <InputLabel id="localidad-label">Localidad</InputLabel>
+                <Select
+                  labelId="localidad-label"
+                  id="localidad"
+                  name="localidad"
+                  value={formData.localidad}
+                  label="Localidad"
+                  onChange={handleChange}
+                  defaultValue={formData.localidad}
+                >
+                  {localidades.map((loc) => (
+                    <MenuItem key={loc.LOC_ID} value={loc.LOC_ID}>
+                      {loc.LOC_DESCRIPCION}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
 
             <Grid item xs={12} sm={6}>
               <FormControlLabel

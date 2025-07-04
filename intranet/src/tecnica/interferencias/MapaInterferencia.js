@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 
-const MapaInterferencia = ({ onData }) => {
+const MapaInterferencia = ({ onData, initialPosition }) => {
   const mapRef = useRef(null);
   const deleteBtnRef = useRef(null);
 
@@ -9,33 +9,41 @@ const MapaInterferencia = ({ onData }) => {
   const [selectedOverlay, setSelectedOverlay] = useState(null);
 
   useEffect(() => {
-    if (!window.google) {
-      const script = document.createElement("script");
-      script.src =
-        "https://maps.googleapis.com/maps/api/js?key=AIzaSyA_TMQ1qzW06reNAT9l-3Kn89omHwEdNGI&libraries=drawing";
-      script.async = true;
-      script.defer = true;
-      script.onload = () => {
-        initMap();
-      };
-      document.head.appendChild(script);
-    } else {
-      initMap();
-    }
+    if (initialPosition && map) {
+      map.setCenter(initialPosition);
+      map.setZoom(17);
 
-    // Limpieza al desmontar
-    return () => {
-      if (deleteBtnRef.current) {
-        deleteBtnRef.current.style.display = "none";
+      // Opcional: poner marcador en la nueva posición
+      if (!window.positionMarker) {
+        window.positionMarker = new window.google.maps.Marker({
+          map: map,
+          position: initialPosition,
+          title: "Ubicación manual",
+        });
+      } else {
+        window.positionMarker.setPosition(initialPosition);
       }
-      if (mapRef.current) {
-        mapRef.current.innerHTML = "";
-      }
-    };
+    }
+  }, [initialPosition, map]);
+
+
+
+  useEffect(() => {
+    if (window.google) {
+      initMap();
+    } else {
+      // Si por alguna razón no está, podés poner un pequeño tiempo para esperar y probar de nuevo
+      const interval = setInterval(() => {
+        if (window.google) {
+          initMap();
+          clearInterval(interval);
+        }
+      }, 100);
+    }
   }, []);
 
   const initMap = () => {
-    const defaultPos = { lat: -34.6037, lng: -58.3816 };
+    const defaultPos = initialPosition || { lat: -34.6037, lng: -58.3816 };
 
     const mapInstance = new window.google.maps.Map(mapRef.current, {
       center: defaultPos,
@@ -43,7 +51,7 @@ const MapaInterferencia = ({ onData }) => {
     });
 
     // Geolocalización
-    if (navigator.geolocation) {
+    if (!initialPosition && navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const userPos = {
