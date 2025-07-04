@@ -279,7 +279,7 @@ const NuevaInterferencia = () => {
                     <Button type="submit" variant="contained" color="success" startIcon={<Send />}>Crear</Button>
                   </Grid>
                   <Grid item>
-                    <Button variant="outlined" color="error" startIcon={<Cancel />} onClick={() => navigate('/home/solicitudes')}>Cancelar</Button>
+                    <Button variant="outlined" color="error" startIcon={<Cancel />} onClick={() => navigate('/home/interferencias')}>Cancelar</Button>
                   </Grid>
                 </Grid>
               </Box>

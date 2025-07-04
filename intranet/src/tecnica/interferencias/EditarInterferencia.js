@@ -226,10 +226,15 @@ const EditarInterferencia = () => {
                 />
               </Box>
             </Grid>
-            <Grid item xs={12}>
-              <Button type="submit" variant="contained" color="primary">
-                Guardar Cambios
-              </Button>
+            <Grid container justifyContent="center" spacing={2}>
+              <Grid item>
+                <Button type="submit" variant="contained" color="success" >
+                  Guardar Cambios
+                </Button>
+              </Grid>
+              <Grid item>
+                <Button variant="outlined" color="error" onClick={() => navigate('/home/interferencias')}>Cancelar</Button>
+              </Grid>
             </Grid>
           </Grid>
         </Box>
