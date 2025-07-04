@@ -76,6 +76,8 @@ const EditarInterferencia = () => {
         const localidadEncontrada = localidades.find(loc => loc.LOC_DESCRIPCION === data.Localidad);
         const localidadId = localidadEncontrada ? localidadEncontrada.LOC_ID : null;
 
+        console.log(data.Mapa);
+
         setFormData({
           cuit: data.CUIT_DNI || '',
           nombre: data.Nombre || '',
