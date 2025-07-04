@@ -8,6 +8,73 @@ const MapaInterferencia = ({ onData, initialPosition, geojsonData }) => {
   const [drawingManager, setDrawingManager] = useState(null);
   const [selectedOverlay, setSelectedOverlay] = useState(null);
 
+
+  useEffect(() => {
+    if (map && geojsonData) {
+      try {
+        const feature = JSON.parse(geojsonData);
+
+        const drawFeature = (feature) => {
+          const { geometry, properties } = feature;
+
+          if (geometry.type === "Point") {
+            const [lng, lat] = geometry.coordinates;
+            new window.google.maps.Marker({
+              position: { lat, lng },
+              map: map,
+              title: "Punto guardado",
+            });
+
+            if (properties && properties.radius) {
+              new window.google.maps.Circle({
+                center: { lat, lng },
+                radius: properties.radius,
+                fillColor: "#00FFFF",
+                fillOpacity: 0.3,
+                strokeWeight: 2,
+                editable: false,
+                map: map,
+              });
+            }
+
+          } else if (geometry.type === "LineString") {
+            const path = geometry.coordinates.map(([lng, lat]) => ({ lat, lng }));
+            new window.google.maps.Polyline({
+              path,
+              strokeColor: "#FF0000",
+              strokeWeight: 3,
+              editable: false,
+              map: map,
+            });
+
+          } else if (geometry.type === "Polygon") {
+            const paths = geometry.coordinates.map(ring =>
+              ring.map(([lng, lat]) => ({ lat, lng }))
+            );
+            new window.google.maps.Polygon({
+              paths,
+              fillColor: "#00FF00",
+              fillOpacity: 0.3,
+              strokeWeight: 2,
+              editable: false,
+              map: map,
+            });
+          }
+        };
+
+        if (feature.type === "Feature") {
+          drawFeature(feature);
+        } else if (feature.type === "FeatureCollection") {
+          feature.features.forEach(drawFeature);
+        }
+
+      } catch (e) {
+        console.error("Error al parsear GeoJSON (desde useEffect):", e);
+      }
+    }
+  }, [geojsonData, map]);
+
+
   useEffect(() => {
     if (initialPosition && map) {
       map.setCenter(initialPosition);
