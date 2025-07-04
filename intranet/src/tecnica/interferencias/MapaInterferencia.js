@@ -232,34 +232,39 @@ const MapaInterferencia = ({ onData, initialPosition, geojsonData }) => {
 
         const drawFeature = (feature) => {
           const { geometry, properties } = feature;
+          let overlay = null;
 
           if (geometry.type === "Point") {
             const [lng, lat] = geometry.coordinates;
-            new window.google.maps.Marker({
-              position: { lat, lng },
-              map: mapInstance,
-              title: "Punto guardado",
-            });
 
-            if (properties && properties.radius) {
-              new window.google.maps.Circle({
+            if (properties?.radius) {
+              overlay = new window.google.maps.Circle({
                 center: { lat, lng },
                 radius: properties.radius,
                 fillColor: "#00FFFF",
                 fillOpacity: 0.3,
                 strokeWeight: 2,
-                editable: false,
+                editable: true,
+                draggable: true,
                 map: mapInstance,
+              });
+            } else {
+              overlay = new window.google.maps.Marker({
+                position: { lat, lng },
+                map: mapInstance,
+                title: "Punto editable",
+                draggable: true,
               });
             }
 
           } else if (geometry.type === "LineString") {
             const path = geometry.coordinates.map(([lng, lat]) => ({ lat, lng }));
-            new window.google.maps.Polyline({
+            overlay = new window.google.maps.Polyline({
               path,
               strokeColor: "#FF0000",
               strokeWeight: 3,
-              editable: false,
+              editable: true,
+              draggable: true,
               map: mapInstance,
             });
 
@@ -267,14 +272,92 @@ const MapaInterferencia = ({ onData, initialPosition, geojsonData }) => {
             const paths = geometry.coordinates.map(ring =>
               ring.map(([lng, lat]) => ({ lat, lng }))
             );
-            new window.google.maps.Polygon({
+            overlay = new window.google.maps.Polygon({
               paths,
               fillColor: "#00FF00",
               fillOpacity: 0.3,
               strokeWeight: 2,
-              editable: false,
+              editable: true,
+              draggable: true,
               map: mapInstance,
             });
+          }
+
+          if (overlay) {
+            setSelectedOverlay(overlay);
+
+            overlay.addListener("click", () => {
+              setSelectedOverlay(overlay);
+              if (deleteBtnRef.current) deleteBtnRef.current.style.display = "block";
+            });
+
+            // Actualizar datos cuando se edita
+            const saveGeojson = () => {
+              let geojson = null;
+
+              if (overlay instanceof window.google.maps.Marker) {
+                const pos = overlay.getPosition();
+                geojson = {
+                  type: "Feature",
+                  geometry: {
+                    type: "Point",
+                    coordinates: [pos.lng(), pos.lat()],
+                  },
+                  properties: {},
+                };
+              } else if (overlay instanceof window.google.maps.Circle) {
+                const center = overlay.getCenter();
+                geojson = {
+                  type: "Feature",
+                  geometry: {
+                    type: "Point",
+                    coordinates: [center.lng(), center.lat()],
+                  },
+                  properties: {
+                    radius: overlay.getRadius(),
+                  },
+                };
+              } else if (overlay instanceof window.google.maps.Polyline) {
+                const coords = overlay.getPath().getArray().map((latlng) => [
+                  latlng.lng(),
+                  latlng.lat(),
+                ]);
+                geojson = {
+                  type: "Feature",
+                  geometry: {
+                    type: "LineString",
+                    coordinates: coords,
+                  },
+                  properties: {},
+                };
+              } else if (overlay instanceof window.google.maps.Polygon) {
+                const paths = overlay.getPaths().getArray().map((path) =>
+                  path.getArray().map((latlng) => [latlng.lng(), latlng.lat()])
+                );
+                geojson = {
+                  type: "Feature",
+                  geometry: {
+                    type: "Polygon",
+                    coordinates: paths,
+                  },
+                  properties: {},
+                };
+              }
+
+              if (geojson && onData) onData(JSON.stringify(geojson));
+            };
+
+            // Escuchar cambios
+            if (overlay instanceof window.google.maps.Circle) {
+              overlay.addListener("center_changed", saveGeojson);
+              overlay.addListener("radius_changed", saveGeojson);
+            } else if (overlay instanceof window.google.maps.Polygon || overlay instanceof window.google.maps.Polyline) {
+              overlay.getPath().addListener("set_at", saveGeojson);
+              overlay.getPath().addListener("insert_at", saveGeojson);
+              overlay.getPath().addListener("remove_at", saveGeojson);
+            } else if (overlay instanceof window.google.maps.Marker) {
+              overlay.addListener("dragend", saveGeojson);
+            }
           }
         };
 
