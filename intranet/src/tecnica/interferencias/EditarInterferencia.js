@@ -228,7 +228,7 @@ const EditarInterferencia = () => {
             </Grid>
             <Grid container justifyContent="center" spacing={2}>
               <Grid item>
-                <Button type="submit" variant="contained" color="success" >
+                <Button type="submit" variant="contained" color="primary" >
                   Guardar Cambios
                 </Button>
               </Grid>

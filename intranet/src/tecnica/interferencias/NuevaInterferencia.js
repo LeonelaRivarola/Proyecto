@@ -276,7 +276,7 @@ const NuevaInterferencia = () => {
                 {/* Botones */}
                 <Grid container justifyContent="center" spacing={2}>
                   <Grid item>
-                    <Button type="submit" variant="contained" color="primary" startIcon={<Send />}>Crear</Button>
+                    <Button type="submit" variant="contained" color="success" startIcon={<Send />}>Crear</Button>
                   </Grid>
                   <Grid item>
                     <Button variant="outlined" color="error" startIcon={<Cancel />} onClick={() => navigate('/home/interferencias')}>Cancelar</Button>
