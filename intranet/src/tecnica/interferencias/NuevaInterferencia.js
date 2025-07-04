@@ -104,7 +104,7 @@ const NuevaInterferencia = () => {
     ]);
   }, []);
 
-
+  
 
   return (
     <Container maxWidth="xl">
@@ -229,15 +229,14 @@ const NuevaInterferencia = () => {
                   <Typography variant="h6" gutterBottom>Mapa de Interferencia</Typography>
                   <Grid container spacing={2}>
                     <Grid item xs={12}>
-                      <Box sx={{ width: '100%', height: 400, maxWidth: '100%' }}>
-
+                      <Box sx={{ width: '900px', height: 400 }}>
                         <MapaInterferencia
-                          onData={(data) => setFormData(prev => ({ ...prev, mapa: data }))}
-                          initialPosition={
-                            formData.latitud && formData.longitud
-                              ? { lat: parseFloat(formData.latitud), lng: parseFloat(formData.longitud) }
-                              : null
-                          }
+                        onData={(data) => setFormData(prev => ({ ...prev, mapa: data }))}
+                        initialPosition={
+                          formData.latitud && formData.longitud
+                          ? {lat: parseFloat(formData.latitud), lng: parseFloat(formData.longitud)}
+                          : null
+                        }
                         />
                       </Box>
                     </Grid>
