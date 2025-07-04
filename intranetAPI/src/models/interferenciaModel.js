@@ -1,6 +1,7 @@
 const { request } = require('express');
 const { connectToGeaCorpico, sql } = require('../config/db');
 
+
 exports.getAll = async (res, req) => {
     const pool = await connectToGeaCorpico();
 
@@ -27,7 +28,8 @@ exports.getAll = async (res, req) => {
             SOI.SOI_HASTA as Hasta,
             SOI.SOI_FECHA as Fecha_interf,
             SOI.SOI_MAPA as Mapa,
-            SOI.SOI_PATH as Path
+            SOI.SOI_PATH as Path,
+            SOI_ESTADO as Estado
         FROM SOLICITUD_INTERFERENCIA SOI
         INNER JOIN LOCALIDAD LOC ON LOC.LOC_ID = SOI.SOI_LOCALIDAD_ID;
 
@@ -39,7 +41,7 @@ exports.create = async (data) => {
     const {
         cuit, nombre, apellido, es_persona, email, calle, altura, piso, dpto, vereda,
         entre1, entre2, localidad, latitud, longitud, desde, hasta, //fecha_interf, 
-        mapa, path
+        mapa, path, estado
     } = data;
 
     const fechaActual = new Date();
@@ -59,24 +61,25 @@ exports.create = async (data) => {
         .input('entre1', sql.VarChar, entre1)
         .input('entre2', sql.VarChar, entre2)
         .input('localidad', sql.Int, localidad)
-        .input('latitud', sql.Decimal, latitud)
-        .input('longitud', sql.Decimal, longitud)
+        .input('latitud', sql.Decimal(10, 7), latitud)
+        .input('longitud', sql.Decimal(10, 7), longitud)
         .input('desde', sql.Date, desde)
         .input('hasta', sql.Date, hasta)
         .input('fecha', sql.DateTime, fechaActual)
         .input('mapa', sql.VarChar, mapa)
         .input('path', sql.VarChar, path)
+        .input('estado', sql.VarChar,'Pendiente')
         .query(`
             INSERT INTO SOLICITUD_INTERFERENCIA (
                 SOI_CUIT, SOI_NOMBRE, SOI_APELLIDO, SOI_PERSONA, SOI_EMAIL, SOI_CALLE,
                 SOI_ALTURA, SOI_PISO, SOI_DPTO, SOI_VEREDA, SOI_ENTRE1, SOI_ENTRE2, SOI_LOCALIDAD_ID, 
-                SOI_LATITUD, SOI_LONGITUD, SOI_DESDE, SOI_HASTA, SOI_FECHA, SOI_MAPA, SOI_PATH
+                SOI_LATITUD, SOI_LONGITUD, SOI_DESDE, SOI_HASTA, SOI_FECHA, SOI_MAPA, SOI_PATH, SOI_ESTADO
             )
             OUTPUT INSERTED.SOI_ID
             VALUES (
                 @cuit, @nombre, @apellido, @es_persona, @email, @calle, @altura,
                 @piso, @dpto, @vereda, @entre1, @entre2, @localidad, @latitud, @longitud,
-                @desde, @hasta, @fecha, @mapa, @path
+                @desde, @hasta, @fecha, @mapa, @path, @estado
             )
         `);
 
@@ -119,8 +122,8 @@ exports.update = async (id, data) => {
         .input('entre1', sql.VarChar, entre1)
         .input('entre2', sql.VarChar, entre2)
         .input('localidad', sql.Int, localidad)
-        .input('latitud', sql.Decimal, latitud)
-        .input('longitud', sql.Decimal, longitud)
+        .input('latitud', sql.Decimal(10, 7), latitud)
+        .input('longitud', sql.Decimal(10, 7), longitud)
         .input('desde', sql.Date, desde)
         .input('hasta', sql.Date, hasta)
         .input('fecha', sql.DateTime, fechaActual)
@@ -161,7 +164,6 @@ exports.getLocalidades = async () => {
   `);
   return result.recordset;
 };
-
 
 exports.getById = async (id) => {
     const pool = await connectToGeaCorpico();

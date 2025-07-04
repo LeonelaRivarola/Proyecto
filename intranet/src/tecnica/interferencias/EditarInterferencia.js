@@ -72,6 +72,11 @@ const EditarInterferencia = () => {
           }
         });
         const data = await res.json();
+
+        const localidadEncontrada = localidades.find(loc => loc.LOC_DESCRIPCION === data.Localidad);
+        const localidadId = localidadEncontrada ? localidadEncontrada.LOC_ID : "";
+
+
         setFormData({
           cuit: data.CUIT_DNI || '',
           nombre: data.Nombre || '',
@@ -85,11 +90,11 @@ const EditarInterferencia = () => {
           vereda: data.Vereda || 'I',
           entre1: data.Entre1 || '',
           entre2: data.Entre2 || '',
-          localidad: data.Localidad,
-          latitud: data.Latitud !== null ? parseFloat(data.Latitud) : '',
-          longitud: data.Longitud !== null ? parseFloat(data.Longitud) : '',
-          desde: data.Desde || '',
-          hasta: data.Hasta || '',
+          localidad: localidadId,
+          latitud: data.Latitud || '',
+          longitud: data.Longitud || '',
+          desde: data.Desde ? data.Desde.split('T')[0] : '',
+          hasta: data.Hasta ? data.Hasta.split('T')[0] : '',
           mapa: data.Mapa || '',
           path: data.Path || ''
         });
@@ -151,6 +156,7 @@ const EditarInterferencia = () => {
               <Grid item xs={12} sm={field.length > 5 ? 12 : 6} key={field}>
                 <TextField
                   fullWidth
+                  type={['desde', 'hasta'].includes(field) ? 'date' : 'text'}
                   name={field}
                   label={field.charAt(0).toUpperCase() + field.slice(1)}
                   value={formData[field]}
@@ -169,7 +175,6 @@ const EditarInterferencia = () => {
                   value={formData.localidad}
                   label="Localidad"
                   onChange={handleChange}
-                  defaultValue={formData.localidad}
                 >
                   {localidades.map((loc) => (
                     <MenuItem key={loc.LOC_ID} value={loc.LOC_ID}>
