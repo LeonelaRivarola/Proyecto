@@ -8,6 +8,98 @@ const MapaInterferencia = ({ onData, initialPosition, geojsonData }) => {
   const [drawingManager, setDrawingManager] = useState(null);
   const [selectedOverlay, setSelectedOverlay] = useState(null);
 
+  const updateCircle = (circle) => {
+    const center = circle.getCenter();
+    const radius = circle.getRadius();
+    const geojson = {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [center.lng(), center.lat()],
+      },
+      properties: { radius },
+    };
+    onData && onData(JSON.stringify(geojson));
+  };
+
+  const updatePolyline = (polyline) => {
+    const path = polyline.getPath().getArray().map((latlng) => [
+      latlng.lng(),
+      latlng.lat(),
+    ]);
+    const geojson = {
+      type: "Feature",
+      geometry: {
+        type: "LineString",
+        coordinates: path,
+      },
+      properties: {},
+    };
+    onData && onData(JSON.stringify(geojson));
+  };
+
+  const updateRectangle = (rectangle) => {
+    const bounds = rectangle.getBounds();
+    const geojson = {
+      type: "Feature",
+      geometry: {
+        type: "Polygon",
+        coordinates: [[
+          [bounds.getSouthWest().lng(), bounds.getSouthWest().lat()],
+          [bounds.getNorthEast().lng(), bounds.getSouthWest().lat()],
+          [bounds.getNorthEast().lng(), bounds.getNorthEast().lat()],
+          [bounds.getSouthWest().lng(), bounds.getNorthEast().lat()],
+          [bounds.getSouthWest().lng(), bounds.getSouthWest().lat()],
+        ]],
+      },
+      properties: {},
+    };
+    onData && onData(JSON.stringify(geojson));
+  };
+
+  const updatePolygon = (polygon) => {
+    const coords = [polygon.getPath().getArray().map((latlng) => [
+      latlng.lng(),
+      latlng.lat(),
+    ])];
+    const geojson = {
+      type: "Feature",
+      geometry: {
+        type: "Polygon",
+        coordinates: coords,
+      },
+      properties: {},
+    };
+    onData && onData(JSON.stringify(geojson));
+  };
+
+  const handleOverlayToGeoJSON = (overlay, type) => {
+    if (type === "CIRCLE") {
+      overlay.addListener("center_changed", () => updateCircle(overlay));
+      overlay.addListener("radius_changed", () => updateCircle(overlay));
+    } else if (type === "POLYLINE") {
+      overlay.getPath().addListener("set_at", () => updatePolyline(overlay));
+      overlay.getPath().addListener("insert_at", () => updatePolyline(overlay));
+    } else if (type === "RECTANGLE") {
+      overlay.addListener("bounds_changed", () => updateRectangle(overlay));
+    } else if (type === "POLYGON") {
+      overlay.getPath().addListener("set_at", () => updatePolygon(overlay));
+      overlay.getPath().addListener("insert_at", () => updatePolygon(overlay));
+    } else if (type === "MARKER") {
+      overlay.addListener("dragend", () => {
+        const pos = overlay.getPosition();
+        const geojson = {
+          type: "Feature",
+          geometry: {
+            type: "Point",
+            coordinates: [pos.lng(), pos.lat()],
+          },
+          properties: {},
+        };
+        onData && onData(JSON.stringify(geojson));
+      });
+    }
+  };
 
   useEffect(() => {
     if (map && geojsonData) {
@@ -19,46 +111,54 @@ const MapaInterferencia = ({ onData, initialPosition, geojsonData }) => {
 
           if (geometry.type === "Point") {
             const [lng, lat] = geometry.coordinates;
-            new window.google.maps.Marker({
+            const marker = new window.google.maps.Marker({
               position: { lat, lng },
               map: map,
               title: "Punto guardado",
+              draggable: true,
             });
+            handleOverlayToGeoJSON(marker, "MARKER");
 
             if (properties && properties.radius) {
-              new window.google.maps.Circle({
+              const circle = new window.google.maps.Circle({
                 center: { lat, lng },
                 radius: properties.radius,
                 fillColor: "#00FFFF",
                 fillOpacity: 0.3,
                 strokeWeight: 2,
-                editable: false,
+                editable: true,
+                draggable: true,
                 map: map,
               });
+              handleOverlayToGeoJSON(circle, "CIRCLE");
             }
 
           } else if (geometry.type === "LineString") {
             const path = geometry.coordinates.map(([lng, lat]) => ({ lat, lng }));
-            new window.google.maps.Polyline({
+            const polyline = new window.google.maps.Polyline({
               path,
               strokeColor: "#FF0000",
               strokeWeight: 3,
-              editable: false,
+              editable: true,
+              draggable: true,
               map: map,
             });
+            handleOverlayToGeoJSON(polyline, "POLYLINE");
 
           } else if (geometry.type === "Polygon") {
             const paths = geometry.coordinates.map(ring =>
               ring.map(([lng, lat]) => ({ lat, lng }))
             );
-            new window.google.maps.Polygon({
+            const polygon = new window.google.maps.Polygon({
               paths,
               fillColor: "#00FF00",
               fillOpacity: 0.3,
               strokeWeight: 2,
-              editable: false,
+              editable: true,
+              draggable: true,
               map: map,
             });
+            handleOverlayToGeoJSON(polygon, "POLYGON");
           }
         };
 
