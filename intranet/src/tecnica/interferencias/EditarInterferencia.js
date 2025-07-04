@@ -152,7 +152,7 @@ const EditarInterferencia = () => {
             {[
               "cuit", "nombre", "apellido", "email", "calle", "altura",
               "piso", "dpto", "entre1", "entre2",
-              "latitud", "longitud", "desde", "hasta", "mapa", "path"
+              "latitud", "longitud", "desde", "hasta", "path"
             ].map((field) => (
               <Grid item xs={12} sm={field.length > 5 ? 12 : 6} key={field}>
                 <TextField
@@ -211,6 +211,16 @@ const EditarInterferencia = () => {
                   />
                 }
                 label={`Vereda: ${formData.vereda === "P" ? "Par" : "Impar"}`}
+              />
+            </Grid>
+            <Grid item xs={12} sx={{ mt: 4 }}>
+              <Typography variant="subtitle1" gutterBottom>
+                Vista del Mapa Guardado:
+              </Typography>
+              <MapaInterferencia
+                initialPosition={{ lat: parseFloat(formData.latitud), lng: parseFloat(formData.longitud) }}
+                geojsonData={formData.mapa}
+                onData={(geojson) => setFormData(prev => ({ ...prev, mapa: geojson }))}
               />
             </Grid>
             <Grid item xs={12}>
