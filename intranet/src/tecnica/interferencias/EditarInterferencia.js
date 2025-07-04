@@ -101,7 +101,7 @@ const EditarInterferencia = () => {
           path: data.Path || ''
         });
 
-        console.log("GeoJSON recibido:", geojsonData);
+        console.log("GeoJSON recibido:", data.Mapa);
       } catch (err) {
         console.error('Error al cargar datos:', err);
       }
