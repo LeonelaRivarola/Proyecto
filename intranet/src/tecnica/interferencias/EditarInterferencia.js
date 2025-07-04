@@ -218,11 +218,13 @@ const EditarInterferencia = () => {
               <Typography variant="subtitle1" gutterBottom>
                 Vista del Mapa Guardado:
               </Typography>
-              <MapaInterferencia
-                initialPosition={{ lat: parseFloat(formData.latitud), lng: parseFloat(formData.longitud) }}
-                geojsonData={formData.mapa}
-                onData={(geojson) => setFormData(prev => ({ ...prev, mapa: geojson }))}
-              />
+              <Box sx={{ width: '900px', height: 400 }}>
+                <MapaInterferencia
+                  initialPosition={{ lat: parseFloat(formData.latitud), lng: parseFloat(formData.longitud) }}
+                  geojsonData={formData.mapa}
+                  onData={(geojson) => setFormData(prev => ({ ...prev, mapa: geojson }))}
+                />
+              </Box>
             </Grid>
             <Grid item xs={12}>
               <Button type="submit" variant="contained" color="primary">
