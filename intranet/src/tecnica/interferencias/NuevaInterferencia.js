@@ -76,7 +76,6 @@ const NuevaInterferencia = () => {
       const response = await fetch(`${API_URL}/api/tecnica/interferencia/nueva`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
         body: dataToSend,
