@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { API_URL } from '../../config';
 import MapaInterferencia from './MapaInterferencia';
+import VerMapa from './mapas/VerMapa';
 import {
   TextField,
   FormControlLabel,
@@ -221,10 +222,11 @@ const EditarInterferencia = () => {
                 Vista del Mapa Guardado:
               </Typography>
               <Box sx={{ width: '900px', height: 400 }}>
-                <MapaInterferencia
+                <VerMapa
                   initialPosition={{ lat: parseFloat(formData.latitud), lng: parseFloat(formData.longitud) }}
                   geojsonData={formData.mapa}
                   onData={(geojson) => setFormData(prev => ({ ...prev, mapa: geojson }))}
+                  modoEdicion={true}
                 />
               </Box>
             </Grid>
