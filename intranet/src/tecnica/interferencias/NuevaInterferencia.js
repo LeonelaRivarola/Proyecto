@@ -18,6 +18,7 @@ import { useNavigate } from 'react-router-dom';
 import { API_URL } from '../../config';
 import { Send, Cancel } from '@mui/icons-material';
 import MapaInterferencia from './MapaInterferencia';
+import CargarMapa from './mapas/CargarMapa';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 
 const NuevaInterferencia = () => {
@@ -230,7 +231,7 @@ const NuevaInterferencia = () => {
                   <Grid container spacing={2}>
                     <Grid item xs={12}>
                       <Box sx={{ width: '900px', height: 400 }}>
-                        <MapaInterferencia
+                        <CargarMapa
                         onData={(data) => setFormData(prev => ({ ...prev, mapa: data }))}
                         initialPosition={
                           formData.latitud && formData.longitud

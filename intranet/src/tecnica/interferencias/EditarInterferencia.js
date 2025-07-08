@@ -226,7 +226,7 @@ const EditarInterferencia = () => {
                   initialPosition={{ lat: parseFloat(formData.latitud), lng: parseFloat(formData.longitud) }}
                   geojsonData={formData.mapa}
                   onData={(geojson) => setFormData(prev => ({ ...prev, mapa: geojson }))}
-                  modoEdicion={true}
+                  modoEdicion={false}
                 />
               </Box>
             </Grid>
