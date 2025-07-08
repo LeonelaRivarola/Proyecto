@@ -3,48 +3,54 @@ import React, { useEffect, useRef, useState } from "react";
 const EditarGeoJson = ({ onData, initialPosition, geojsonData }) => {
   const mapRef = useRef(null);
   const deleteBtnRef = useRef(null);
-
   const [map, setMap] = useState(null);
   const [drawingManager, setDrawingManager] = useState(null);
   const [selectedOverlay, setSelectedOverlay] = useState(null);
-  const [features, setFeatures] = useState([]); // Estado local para las figuras
+  const [localGeojsonData, setLocalGeojsonData] = useState(null);
 
-  // Debounce para evitar múltiples llamadas seguidas a onData
-  let debounceTimer = useRef(null);
-  const debounceUpdate = (callback, delay = 500) => {
-    clearTimeout(debounceTimer.current);
-    debounceTimer.current = setTimeout(() => {
-      callback();
-    }, delay);
-  };
-
-  // Inicializar features a partir del prop geojsonData
   useEffect(() => {
-    if (geojsonData) {
-      try {
-        const parsed = JSON.parse(geojsonData);
-        if (parsed.type === "FeatureCollection") {
-          setFeatures(parsed.features);
-        } else if (parsed.type === "Feature") {
-          setFeatures([parsed]);
-        } else {
-          setFeatures([]);
-        }
-      } catch {
-        setFeatures([]);
-      }
-    } else {
-      setFeatures([]);
-    }
+    setLocalGeojsonData(geojsonData);
   }, [geojsonData]);
 
-  // Función para actualizar features y llamar a onData
-  const updateFeatures = (newFeature) => {
-    setFeatures((prev) => {
-      const updated = [...prev, newFeature];
-      onData && onData(JSON.stringify({ type: "FeatureCollection", features: updated }));
-      return updated;
-    });
+  const updateGeoJson = (updatedFeature) => {
+    try {
+      let current = localGeojsonData ? JSON.parse(localGeojsonData) : { type: "FeatureCollection", features: [] };
+      let features = current.features || [];
+
+      // Reemplazar figura por ID
+      features = features.filter(f => f.properties?.id !== updatedFeature.properties.id);
+      features.push(updatedFeature);
+
+      const updated = {
+        type: "FeatureCollection",
+        features,
+      };
+
+      const jsonStr = JSON.stringify(updated);
+      setLocalGeojsonData(jsonStr);
+      onData?.(jsonStr);
+    } catch (e) {
+      const fallback = {
+        type: "FeatureCollection",
+        features: [updatedFeature],
+      };
+      const jsonStr = JSON.stringify(fallback);
+      setLocalGeojsonData(jsonStr);
+      onData?.(jsonStr);
+    }
+  };
+
+  const debounceTimer = useRef(null);
+  const debounceUpdate = (callback, delay = 500) => {
+    clearTimeout(debounceTimer.current);
+    debounceTimer.current = setTimeout(callback, delay);
+  };
+
+  const wrapUpdate = (geojson, overlay) => {
+    if (!geojson.properties) geojson.properties = {};
+    if (!overlay._featureId) overlay._featureId = crypto.randomUUID();
+    geojson.properties.id = overlay._featureId;
+    updateGeoJson(geojson);
   };
 
   const updateCircle = (circle) => {
@@ -56,16 +62,13 @@ const EditarGeoJson = ({ onData, initialPosition, geojsonData }) => {
         type: "Point",
         coordinates: [center.lng(), center.lat()],
       },
-      properties: { radius },
+      properties: { radius: radius },
     };
-    updateFeatures(geojson);
+    wrapUpdate(geojson, circle);
   };
 
   const updatePolyline = (polyline) => {
-    const path = polyline.getPath().getArray().map((latlng) => [
-      latlng.lng(),
-      latlng.lat(),
-    ]);
+    const path = polyline.getPath().getArray().map((latlng) => [latlng.lng(), latlng.lat()]);
     const geojson = {
       type: "Feature",
       geometry: {
@@ -74,7 +77,7 @@ const EditarGeoJson = ({ onData, initialPosition, geojsonData }) => {
       },
       properties: {},
     };
-    updateFeatures(geojson);
+    wrapUpdate(geojson, polyline);
   };
 
   const updateRectangle = (rectangle) => {
@@ -93,14 +96,11 @@ const EditarGeoJson = ({ onData, initialPosition, geojsonData }) => {
       },
       properties: {},
     };
-    updateFeatures(geojson);
+    wrapUpdate(geojson, rectangle);
   };
 
   const updatePolygon = (polygon) => {
-    const coords = [polygon.getPath().getArray().map((latlng) => [
-      latlng.lng(),
-      latlng.lat(),
-    ])];
+    const coords = [polygon.getPath().getArray().map((latlng) => [latlng.lng(), latlng.lat()])];
     const geojson = {
       type: "Feature",
       geometry: {
@@ -109,11 +109,8 @@ const EditarGeoJson = ({ onData, initialPosition, geojsonData }) => {
       },
       properties: {},
     };
-    updateFeatures(geojson);
+    wrapUpdate(geojson, polygon);
   };
-
-  // Para actualizar una figura ya existente (opcional, si quieres soportar edición en lugar de agregar duplicados)
-  // Esto se podría mejorar para actualizar en vez de agregar, pero depende de la lógica que quieras
 
   const handleOverlayToGeoJSON = (overlay, type) => {
     if (overlay._listenersSet) return;
@@ -155,93 +152,15 @@ const EditarGeoJson = ({ onData, initialPosition, geojsonData }) => {
           },
           properties: {},
         };
-        updateFeatures(geojson);
+        wrapUpdate(geojson, overlay);
       });
     }
   };
 
   useEffect(() => {
-    if (map && features.length > 0) {
-      // Limpiar figuras actuales antes de dibujar nuevas
-      // Aquí podrías guardar referencias de overlays para limpiar, o para simplicidad no limpiar (depende del caso)
-      // Para evitar duplicados, considera limpiar los overlays antiguos antes de dibujar
-
-      // Dibujo todas las features
-      features.forEach((feature) => {
-        const { geometry, properties } = feature;
-
-        if (geometry.type === "Point") {
-          const [lng, lat] = geometry.coordinates;
-          const marker = new window.google.maps.Marker({
-            position: { lat, lng },
-            map,
-            draggable: true,
-          });
-          handleOverlayToGeoJSON(marker, "MARKER");
-
-          if (properties?.radius) {
-            const circle = new window.google.maps.Circle({
-              center: { lat, lng },
-              radius: properties.radius,
-              fillColor: "#00FFFF",
-              fillOpacity: 0.3,
-              strokeWeight: 2,
-              editable: true,
-              draggable: true,
-              map,
-            });
-            handleOverlayToGeoJSON(circle, "CIRCLE");
-          }
-        } else if (geometry.type === "LineString") {
-          const path = geometry.coordinates.map(([lng, lat]) => ({ lat, lng }));
-          const polyline = new window.google.maps.Polyline({
-            path,
-            strokeColor: "#FF0000",
-            strokeWeight: 3,
-            editable: true,
-            draggable: true,
-            map,
-          });
-          handleOverlayToGeoJSON(polyline, "POLYLINE");
-        } else if (geometry.type === "Polygon") {
-          const paths = geometry.coordinates.map(ring =>
-            ring.map(([lng, lat]) => ({ lat, lng }))
-          );
-          const polygon = new window.google.maps.Polygon({
-            paths,
-            fillColor: "#00FF00",
-            fillOpacity: 0.3,
-            strokeWeight: 2,
-            editable: true,
-            draggable: true,
-            map,
-          });
-          handleOverlayToGeoJSON(polygon, "POLYGON");
-        }
-      });
-    }
-  }, [features, map]);
-
-  useEffect(() => {
-    if (initialPosition && map) {
-      map.setCenter(initialPosition);
-      map.setZoom(17);
-      if (!window.positionMarker) {
-        window.positionMarker = new window.google.maps.Marker({
-          map,
-          position: initialPosition,
-          title: "Ubicación manual",
-        });
-      } else {
-        window.positionMarker.setPosition(initialPosition);
-      }
-    }
-  }, [initialPosition, map]);
-
-  useEffect(() => {
     if (!window.google) {
       const script = document.createElement("script");
-      script.src = "https://maps.googleapis.com/maps/api/js?key=TU_API_KEY&libraries=drawing";
+      script.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyA_TMQ1qzW06reNAT9l-3Kn89omHwEdNGI&libraries=drawing";
       script.async = true;
       script.defer = true;
       script.onload = () => initMap();
@@ -257,10 +176,9 @@ const EditarGeoJson = ({ onData, initialPosition, geojsonData }) => {
   }, []);
 
   const initMap = () => {
-    const defaultPos = initialPosition || { lat: -34.6037, lng: -58.3816 };
     const mapInstance = new window.google.maps.Map(mapRef.current, {
-      center: defaultPos,
-      zoom: 12,
+      center: initialPosition || { lat: -34.6037, lng: -58.3816 },
+      zoom: 17,
     });
 
     const drawingManagerInstance = new window.google.maps.drawing.DrawingManager({
@@ -269,10 +187,11 @@ const EditarGeoJson = ({ onData, initialPosition, geojsonData }) => {
       drawingControlOptions: {
         position: window.google.maps.ControlPosition.TOP_CENTER,
         drawingModes: [
-          window.google.maps.drawing.OverlayType.MARKER,
-          window.google.maps.drawing.OverlayType.CIRCLE,
-          window.google.maps.drawing.OverlayType.RECTANGLE,
-          window.google.maps.drawing.OverlayType.POLYLINE,
+          "marker",
+          "circle",
+          "rectangle",
+          "polyline",
+          "polygon",
         ],
       },
       markerOptions: { draggable: true },
@@ -296,70 +215,97 @@ const EditarGeoJson = ({ onData, initialPosition, geojsonData }) => {
         editable: true,
         draggable: true,
       },
+      polygonOptions: {
+        fillColor: "#0000FF",
+        fillOpacity: 0.2,
+        strokeWeight: 2,
+        editable: true,
+        draggable: true,
+      },
     });
 
     drawingManagerInstance.setMap(mapInstance);
 
     window.google.maps.event.addListener(drawingManagerInstance, "overlaycomplete", (event) => {
       const overlay = event.overlay;
-      overlay.addListener("click", () => {
-        setSelectedOverlay(overlay);
-        if (deleteBtnRef.current) deleteBtnRef.current.style.display = "block";
-      });
+      const type = event.type.toUpperCase();
 
-      handleOverlayToGeoJSON(overlay, event.type);
+      const id = crypto.randomUUID();
+      overlay._featureId = id;
 
-      let geojsonFeature = null;
+      let geojson = null;
 
-      if (event.type === "POLYLINE") {
-        geojsonFeature = {
-          type: "Feature",
-          geometry: {
-            type: "LineString",
-            coordinates: overlay.getPath().getArray().map((latlng) => [latlng.lng(), latlng.lat()]),
-          },
-          properties: {},
-        };
-      } else if (event.type === "MARKER") {
-        geojsonFeature = {
-          type: "Feature",
-          geometry: {
-            type: "Point",
-            coordinates: [overlay.getPosition().lng(), overlay.getPosition().lat()],
-          },
-          properties: {},
-        };
-      } else if (event.type === "CIRCLE") {
-        geojsonFeature = {
-          type: "Feature",
-          geometry: {
-            type: "Point",
-            coordinates: [overlay.getCenter().lng(), overlay.getCenter().lat()],
-          },
-          properties: {
-            radius: overlay.getRadius(),
-          },
-        };
-      } else if (event.type === "RECTANGLE") {
-        const bounds = overlay.getBounds();
-        geojsonFeature = {
-          type: "Feature",
-          geometry: {
-            type: "Polygon",
-            coordinates: [[
-              [bounds.getSouthWest().lng(), bounds.getSouthWest().lat()],
-              [bounds.getNorthEast().lng(), bounds.getSouthWest().lat()],
-              [bounds.getNorthEast().lng(), bounds.getNorthEast().lat()],
-              [bounds.getSouthWest().lng(), bounds.getNorthEast().lat()],
-              [bounds.getSouthWest().lng(), bounds.getSouthWest().lat()],
-            ]],
-          },
-          properties: {},
-        };
+      switch (type) {
+        case "POLYLINE":
+          geojson = {
+            type: "Feature",
+            geometry: {
+              type: "LineString",
+              coordinates: overlay.getPath().getArray().map((latlng) => [latlng.lng(), latlng.lat()]),
+            },
+            properties: { id },
+          };
+          break;
+        case "MARKER":
+          geojson = {
+            type: "Feature",
+            geometry: {
+              type: "Point",
+              coordinates: [overlay.getPosition().lng(), overlay.getPosition().lat()],
+            },
+            properties: { id },
+          };
+          break;
+        case "CIRCLE":
+          geojson = {
+            type: "Feature",
+            geometry: {
+              type: "Point",
+              coordinates: [overlay.getCenter().lng(), overlay.getCenter().lat()],
+            },
+            properties: { id, radius: overlay.getRadius() },
+          };
+          break;
+        case "RECTANGLE":
+          const bounds = overlay.getBounds();
+          geojson = {
+            type: "Feature",
+            geometry: {
+              type: "Polygon",
+              coordinates: [[
+                [bounds.getSouthWest().lng(), bounds.getSouthWest().lat()],
+                [bounds.getNorthEast().lng(), bounds.getSouthWest().lat()],
+                [bounds.getNorthEast().lng(), bounds.getNorthEast().lat()],
+                [bounds.getSouthWest().lng(), bounds.getNorthEast().lat()],
+                [bounds.getSouthWest().lng(), bounds.getSouthWest().lat()],
+              ]],
+            },
+            properties: { id },
+          };
+          break;
+        case "POLYGON":
+          geojson = {
+            type: "Feature",
+            geometry: {
+              type: "Polygon",
+              coordinates: [
+                overlay.getPath().getArray().map((latlng) => [latlng.lng(), latlng.lat()]),
+              ],
+            },
+            properties: { id },
+          };
+          break;
+        default:
+          return;
       }
 
-      if (geojsonFeature) {
-        updateFeatures(geojsonFeature);
+      if (geojson) {
+        handleOverlayToGeoJSON(overlay, type);
+        updateGeoJson(geojson);
+        overlay.addListener("click", () => {
+          setSelectedOverlay(overlay);
+          if (deleteBtnRef.current) deleteBtnRef.current.style.display = "block";
+        });
       }
     });
 
@@ -373,20 +319,34 @@ const EditarGeoJson = ({ onData, initialPosition, geojsonData }) => {
   };
 
   const handleDelete = () => {
-    if (selectedOverlay) {
-      // Aquí podrías mejorar para eliminar también del estado local features,
-      // pero eso requeriría llevar referencias entre overlay y feature GeoJSON,
-      // que sería un paso extra. Por simplicidad:
-      selectedOverlay.setMap(null);
-      setSelectedOverlay(null);
-      if (deleteBtnRef.current) deleteBtnRef.current.style.display = "none";
-      // NOTA: Eliminar del estado features y llamar onData debería implementarse para sincronizar bien.
+    if (!selectedOverlay) return;
+
+    const id = selectedOverlay._featureId;
+    selectedOverlay.setMap(null);
+    setSelectedOverlay(null);
+    if (deleteBtnRef.current) deleteBtnRef.current.style.display = "none";
+
+    try {
+      let current = localGeojsonData ? JSON.parse(localGeojsonData) : { type: "FeatureCollection", features: [] };
+      let features = current.features.filter(f => f.properties?.id !== id);
+
+      const updated = {
+        type: "FeatureCollection",
+        features,
+      };
+
+      const jsonStr = JSON.stringify(updated);
+      setLocalGeojsonData(jsonStr);
+      onData?.(jsonStr);
+    } catch (e) {
+      console.error("Error al eliminar figura", e);
     }
   };
 
   return (
     <div style={{ height: "400px", width: "100%", position: "relative" }}>
       <div ref={mapRef} style={{ height: "100%", width: "100%" }}></div>
+
       <button
         ref={deleteBtnRef}
         onClick={handleDelete}
