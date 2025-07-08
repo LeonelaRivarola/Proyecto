@@ -9,6 +9,68 @@ const VerMapa = ({ onData, initialPosition, geojsonData, modoEdicion }) => {
     const [map, setMap] = useState(null);
     const [selectedOverlay, setSelectedOverlay] = useState(null);
 
+    const updateCircle = (circle) => {
+        const geojson = {
+            type: "Feature",
+            geometry: {
+                type: "Point",
+                coordinates: [circle.getCenter().lng(), circle.getCenter().lat()],
+            },
+            properties: {
+                radius: circle.getRadius(),
+            },
+        };
+        onData && onData(JSON.stringify(geojson));
+    };
+
+    const updatePolyline = (polyline) => {
+        const path = polyline.getPath().getArray().map(coord => [coord.lng(), coord.lat()]);
+        const geojson = {
+            type: "Feature",
+            geometry: {
+                type: "LineString",
+                coordinates: path,
+            },
+            properties: {},
+        };
+        onData && onData(JSON.stringify(geojson));
+    };
+
+    const updateRectangle = (rectangle) => {
+        const bounds = rectangle.getBounds();
+        const ne = bounds.getNorthEast();
+        const sw = bounds.getSouthWest();
+        const geojson = {
+            type: "Feature",
+            geometry: {
+                type: "Polygon",
+                coordinates: [[
+                    [sw.lng(), sw.lat()],
+                    [ne.lng(), sw.lat()],
+                    [ne.lng(), ne.lat()],
+                    [sw.lng(), ne.lat()],
+                    [sw.lng(), sw.lat()],
+                ]],
+            },
+            properties: {},
+        };
+        onData && onData(JSON.stringify(geojson));
+    };
+
+    const updatePolygon = (polygon) => {
+        const path = polygon.getPath().getArray().map(coord => [coord.lng(), coord.lat()]);
+        const geojson = {
+            type: "Feature",
+            geometry: {
+                type: "Polygon",
+                coordinates: [path],
+            },
+            properties: {},
+        };
+        onData && onData(JSON.stringify(geojson));
+    };
+
+
     const handleOverlayToGeoJSON = (overlay, type) => {
         if (type === "CIRCLE") {
             overlay.addListener("center_changed", () => updateCircle(overlay));
