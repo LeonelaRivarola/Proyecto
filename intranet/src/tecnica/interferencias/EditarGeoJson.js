@@ -4,17 +4,13 @@ const EditarGeoJson = ({ onData, initialPosition, geojsonData }) => {
     const mapRef = useRef(null);
     const deleteBtnRef = useRef(null);
 
+    const [localGeojson, setLocalGeojson] = useState(geojsonData);
+
     const [map, setMap] = useState(null);
     const [drawingManager, setDrawingManager] = useState(null);
     const [selectedOverlay, setSelectedOverlay] = useState(null);
-    const [localGeojson, setLocalGeojson] = useState(geojsonData);
 
-    // Sync localGeojson with prop
-    useEffect(() => {
-        setLocalGeojson(geojsonData);
-    }, [geojsonData]);
-
-    // Debounce para evitar múltiples llamadas
+    // Debounce para evitar múltiples llamadas seguidas a onData
     let debounceTimer = useRef(null);
     const debounceUpdate = (callback, delay = 500) => {
         clearTimeout(debounceTimer.current);
@@ -23,35 +19,168 @@ const EditarGeoJson = ({ onData, initialPosition, geojsonData }) => {
         }, delay);
     };
 
-    const addFeatureToGeoJSON = (feature) => {
-        try {
-            let current = localGeojson ? JSON.parse(localGeojson) : null;
-            let features = [];
+    const updateCircle = (circle) => {
+        const center = circle.getCenter();
+        const radius = circle.getRadius();
+        const geojson = {
+            type: "Feature",
+            geometry: {
+                type: "Point",
+                coordinates: [center.lng(), center.lat()],
+            },
+            properties: { radius },
+        };
+        if (onData) {
+            try {
+                let current = geojsonData ? JSON.parse(geojsonData) : null;
+                let features = [];
 
-            if (current && current.type === "FeatureCollection") {
-                features = current.features;
-            } else if (current && current.type === "Feature") {
-                features = [current];
+                if (current && current.type === "FeatureCollection") {
+                    features = current.features;
+                } else if (current && current.type === "Feature") {
+                    features = [current];
+                }
+
+                features.push(geojson);
+
+                const updated = {
+                    type: "FeatureCollection",
+                    features,
+                };
+
+                onData(JSON.stringify(updated));
+            } catch (e) {
+                onData(JSON.stringify({
+                    type: "FeatureCollection",
+                    features: [geojson],
+                }));
             }
+        }
+    };
 
-            features.push(feature);
+    const updatePolyline = (polyline) => {
+        const path = polyline.getPath().getArray().map((latlng) => [
+            latlng.lng(),
+            latlng.lat(),
+        ]);
+        const geojson = {
+            type: "Feature",
+            geometry: {
+                type: "LineString",
+                coordinates: path,
+            },
+            properties: {},
+        };
+        if (onData) {
+            try {
+                let current = geojsonData ? JSON.parse(geojsonData) : null;
+                let features = [];
 
-            const updatedCollection = {
-                type: "FeatureCollection",
-                features,
-            };
+                if (current && current.type === "FeatureCollection") {
+                    features = current.features;
+                } else if (current && current.type === "Feature") {
+                    features = [current];
+                }
 
-            const updatedJSON = JSON.stringify(updatedCollection);
-            setLocalGeojson(updatedJSON);
-            onData && onData(updatedJSON);
-        } catch (e) {
-            const fallback = {
-                type: "FeatureCollection",
-                features: [feature],
-            };
-            const fallbackJSON = JSON.stringify(fallback);
-            setLocalGeojson(fallbackJSON);
-            onData && onData(fallbackJSON);
+                features.push(geojson);
+
+                const updated = {
+                    type: "FeatureCollection",
+                    features,
+                };
+
+                onData(JSON.stringify(updated));
+            } catch (e) {
+                onData(JSON.stringify({
+                    type: "FeatureCollection",
+                    features: [geojson],
+                }));
+            }
+        }
+    };
+
+    const updateRectangle = (rectangle) => {
+        const bounds = rectangle.getBounds();
+        const geojson = {
+            type: "Feature",
+            geometry: {
+                type: "Polygon",
+                coordinates: [[
+                    [bounds.getSouthWest().lng(), bounds.getSouthWest().lat()],
+                    [bounds.getNorthEast().lng(), bounds.getSouthWest().lat()],
+                    [bounds.getNorthEast().lng(), bounds.getNorthEast().lat()],
+                    [bounds.getSouthWest().lng(), bounds.getNorthEast().lat()],
+                    [bounds.getSouthWest().lng(), bounds.getSouthWest().lat()],
+                ]],
+            },
+            properties: {},
+        };
+        if (onData) {
+            try {
+                let current = geojsonData ? JSON.parse(geojsonData) : null;
+                let features = [];
+
+                if (current && current.type === "FeatureCollection") {
+                    features = current.features;
+                } else if (current && current.type === "Feature") {
+                    features = [current];
+                }
+
+                features.push(geojson);
+
+                const updated = {
+                    type: "FeatureCollection",
+                    features,
+                };
+
+                onData(JSON.stringify(updated));
+            } catch (e) {
+                onData(JSON.stringify({
+                    type: "FeatureCollection",
+                    features: [geojson],
+                }));
+            }
+        }
+    };
+
+    const updatePolygon = (polygon) => {
+        const coords = [polygon.getPath().getArray().map((latlng) => [
+            latlng.lng(),
+            latlng.lat(),
+        ])];
+        const geojson = {
+            type: "Feature",
+            geometry: {
+                type: "Polygon",
+                coordinates: coords,
+            },
+            properties: {},
+        };
+        if (onData) {
+            try {
+                let current = geojsonData ? JSON.parse(geojsonData) : null;
+                let features = [];
+
+                if (current && current.type === "FeatureCollection") {
+                    features = current.features;
+                } else if (current && current.type === "Feature") {
+                    features = [current];
+                }
+
+                features.push(geojson);
+
+                const updated = {
+                    type: "FeatureCollection",
+                    features,
+                };
+
+                onData(JSON.stringify(updated));
+            } catch (e) {
+                onData(JSON.stringify({
+                    type: "FeatureCollection",
+                    features: [geojson],
+                }));
+            }
         }
     };
 
@@ -87,7 +216,7 @@ const EditarGeoJson = ({ onData, initialPosition, geojsonData }) => {
         } else if (type === "MARKER") {
             overlay.addListener("dragend", () => {
                 const pos = overlay.getPosition();
-                const feature = {
+                const geojson = {
                     type: "Feature",
                     geometry: {
                         type: "Point",
@@ -95,75 +224,97 @@ const EditarGeoJson = ({ onData, initialPosition, geojsonData }) => {
                     },
                     properties: {},
                 };
-                addFeatureToGeoJSON(feature);
+                onData && onData(JSON.stringify(geojson));
             });
         }
     };
 
-    const updateCircle = (circle) => {
-        const center = circle.getCenter();
-        const radius = circle.getRadius();
-        const feature = {
-            type: "Feature",
-            geometry: {
-                type: "Point",
-                coordinates: [center.lng(), center.lat()],
-            },
-            properties: { radius },
-        };
-        addFeatureToGeoJSON(feature);
-    };
+    useEffect(() => {
+        if (map && geojsonData) {
+            try {
+                const feature = JSON.parse(geojsonData);
 
-    const updatePolyline = (polyline) => {
-        const path = polyline.getPath().getArray().map((latlng) => [
-            latlng.lng(),
-            latlng.lat(),
-        ]);
-        const feature = {
-            type: "Feature",
-            geometry: {
-                type: "LineString",
-                coordinates: path,
-            },
-            properties: {},
-        };
-        addFeatureToGeoJSON(feature);
-    };
+                const drawFeature = (feature) => {
+                    const { geometry, properties } = feature;
 
-    const updateRectangle = (rectangle) => {
-        const bounds = rectangle.getBounds();
-        const feature = {
-            type: "Feature",
-            geometry: {
-                type: "Polygon",
-                coordinates: [[
-                    [bounds.getSouthWest().lng(), bounds.getSouthWest().lat()],
-                    [bounds.getNorthEast().lng(), bounds.getSouthWest().lat()],
-                    [bounds.getNorthEast().lng(), bounds.getNorthEast().lat()],
-                    [bounds.getSouthWest().lng(), bounds.getNorthEast().lat()],
-                    [bounds.getSouthWest().lng(), bounds.getSouthWest().lat()],
-                ]],
-            },
-            properties: {},
-        };
-        addFeatureToGeoJSON(feature);
-    };
+                    if (geometry.type === "Point") {
+                        const [lng, lat] = geometry.coordinates;
+                        const marker = new window.google.maps.Marker({
+                            position: { lat, lng },
+                            map,
+                            draggable: true,
+                        });
+                        handleOverlayToGeoJSON(marker, "MARKER");
 
-    const updatePolygon = (polygon) => {
-        const coords = [polygon.getPath().getArray().map((latlng) => [
-            latlng.lng(),
-            latlng.lat(),
-        ])];
-        const feature = {
-            type: "Feature",
-            geometry: {
-                type: "Polygon",
-                coordinates: coords,
-            },
-            properties: {},
-        };
-        addFeatureToGeoJSON(feature);
-    };
+                        if (properties?.radius) {
+                            const circle = new window.google.maps.Circle({
+                                center: { lat, lng },
+                                radius: properties.radius,
+                                fillColor: "#00FFFF",
+                                fillOpacity: 0.3,
+                                strokeWeight: 2,
+                                editable: true,
+                                draggable: true,
+                                map,
+                            });
+                            handleOverlayToGeoJSON(circle, "CIRCLE");
+                        }
+
+                    } else if (geometry.type === "LineString") {
+                        const path = geometry.coordinates.map(([lng, lat]) => ({ lat, lng }));
+                        const polyline = new window.google.maps.Polyline({
+                            path,
+                            strokeColor: "#FF0000",
+                            strokeWeight: 3,
+                            editable: true,
+                            draggable: true,
+                            map,
+                        });
+                        handleOverlayToGeoJSON(polyline, "POLYLINE");
+
+                    } else if (geometry.type === "Polygon") {
+                        const paths = geometry.coordinates.map(ring =>
+                            ring.map(([lng, lat]) => ({ lat, lng }))
+                        );
+                        const polygon = new window.google.maps.Polygon({
+                            paths,
+                            fillColor: "#00FF00",
+                            fillOpacity: 0.3,
+                            strokeWeight: 2,
+                            editable: true,
+                            draggable: true,
+                            map,
+                        });
+                        handleOverlayToGeoJSON(polygon, "POLYGON");
+                    }
+                };
+
+                if (feature.type === "Feature") {
+                    drawFeature(feature);
+                } else if (feature.type === "FeatureCollection") {
+                    feature.features.forEach(drawFeature);
+                }
+            } catch (e) {
+                console.error("Error al parsear GeoJSON (desde useEffect):", e);
+            }
+        }
+    }, [geojsonData, map]);
+
+    useEffect(() => {
+        if (initialPosition && map) {
+            map.setCenter(initialPosition);
+            map.setZoom(17);
+            if (!window.positionMarker) {
+                window.positionMarker = new window.google.maps.Marker({
+                    map,
+                    position: initialPosition,
+                    title: "Ubicación manual",
+                });
+            } else {
+                window.positionMarker.setPosition(initialPosition);
+            }
+        }
+    }, [initialPosition, map]);
 
     useEffect(() => {
         if (!window.google) {
@@ -184,12 +335,14 @@ const EditarGeoJson = ({ onData, initialPosition, geojsonData }) => {
     }, []);
 
     const initMap = () => {
+        const defaultPos = initialPosition || { lat: -34.6037, lng: -58.3816 };
         const mapInstance = new window.google.maps.Map(mapRef.current, {
-            center: initialPosition || { lat: -34.6037, lng: -58.3816 },
-            zoom: 15,
+            center: defaultPos,
+            zoom: 12,
         });
 
         const drawingManagerInstance = new window.google.maps.drawing.DrawingManager({
+            drawingMode: null,
             drawingControl: true,
             drawingControlOptions: {
                 position: window.google.maps.ControlPosition.TOP_CENTER,
@@ -198,7 +351,6 @@ const EditarGeoJson = ({ onData, initialPosition, geojsonData }) => {
                     window.google.maps.drawing.OverlayType.CIRCLE,
                     window.google.maps.drawing.OverlayType.RECTANGLE,
                     window.google.maps.drawing.OverlayType.POLYLINE,
-                    window.google.maps.drawing.OverlayType.POLYGON,
                 ],
             },
             markerOptions: { draggable: true },
@@ -222,20 +374,12 @@ const EditarGeoJson = ({ onData, initialPosition, geojsonData }) => {
                 editable: true,
                 draggable: true,
             },
-            polygonOptions: {
-                fillColor: "#FF00FF",
-                fillOpacity: 0.3,
-                strokeWeight: 2,
-                editable: true,
-                draggable: true,
-            },
         });
 
         drawingManagerInstance.setMap(mapInstance);
 
         window.google.maps.event.addListener(drawingManagerInstance, "overlaycomplete", (event) => {
             const overlay = event.overlay;
-
             overlay.addListener("click", () => {
                 setSelectedOverlay(overlay);
                 if (deleteBtnRef.current) deleteBtnRef.current.style.display = "block";
@@ -243,31 +387,40 @@ const EditarGeoJson = ({ onData, initialPosition, geojsonData }) => {
 
             handleOverlayToGeoJSON(overlay, event.type);
 
-            // Convert to GeoJSON manually
-            let feature = null;
-            if (event.type === "MARKER") {
-                const pos = overlay.getPosition();
-                feature = {
+            let geojsonFeature = null;
+
+            if (event.type === "POLYLINE") {
+                geojsonFeature = {
+                    type: "Feature",
+                    geometry: {
+                        type: "LineString",
+                        coordinates: overlay.getPath().getArray().map((latlng) => [latlng.lng(), latlng.lat()]),
+                    },
+                    properties: {},
+                };
+            } else if (event.type === "MARKER") {
+                geojsonFeature = {
                     type: "Feature",
                     geometry: {
                         type: "Point",
-                        coordinates: [pos.lng(), pos.lat()],
+                        coordinates: [overlay.getPosition().lng(), overlay.getPosition().lat()],
                     },
                     properties: {},
                 };
             } else if (event.type === "CIRCLE") {
-                const center = overlay.getCenter();
-                feature = {
+                geojsonFeature = {
                     type: "Feature",
                     geometry: {
                         type: "Point",
-                        coordinates: [center.lng(), center.lat()],
+                        coordinates: [overlay.getCenter().lng(), overlay.getCenter().lat()],
                     },
-                    properties: { radius: overlay.getRadius() },
+                    properties: {
+                        radius: overlay.getRadius(),
+                    },
                 };
             } else if (event.type === "RECTANGLE") {
                 const bounds = overlay.getBounds();
-                feature = {
+                geojsonFeature = {
                     type: "Feature",
                     geometry: {
                         type: "Polygon",
@@ -281,29 +434,41 @@ const EditarGeoJson = ({ onData, initialPosition, geojsonData }) => {
                     },
                     properties: {},
                 };
-            } else if (event.type === "POLYLINE") {
-                const path = overlay.getPath().getArray().map((latlng) => [latlng.lng(), latlng.lat()]);
-                feature = {
-                    type: "Feature",
-                    geometry: {
-                        type: "LineString",
-                        coordinates: path,
-                    },
-                    properties: {},
-                };
-            } else if (event.type === "POLYGON") {
-                const coords = [overlay.getPath().getArray().map((latlng) => [latlng.lng(), latlng.lat()])];
-                feature = {
-                    type: "Feature",
-                    geometry: {
-                        type: "Polygon",
-                        coordinates: coords,
-                    },
-                    properties: {},
-                };
             }
 
-            if (feature) addFeatureToGeoJSON(feature);
+            if (geojsonFeature && onData) {
+
+                try {
+                    let current = geojsonData ? JSON.parse(geojsonData) : null;
+                    let features = [];
+
+                    if (current && current.type === "FeatureCollection") {
+                        features = current.features;
+                    } else if (current && current.type === "Feature") {
+                        features = [current];
+                    }
+
+                    features.push(geojsonFeature);
+
+                    const newCollection = {
+                        type: "FeatureCollection",
+                        features,
+                    };
+
+                    onData(JSON.stringify(newCollection));
+                } catch (e) {
+                    const fallback = {
+                        type: "FeatureCollection",
+                        features: [geojsonFeature],
+                    };
+                    onData(JSON.stringify(fallback));
+                }
+            }
+        });
+
+        mapInstance.addListener("click", () => {
+            setSelectedOverlay(null);
+            if (deleteBtnRef.current) deleteBtnRef.current.style.display = "none";
         });
 
         setMap(mapInstance);
@@ -315,13 +480,12 @@ const EditarGeoJson = ({ onData, initialPosition, geojsonData }) => {
             selectedOverlay.setMap(null);
             setSelectedOverlay(null);
             if (deleteBtnRef.current) deleteBtnRef.current.style.display = "none";
-            // Aquí podrías también quitar del GeoJSON si tenés identificadores.
         }
     };
 
     return (
-        <div style={{ height: "500px", width: "100%", position: "relative" }}>
-            <div ref={mapRef} style={{ height: "100%" }} />
+        <div style={{ height: "400px", width: "100%", position: "relative" }}>
+            <div ref={mapRef} style={{ height: "100%", width: "100%" }}></div>
             <button
                 ref={deleteBtnRef}
                 onClick={handleDelete}
