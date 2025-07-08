@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router()
 const authController = require('../controllers/authController');
-const solicitudController = require('../controllers/solicitudController');
+const solicitudController = require('../controllers/ObrasElec/SolicitudController');
 const verificarToken = require('../middlewares/authMiddleware');
-const tipoObraController = require('../controllers/tipoObraController');
+const tipoObraController = require('../controllers/ObrasElec/TipoObraController');
 // const presupuestoController = require('../controllers/presupuestoController');
-const interferenciaController = require('../controllers/interferenciaController');
-const emailController = require('../controllers/emailController');
+const interferenciaController = require('../controllers/InterferenciaController');
+const emailController = require('../controllers/ObrasElec/EmailController');
 //subir archivo pdf
 const multer = require('multer');
 const path = require('path');
@@ -65,7 +65,7 @@ router.get('tecnica/obrasElectricas/emails/mostrar/:id', verificarToken, emailCo
 //interferencias
 router.get('/tecnica/interferencia/Interferencias', verificarToken, interferenciaController.index);
 //para el path subir archivo pdf
-router.post('/tecnica/interferencia/nueva', verificarToken, upload.single('path'), async (req, res) => {
+router.post('/tecnica/interferencia/nueva', upload.single('path'), async (req, res) => { //el verificar lo saco porque lo puede usar cualquier usuario externo
     try {
         const filePath = req.file?.filename || null;
         req.body = {

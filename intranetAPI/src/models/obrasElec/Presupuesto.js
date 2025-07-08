@@ -1,4 +1,4 @@
-const { connectToAlum, sql } = require('../config/db'); // conexión a la base de datos
+const { connectToAlum, sql } = require('../../config/db'); // conexión a la base de datos
 const dayjs = require('dayjs');
 
 module.exports = {

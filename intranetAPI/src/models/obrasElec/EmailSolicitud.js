@@ -1,4 +1,4 @@
-const db = require('../config/db');
+const db = require('../../config/db');
 
 const getPaginatedEmails = async (limit, offset) => {
   const [rows] = await db.query(
