@@ -18,7 +18,6 @@ import { useNavigate } from 'react-router-dom';
 import { API_URL } from '../../config';
 import { Send, Cancel } from '@mui/icons-material';
 import MapaInterferencia from './MapaInterferencia';
-import CargarMapa from './mapas/CargarMapa';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 
 const NuevaInterferencia = () => {
