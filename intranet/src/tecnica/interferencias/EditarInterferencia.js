@@ -39,7 +39,7 @@ const EditarInterferencia = () => {
     longitud: "",
     desde: "",
     hasta: "",
-    mapa: "",
+    mapa: null,
     path: ""
   });
 
@@ -98,7 +98,7 @@ const EditarInterferencia = () => {
           longitud: data.Longitud || '',
           desde: data.Desde ? data.Desde.split('T')[0] : '',
           hasta: data.Hasta ? data.Hasta.split('T')[0] : '',
-          mapa: data.Mapa || '',
+          mapa: data.Mapa && data.Mapa !== '' ? data.Mapa : null,
           path: data.Path || ''
         });
       } catch (err) {
