@@ -57,6 +57,10 @@ const Interferencias = () => {
         setDialogOpen(true);
     };
 
+    const handleAsignar = (interferencia) => {
+
+    };
+
     const confirmarEliminacion = async () => {
         if (!interferenciaAEliminar) return;
 
