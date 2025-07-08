@@ -22,6 +22,7 @@ import dayjs from 'dayjs';
 import { useNavigate } from 'react-router-dom';
 import { Outlet } from 'react-router-dom';
 import EditDocumentIcon from '@mui/icons-material/EditDocument';
+import SummarizeIcon from '@mui/icons-material/Summarize';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 const Interferencias = () => {
@@ -129,7 +130,7 @@ const Interferencias = () => {
                     <Table size="small" sx={{ minWidth: '100%', tableLayout: 'auto' }}>
                         <TableHead>
                             <TableRow>
-                                {['Solicitud', 'Empresa / Particular', 'Dirección', 'Estado', 'Fecha de Solicitud', 'Fecha de Inicio', 'Fecha de Fin', 'Localidad', 'Editar', 'Eliminar'].map(header => (
+                                {['Solicitud', 'Empresa / Particular', 'Dirección', 'Estado', 'Fecha de Solicitud', 'Fecha de Inicio', 'Fecha de Fin', 'Localidad', 'Editar', 'Eliminar', 'Asignar'].map(header => (
                                     <TableCell
                                         key={header}
                                         sx={{
@@ -201,6 +202,27 @@ const Interferencias = () => {
                                                         }}
                                                     >
                                                         <DeleteIcon fontSize="xl" />
+                                                    </IconButton>
+                                                </Tooltip>
+                                            </Box>
+                                        </TableCell>
+                                        <TableCell>
+                                            <Box display="flex" gap={1.5}>
+                                                <Tooltip title="Asignar" arrow>
+                                                    <IconButton
+                                                        onClick={() => handleAsignar(interferencia)}
+                                                        size="xl"
+                                                        sx={{
+                                                            backgroundColor: '#43a047',
+                                                            color: 'white',
+                                                            '&:hover': {
+                                                                backgroundColor: '#357a38',
+                                                            },
+                                                            borderRadius: 2,
+                                                            padding: '4px'
+                                                        }}
+                                                    >
+                                                        <SummarizeIcon fontSize="xl" />
                                                     </IconButton>
                                                 </Tooltip>
                                             </Box>
