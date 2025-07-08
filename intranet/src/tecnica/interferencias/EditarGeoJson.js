@@ -39,7 +39,7 @@ const EditarGeoJson = ({ onData, initialPosition, geojsonData }) => {
                     features = [current];
                 }
 
-                features.push(newFeature);
+                features.push(geojson);
 
                 const updated = {
                     type: "FeatureCollection",
@@ -50,7 +50,7 @@ const EditarGeoJson = ({ onData, initialPosition, geojsonData }) => {
             } catch (e) {
                 onData(JSON.stringify({
                     type: "FeatureCollection",
-                    features: [newFeature],
+                    features: [geojson],
                 }));
             }
         }
@@ -80,7 +80,7 @@ const EditarGeoJson = ({ onData, initialPosition, geojsonData }) => {
                     features = [current];
                 }
 
-                features.push(newFeature);
+                features.push(geojson);
 
                 const updated = {
                     type: "FeatureCollection",
@@ -91,7 +91,7 @@ const EditarGeoJson = ({ onData, initialPosition, geojsonData }) => {
             } catch (e) {
                 onData(JSON.stringify({
                     type: "FeatureCollection",
-                    features: [newFeature],
+                    features: [geojson],
                 }));
             }
         }
@@ -124,7 +124,7 @@ const EditarGeoJson = ({ onData, initialPosition, geojsonData }) => {
                     features = [current];
                 }
 
-                features.push(newFeature);
+                features.push(geojson);
 
                 const updated = {
                     type: "FeatureCollection",
@@ -135,7 +135,7 @@ const EditarGeoJson = ({ onData, initialPosition, geojsonData }) => {
             } catch (e) {
                 onData(JSON.stringify({
                     type: "FeatureCollection",
-                    features: [newFeature],
+                    features: [geojson],
                 }));
             }
         }
@@ -165,7 +165,7 @@ const EditarGeoJson = ({ onData, initialPosition, geojsonData }) => {
                     features = [current];
                 }
 
-                features.push(newFeature);
+                features.push(geojson);
 
                 const updated = {
                     type: "FeatureCollection",
@@ -176,7 +176,7 @@ const EditarGeoJson = ({ onData, initialPosition, geojsonData }) => {
             } catch (e) {
                 onData(JSON.stringify({
                     type: "FeatureCollection",
-                    features: [newFeature],
+                    features: [geojson],
                 }));
             }
         }
