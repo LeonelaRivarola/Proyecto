@@ -28,7 +28,32 @@ const EditarGeoJson = ({ onData, initialPosition, geojsonData }) => {
             },
             properties: { radius },
         };
-        onData && onData(JSON.stringify(geojson));
+        if (onData) {
+            try {
+                let current = geojsonData ? JSON.parse(geojsonData) : null;
+                let features = [];
+
+                if (current && current.type === "FeatureCollection") {
+                    features = current.features;
+                } else if (current && current.type === "Feature") {
+                    features = [current];
+                }
+
+                features.push(newFeature);
+
+                const updated = {
+                    type: "FeatureCollection",
+                    features,
+                };
+
+                onData(JSON.stringify(updated));
+            } catch (e) {
+                onData(JSON.stringify({
+                    type: "FeatureCollection",
+                    features: [newFeature],
+                }));
+            }
+        }
     };
 
     const updatePolyline = (polyline) => {
@@ -44,7 +69,32 @@ const EditarGeoJson = ({ onData, initialPosition, geojsonData }) => {
             },
             properties: {},
         };
-        onData && onData(JSON.stringify(geojson));
+        if (onData) {
+            try {
+                let current = geojsonData ? JSON.parse(geojsonData) : null;
+                let features = [];
+
+                if (current && current.type === "FeatureCollection") {
+                    features = current.features;
+                } else if (current && current.type === "Feature") {
+                    features = [current];
+                }
+
+                features.push(newFeature);
+
+                const updated = {
+                    type: "FeatureCollection",
+                    features,
+                };
+
+                onData(JSON.stringify(updated));
+            } catch (e) {
+                onData(JSON.stringify({
+                    type: "FeatureCollection",
+                    features: [newFeature],
+                }));
+            }
+        }
     };
 
     const updateRectangle = (rectangle) => {
@@ -63,7 +113,32 @@ const EditarGeoJson = ({ onData, initialPosition, geojsonData }) => {
             },
             properties: {},
         };
-        onData && onData(JSON.stringify(geojson));
+        if (onData) {
+            try {
+                let current = geojsonData ? JSON.parse(geojsonData) : null;
+                let features = [];
+
+                if (current && current.type === "FeatureCollection") {
+                    features = current.features;
+                } else if (current && current.type === "Feature") {
+                    features = [current];
+                }
+
+                features.push(newFeature);
+
+                const updated = {
+                    type: "FeatureCollection",
+                    features,
+                };
+
+                onData(JSON.stringify(updated));
+            } catch (e) {
+                onData(JSON.stringify({
+                    type: "FeatureCollection",
+                    features: [newFeature],
+                }));
+            }
+        }
     };
 
     const updatePolygon = (polygon) => {
@@ -79,7 +154,32 @@ const EditarGeoJson = ({ onData, initialPosition, geojsonData }) => {
             },
             properties: {},
         };
-        onData && onData(JSON.stringify(geojson));
+        if (onData) {
+            try {
+                let current = geojsonData ? JSON.parse(geojsonData) : null;
+                let features = [];
+
+                if (current && current.type === "FeatureCollection") {
+                    features = current.features;
+                } else if (current && current.type === "Feature") {
+                    features = [current];
+                }
+
+                features.push(newFeature);
+
+                const updated = {
+                    type: "FeatureCollection",
+                    features,
+                };
+
+                onData(JSON.stringify(updated));
+            } catch (e) {
+                onData(JSON.stringify({
+                    type: "FeatureCollection",
+                    features: [newFeature],
+                }));
+            }
+        }
     };
 
     const handleOverlayToGeoJSON = (overlay, type) => {
