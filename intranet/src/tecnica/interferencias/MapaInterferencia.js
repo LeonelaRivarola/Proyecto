@@ -101,6 +101,8 @@ const MapaInterferencia = ({ onData, initialPosition, geojsonData }) => {
     }
   };
 
+  /*
+
   useEffect(() => {
     if (map && geojsonData) {
       try {
@@ -174,6 +176,7 @@ const MapaInterferencia = ({ onData, initialPosition, geojsonData }) => {
     }
   }, [geojsonData, map]);
 
+  */
 
   useEffect(() => {
     if (initialPosition && map) {

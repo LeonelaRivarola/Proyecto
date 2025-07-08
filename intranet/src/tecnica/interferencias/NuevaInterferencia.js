@@ -231,7 +231,7 @@ const NuevaInterferencia = () => {
                   <Grid container spacing={2}>
                     <Grid item xs={12}>
                       <Box sx={{ width: '900px', height: 400 }}>
-                        <CargarMapa
+                        <MapaInterferencia
                         onData={(data) => setFormData(prev => ({ ...prev, mapa: data }))}
                         initialPosition={
                           formData.latitud && formData.longitud
