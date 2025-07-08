@@ -238,7 +238,7 @@ const EditarGeoJson = ({ onData, initialPosition, geojsonData }) => {
 
             overlay.addListener("click", () => {
                 setSelectedOverlay(overlay);
-                if (deleteBtnRef.current) deleteBtnRefRef.current.style.display = "block";
+                if (deleteBtnRef.current) deleteBtnRef.current.style.display = "block";
             });
 
             handleOverlayToGeoJSON(overlay, event.type);
