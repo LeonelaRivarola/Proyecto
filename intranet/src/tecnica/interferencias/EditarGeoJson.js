@@ -122,25 +122,7 @@ const EditarGeoJson = ({ onData, initialPosition, geojsonData }) => {
                     },
                     properties: {},
                 };
-                if (onData) {
-                    let collection = { type: "FeatureCollection", features: [] };
-                    try {
-                        if (geojsonData) {
-                            const parsed = JSON.parse(geojsonData);
-                            if (parsed.type === "FeatureCollection") {
-                                collection = parsed;
-                            } else if (parsed.type === "Feature") {
-                                collection.features.push(parsed);
-                            }
-                        }
-                    } catch (e) {
-                        console.warn("GeoJSON mal formado, se inicia colección nueva");
-                    }
-
-                    collection.features.push(geojsonFeature);
-                    onData(JSON.stringify(collection));
-                }
-
+                onData && onData(JSON.stringify(geojson));
             });
         }
     };
@@ -304,6 +286,7 @@ const EditarGeoJson = ({ onData, initialPosition, geojsonData }) => {
             handleOverlayToGeoJSON(overlay, event.type);
 
             let geojsonFeature = null;
+
             if (event.type === "POLYLINE") {
                 geojsonFeature = {
                     type: "Feature",
@@ -352,7 +335,32 @@ const EditarGeoJson = ({ onData, initialPosition, geojsonData }) => {
             }
 
             if (geojsonFeature && onData) {
-                onData(JSON.stringify(geojsonFeature));
+
+                try {
+                    let current = geojsonData ? JSON.parse(geojsonData) : null;
+                    let features = [];
+
+                    if (current && current.type === "FeatureCollection") {
+                        features = current.features;
+                    } else if (current && current.type === "Feature") {
+                        features = [current];
+                    }
+
+                    features.push(geojsonFeature);
+
+                    const newCollection = {
+                        type: "FeatureCollection",
+                        features,
+                    };
+
+                    onData(JSON.stringify(newCollection));
+                } catch (e) {
+                    const fallback = {
+                        type: "FeatureCollection",
+                        features: [geojsonFeature],
+                    };
+                    onData(JSON.stringify(fallback));
+                }
             }
         });
 
