@@ -75,7 +75,13 @@ const EditarInterferencia = () => {
         });
         const data = await res.json();
 
-        const localidadEncontrada = localidades.find(loc => loc.LOC_DESCRIPCION === data.Localidad);
+        const normalizar = (str) =>
+          str?.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
+
+        const localidadEncontrada = localidades.find(loc =>
+          normalizar(loc.LOC_DESCRIPCION) === normalizar(data.Localidad)
+        );
+
         const localidadId = localidadEncontrada ? localidadEncontrada.LOC_ID : null;
 
         console.log(data.Mapa);
