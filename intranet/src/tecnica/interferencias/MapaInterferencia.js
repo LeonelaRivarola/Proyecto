@@ -1,7 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 
-// ANDA PERO AL EDITAR SE REPITE //
-
 const MapaInterferencia = ({ onData, initialPosition, geojsonData }) => {
   const mapRef = useRef(null);
   const deleteBtnRef = useRef(null);
