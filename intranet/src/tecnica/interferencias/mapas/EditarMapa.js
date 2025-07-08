@@ -2,70 +2,84 @@ import { useEffect } from "react";
 
 const EditarMapa = ({ map, geojsonData, onData, handleOverlayToGeoJSON }) => {
     useEffect(() => {
-        if (map && geojsonData) {
-            try {
-                const feature = JSON.parse(geojsonData);
+        if (!map || !geojsonData) return;
 
-                const drawFeature = (feature) => {
-                    const { geometry, properties } = feature;
+        // Evita redibujar si ya fueron cargadas
+        if (map.__figurasCargadas) return;
+        map.__figurasCargadas = true;
 
-                    if (geometry.type === "Point") {
-                        const [lng, lat] = geometry.coordinates;
-                        const marker = new window.google.maps.Marker({
-                            position: { lat, lng },
-                            map,
-                            draggable: true,
-                        });
-                        handleOverlayToGeoJSON(marker, "MARKER");
+        try {
+            const feature = JSON.parse(geojsonData);
 
-                        if (properties?.radius) {
-                            const circle = new window.google.maps.Circle({
-                                center: { lat, lng },
-                                radius: properties.radius,
-                                map,
-                                editable: true,
-                                draggable: true,
-                            });
-                            handleOverlayToGeoJSON(circle, "CIRCLE");
-                        }
+            const drawFeature = (feature) => {
+                const { geometry, properties } = feature;
 
-                    } else if (geometry.type === "LineString") {
-                        const path = geometry.coordinates.map(([lng, lat]) => ({ lat, lng }));
-                        const polyline = new window.google.maps.Polyline({
-                            path,
-                            map,
+                if (geometry.type === "Point") {
+                    const [lng, lat] = geometry.coordinates;
+                    const marker = new window.google.maps.Marker({
+                        position: { lat, lng },
+                        map,
+                        draggable: true,
+                        title: "Punto guardado",
+                    });
+                    handleOverlayToGeoJSON(marker, "MARKER");
+
+                    if (properties && properties.radius) {
+                        const circle = new window.google.maps.Circle({
+                            center: { lat, lng },
+                            radius: properties.radius,
+                            fillColor: "#00FFFF",
+                            fillOpacity: 0.3,
+                            strokeWeight: 2,
                             editable: true,
                             draggable: true,
-                        });
-                        handleOverlayToGeoJSON(polyline, "POLYLINE");
-
-                    } else if (geometry.type === "Polygon") {
-                        const paths = geometry.coordinates.map(ring =>
-                            ring.map(([lng, lat]) => ({ lat, lng }))
-                        );
-                        const polygon = new window.google.maps.Polygon({
-                            paths,
                             map,
-                            editable: true,
-                            draggable: true,
                         });
-                        handleOverlayToGeoJSON(polygon, "POLYGON");
+                        handleOverlayToGeoJSON(circle, "CIRCLE");
                     }
-                };
 
-                if (feature.type === "Feature") {
-                    drawFeature(feature);
-                } else if (feature.type === "FeatureCollection") {
-                    feature.features.forEach(drawFeature);
+                } else if (geometry.type === "LineString") {
+                    const path = geometry.coordinates.map(([lng, lat]) => ({ lat, lng }));
+                    const polyline = new window.google.maps.Polyline({
+                        path,
+                        strokeColor: "#FF0000",
+                        strokeWeight: 3,
+                        editable: true,
+                        draggable: true,
+                        map,
+                    });
+                    handleOverlayToGeoJSON(polyline, "POLYLINE");
+
+                } else if (geometry.type === "Polygon") {
+                    const paths = geometry.coordinates.map(ring =>
+                        ring.map(([lng, lat]) => ({ lat, lng }))
+                    );
+                    const polygon = new window.google.maps.Polygon({
+                        paths,
+                        fillColor: "#00FF00",
+                        fillOpacity: 0.3,
+                        strokeWeight: 2,
+                        editable: true,
+                        draggable: true,
+                        map,
+                    });
+                    handleOverlayToGeoJSON(polygon, "POLYGON");
                 }
+            };
 
-            } catch (e) {
-                console.error("Error al parsear GeoJSON:", e);
+            if (feature.type === "Feature") {
+                drawFeature(feature);
+            } else if (feature.type === "FeatureCollection") {
+                feature.features.forEach(drawFeature);
             }
-        }
-    }, [geojsonData, map]);
 
-    return null;
-}
+        } catch (error) {
+            console.error("Error al parsear geojsonData:", error);
+        }
+    }, [map, geojsonData, onData, handleOverlayToGeoJSON]);
+
+    return null; 
+};
+
 
 export default EditarMapa
