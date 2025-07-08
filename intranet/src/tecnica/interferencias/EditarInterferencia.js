@@ -34,7 +34,7 @@ const EditarInterferencia = () => {
     vereda: "I",
     entre1: "",
     entre2: "",
-    localidad: "",
+    localidad: null,
     latitud: "",
     longitud: "",
     desde: "",
@@ -54,9 +54,11 @@ const EditarInterferencia = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    const newValue = name === 'localidad' ? parseInt(value) : value;
+
+    const newValue = name === 'localidad' ? (value === '' ? null : parseInt(value)) : value;
     setFormData(prev => ({ ...prev, [name]: newValue }));
   };
+
 
   const handleSwitchChange = (e) => {
     const { name, checked } = e.target;
@@ -107,7 +109,7 @@ const EditarInterferencia = () => {
     };
 
     fetchDatos();
-  }, [id]);
+  }, [id, localidades]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -175,10 +177,14 @@ const EditarInterferencia = () => {
                   labelId="localidad-label"
                   id="localidad"
                   name="localidad"
-                  value={formData.localidad}
+                  value={formData.localidad || ''} // <--- Added || '' here
                   label="Localidad"
                   onChange={handleChange}
                 >
+                  {/* Add a placeholder/empty option if needed */}
+                  <MenuItem value="">
+                    <em>Seleccione una localidad</em>
+                  </MenuItem>
                   {localidades.map((loc) => (
                     <MenuItem key={loc.LOC_ID} value={loc.LOC_ID}>
                       {loc.LOC_DESCRIPCION}
@@ -187,6 +193,7 @@ const EditarInterferencia = () => {
                 </Select>
               </FormControl>
             </Grid>
+            
             <Grid item xs={12}>
               <Grid container spacing={2}>
                 <Grid item>
