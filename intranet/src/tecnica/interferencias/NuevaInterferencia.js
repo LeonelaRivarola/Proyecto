@@ -96,7 +96,7 @@ const NuevaInterferencia = () => {
   useEffect(() => {
     setLocalidades([
       { LOC_ID: 9966, LOC_DESCRIPCION: "Dorila" },
-      { LOC_ID: 10041, LOC_DESCRIPCION: "Gral Pico" },
+      { LOC_ID: 10041, LOC_DESCRIPCION: "General Pico" },
       { LOC_ID: 10303, LOC_DESCRIPCION: "Metileo" },
       { LOC_ID: 10341, LOC_DESCRIPCION: "Speluzzi" },
       { LOC_ID: 10349, LOC_DESCRIPCION: "Trebolares" },
