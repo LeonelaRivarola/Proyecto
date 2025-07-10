@@ -1,4 +1,4 @@
-const { connectToAlum, sql } = require('../config/db');
+const { connectToAlum, sql } = require('../../config/db');
 
 exports.getAll = async () => {
     const pool = await connectToAlum();

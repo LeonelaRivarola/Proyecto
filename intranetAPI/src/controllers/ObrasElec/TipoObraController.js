@@ -1,5 +1,5 @@
 // Operaciones con tipos de obra
-const tipoObraModel = require('../models/tipoObraModel');
+const tipoObraModel = require('../../models/obrasElec/tipoObra');
 
 module.exports = {
     async index(req, res) {

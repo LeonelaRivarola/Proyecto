@@ -1,4 +1,4 @@
-const EmailModel = require('../models/obrasElec/interf/EmailSolicitudModel');
+const EmailModel = require('../../models/obrasElec/EmailSolicitud');
 
 module.exports = {
   index: async (req, res) => {
