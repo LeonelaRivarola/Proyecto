@@ -262,7 +262,7 @@ const EditarGeoJson = ({ onData, initialPosition, geojsonData }) => {
     useEffect(() => {
         if (!window.google) {
             const script = document.createElement("script");
-            script.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_Maps_API_KEY}&libraries=drawing`; // Use environment variable for API key
+            script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyA7Me8m0t_ztRIarrm45Uc0WKATVGgX_-Y&libraries=drawing`; // Use environment variable for API key
             script.async = true;
             script.defer = true;
             script.onload = () => initMap();
