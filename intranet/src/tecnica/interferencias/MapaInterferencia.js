@@ -243,11 +243,6 @@ const MapaInterferencia = ({ onData, initialPosition, geojsonData }) => {
           mapInstance.setCenter(userPos);
           mapInstance.setZoom(15);
 
-          new window.google.maps.Marker({
-            position: userPos,
-            map: mapInstance,
-            title: "Estás aquí",
-          });
         },
         () => {
           console.warn("Geolocalización no permitida o no disponible");
@@ -418,7 +413,6 @@ const MapaInterferencia = ({ onData, initialPosition, geojsonData }) => {
       }
     );
 
-    // Ocultar botón borrar al hacer click en el mapa
     mapInstance.addListener("click", () => {
       setSelectedOverlay(null);
       if (deleteBtnRef.current) {
