@@ -104,7 +104,21 @@ const NuevaInterferencia = () => {
     ]);
   }, []);
 
-  
+
+  useEffect(() => {
+   
+    window.setLatLngFormData = (lat, lng) => {
+      setFormData(prev => ({
+        ...prev,
+        latitud: lat.toString(),
+        longitud: lng.toString()
+      }));
+    };
+
+    return () => {
+      window.setLatLngFormData = null; 
+    };
+  }, []);
 
   return (
     <Container maxWidth="xl">
@@ -231,12 +245,12 @@ const NuevaInterferencia = () => {
                     <Grid item xs={12}>
                       <Box sx={{ width: '900px', height: 400 }}>
                         <MapaInterferencia
-                        onData={(data) => setFormData(prev => ({ ...prev, mapa: data }))}
-                        initialPosition={
-                          formData.latitud && formData.longitud
-                          ? {lat: parseFloat(formData.latitud), lng: parseFloat(formData.longitud)}
-                          : null
-                        }
+                          onData={(data) => setFormData(prev => ({ ...prev, mapa: data }))}
+                          initialPosition={
+                            formData.latitud && formData.longitud
+                              ? { lat: parseFloat(formData.latitud), lng: parseFloat(formData.longitud) }
+                              : null
+                          }
                         />
                       </Box>
                     </Grid>

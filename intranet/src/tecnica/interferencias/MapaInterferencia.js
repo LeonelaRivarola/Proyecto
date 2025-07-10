@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 const MapaInterferencia = ({ onData, initialPosition, geojsonData }) => {
   const mapRef = useRef(null);
   const deleteBtnRef = useRef(null);
+  const markerRef = useRef(null);
 
   const [map, setMap] = useState(null);
   const [drawingManager, setDrawingManager] = useState(null);
@@ -174,7 +175,7 @@ const MapaInterferencia = ({ onData, initialPosition, geojsonData }) => {
     }
   }, [geojsonData, map]);
 
-  
+
 
   useEffect(() => {
     if (initialPosition && map) {
@@ -201,7 +202,7 @@ const MapaInterferencia = ({ onData, initialPosition, geojsonData }) => {
       const script = document.createElement("script");
       script.src =
         "https://maps.googleapis.com/maps/api/js?key=AIzaSyA7Me8m0t_ztRIarrm45Uc0WKATVGgX_-Y&libraries=drawing";
-        //"https://maps.googleapis.com/maps/api/js?key=AIzaSyA_TMQ1qzW06reNAT9l-3Kn89omHwEdNGI&libraries=drawing";
+      //"https://maps.googleapis.com/maps/api/js?key=AIzaSyA_TMQ1qzW06reNAT9l-3Kn89omHwEdNGI&libraries=drawing";
       script.async = true;
       script.defer = true;
       script.onload = () => {
@@ -335,17 +336,50 @@ const MapaInterferencia = ({ onData, initialPosition, geojsonData }) => {
             properties: {},
           };
         } else if (event.type === window.google.maps.drawing.OverlayType.MARKER) {
-          geojsonFeature = {
+      
+          if (markerRef.current) {
+            markerRef.current.setMap(null);
+          }
+
+          const newMarker = event.overlay;
+          markerRef.current = newMarker;
+
+          newMarker.setDraggable(true);
+
+ 
+          const pos = newMarker.getPosition();
+          const lat = pos.lat();
+          const lng = pos.lng();
+          window.setLatLngFormData?.(lat, lng);
+
+          const geojson = {
             type: "Feature",
             geometry: {
               type: "Point",
-              coordinates: [
-                overlay.getPosition().lng(),
-                overlay.getPosition().lat(),
-              ],
+              coordinates: [lng, lat],
             },
             properties: {},
           };
+          onData?.(JSON.stringify(geojson));
+
+          newMarker.addListener("dragend", () => {
+            const newPos = newMarker.getPosition();
+            const newLat = newPos.lat();
+            const newLng = newPos.lng();
+
+            window.setLatLngFormData?.(newLat, newLng);
+
+            const updatedGeojson = {
+              type: "Feature",
+              geometry: {
+                type: "Point",
+                coordinates: [newLng, newLat],
+              },
+              properties: {},
+            };
+            onData?.(JSON.stringify(updatedGeojson));
+          });
+
         } else if (event.type === window.google.maps.drawing.OverlayType.CIRCLE) {
           geojsonFeature = {
             type: "Feature",
