@@ -4,6 +4,7 @@ const MapaInterferencia = ({ onData, initialPosition, geojsonData }) => {
   const mapRef = useRef(null);
   const deleteBtnRef = useRef(null);
   const markerRef = useRef(null);
+  const [overlays, setOverlays] = useState([]);
 
   const [map, setMap] = useState(null);
   const [drawingManager, setDrawingManager] = useState(null);
@@ -341,7 +342,6 @@ const MapaInterferencia = ({ onData, initialPosition, geojsonData }) => {
 
           newMarker.setDraggable(true);
 
- 
           const pos = newMarker.getPosition();
           const lat = pos.lat();
           const lng = pos.lng();

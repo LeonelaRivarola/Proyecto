@@ -3,11 +3,13 @@ import React, { useEffect, useRef, useState, useCallback } from "react";
 const EditarGeoJson = ({ onData, initialPosition, geojsonData }) => {
     const mapRef = useRef(null);
     const deleteBtnRef = useRef(null);
+    const markerRef = useRef(null);
 
     const [map, setMap] = useState(null);
     const [drawingManager, setDrawingManager] = useState(null);
     const [selectedOverlay, setSelectedOverlay] = useState(null);
-    const overlaysRef = useRef(new Map()); 
+    const overlaysRef = useRef(new Map());
+    const [overlays, setOverlays] = useState([]);
 
     let debounceTimer = useRef(null);
     const debounceUpdate = useCallback((callback, delay = 500) => {
@@ -89,7 +91,7 @@ const EditarGeoJson = ({ onData, initialPosition, geojsonData }) => {
         if (onData) {
             const features = [];
             overlaysRef.current.forEach((overlay, key) => {
-                const geojsonFeature = overlayToGeoJSON(overlay, key.split('-')[0].toUpperCase()); 
+                const geojsonFeature = overlayToGeoJSON(overlay, key.split('-')[0].toUpperCase());
                 if (geojsonFeature) {
                     features.push(geojsonFeature);
                 }
@@ -117,11 +119,15 @@ const EditarGeoJson = ({ onData, initialPosition, geojsonData }) => {
         } else if (type === "POLYLINE" || type === "POLYGON") {
             overlay.getPath().addListener("set_at", updateCallback);
             overlay.getPath().addListener("insert_at", updateCallback);
-            overlay.getPath().addListener("remove_at", updateCallback); 
+            overlay.getPath().addListener("remove_at", updateCallback);
         } else if (type === "RECTANGLE") {
             overlay.addListener("bounds_changed", updateCallback);
         } else if (type === "MARKER") {
-            overlay.addListener("dragend", updateCallback);
+            overlay.addListener("dragend", () => {
+                const pos = overlay.getPosition();
+                window.setLatLngFormData(pos.lat(), pos.lng()); // Actualiza lat/lng al mover
+                debounceUpdate(() => updateAllOverlays());
+            });
         }
 
         overlay.addListener("click", () => {
@@ -140,7 +146,7 @@ const EditarGeoJson = ({ onData, initialPosition, geojsonData }) => {
 
             try {
                 const featureCollection = JSON.parse(geojsonData);
-                let idCounter = 0; 
+                let idCounter = 0;
 
                 const drawFeature = (feature) => {
                     const { geometry, properties } = feature;
@@ -149,8 +155,14 @@ const EditarGeoJson = ({ onData, initialPosition, geojsonData }) => {
 
                     if (geometry.type === "Point") {
                         const [lng, lat] = geometry.coordinates;
+
+                        if (markerRef.current) {
+                            markerRef.current.setMap(null);
+                            overlaysRef.current.delete("MARKER-0");
+                        }
+
                         if (properties?.radius) {
-                          
+
                             overlay = new window.google.maps.Circle({
                                 center: { lat, lng },
                                 radius: properties.radius,
@@ -163,12 +175,13 @@ const EditarGeoJson = ({ onData, initialPosition, geojsonData }) => {
                             });
                             type = "CIRCLE";
                         } else {
-                            
+
                             overlay = new window.google.maps.Marker({
                                 position: { lat, lng },
                                 map,
                                 draggable: true,
                             });
+                            markerRef.current = overlay;
                             type = "MARKER";
                         }
                     } else if (geometry.type === "LineString") {
@@ -187,12 +200,12 @@ const EditarGeoJson = ({ onData, initialPosition, geojsonData }) => {
                             ring.map(([lng, lat]) => ({ lat, lng }))
                         );
                         const isRectangle = paths[0].length === 5 &&
-                                            paths[0][0].lat === paths[0][4].lat &&
-                                            paths[0][0].lng === paths[0][4].lng &&
-                                            paths[0][0].lat === paths[0][1].lat &&
-                                            paths[0][2].lat === paths[0][3].lat &&
-                                            paths[0][1].lng === paths[0][2].lng &&
-                                            paths[0][3].lng === paths[0][0].lng;
+                            paths[0][0].lat === paths[0][4].lat &&
+                            paths[0][0].lng === paths[0][4].lng &&
+                            paths[0][0].lat === paths[0][1].lat &&
+                            paths[0][2].lat === paths[0][3].lat &&
+                            paths[0][1].lng === paths[0][2].lng &&
+                            paths[0][3].lng === paths[0][0].lng;
 
                         if (isRectangle) {
                             const southWest = paths[0][0];
@@ -240,7 +253,7 @@ const EditarGeoJson = ({ onData, initialPosition, geojsonData }) => {
                 console.error("Error al parsear GeoJSON (desde useEffect):", e);
             }
         }
-    }, [geojsonData, map, setupOverlayListeners]); 
+    }, [geojsonData, map, setupOverlayListeners]);
 
     useEffect(() => {
         if (initialPosition && map) {
@@ -277,10 +290,10 @@ const EditarGeoJson = ({ onData, initialPosition, geojsonData }) => {
             overlaysRef.current.forEach(overlay => overlay.setMap(null));
             overlaysRef.current.clear();
         };
-    }, []); 
+    }, []);
 
     const initMap = useCallback(() => {
-        if (mapRef.current && !map) { 
+        if (mapRef.current && !map) {
             const defaultPos = initialPosition || { lat: -34.6037, lng: -58.3816 };
             const mapInstance = new window.google.maps.Map(mapRef.current, {
                 center: defaultPos,
@@ -297,7 +310,7 @@ const EditarGeoJson = ({ onData, initialPosition, geojsonData }) => {
                         window.google.maps.drawing.OverlayType.CIRCLE,
                         window.google.maps.drawing.OverlayType.RECTANGLE,
                         window.google.maps.drawing.OverlayType.POLYLINE,
-                        window.google.maps.drawing.OverlayType.POLYGON, 
+                        window.google.maps.drawing.OverlayType.POLYGON,
                     ],
                 },
                 markerOptions: { draggable: true },
@@ -321,7 +334,7 @@ const EditarGeoJson = ({ onData, initialPosition, geojsonData }) => {
                     editable: true,
                     draggable: true,
                 },
-                polygonOptions: { 
+                polygonOptions: {
                     fillColor: "#00FF00",
                     fillOpacity: 0.3,
                     strokeWeight: 2,
@@ -333,12 +346,31 @@ const EditarGeoJson = ({ onData, initialPosition, geojsonData }) => {
             drawingManagerInstance.setMap(mapInstance);
 
             window.google.maps.event.addListener(drawingManagerInstance, "overlaycomplete", (event) => {
-                const overlay = event.overlay;
                 const type = event.type;
-                let idCounter = overlaysRef.current.size;
-                setupOverlayListeners(overlay, type, idCounter); 
 
-                debounceUpdate(() => updateAllOverlays());
+                if (type === "marker") {
+                    if (markerRef.current) {
+                        markerRef.current.setMap(null);
+                        overlaysRef.current.delete("MARKER-0");
+                    }
+
+                    const marker = event.overlay;
+                    marker.setDraggable(true);
+                    markerRef.current = marker;
+
+                    overlaysRef.current.set("MARKER-0", marker);
+                    setupOverlayListeners(marker, "MARKER", 0);
+
+                    const position = marker.getPosition();
+                    window.setLatLngFormData(position.lat(), position.lng());
+
+                    debounceUpdate(() => updateAllOverlays());
+                } else {
+                    const overlay = event.overlay;
+                    const idCounter = overlaysRef.current.size;
+                    setupOverlayListeners(overlay, type, idCounter);
+                    debounceUpdate(() => updateAllOverlays());
+                }
 
             });
 
@@ -350,7 +382,7 @@ const EditarGeoJson = ({ onData, initialPosition, geojsonData }) => {
             setMap(mapInstance);
             setDrawingManager(drawingManagerInstance);
         }
-    }, [map, initialPosition, debounceUpdate, setupOverlayListeners, updateAllOverlays]); 
+    }, [map, initialPosition, debounceUpdate, setupOverlayListeners, updateAllOverlays]);
 
     const handleDelete = () => {
         if (selectedOverlay) {
