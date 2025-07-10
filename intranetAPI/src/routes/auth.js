@@ -5,7 +5,7 @@ const solicitudController = require('../controllers/ObrasElec/SolicitudControlle
 const verificarToken = require('../middlewares/authMiddleware');
 const tipoObraController = require('../controllers/ObrasElec/TipoObraController');
 // const presupuestoController = require('../controllers/presupuestoController');
-const interferenciaController = require('../controllers/InterferenciaController');
+const interferenciaController = require('../controllers/interf/InterferenciaController');
 const emailController = require('../controllers/ObrasElec/EmailController');
 //subir archivo pdf
 const multer = require('multer');
