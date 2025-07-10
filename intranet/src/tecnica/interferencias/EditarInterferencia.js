@@ -134,6 +134,21 @@ const EditarInterferencia = () => {
     }
   };
 
+  useEffect(() => {
+
+    window.setLatLngFormData = (lat, lng) => {
+      setFormData(prev => ({
+        ...prev,
+        latitud: lat.toString(),
+        longitud: lng.toString()
+      }));
+    };
+
+    return () => {
+      window.setLatLngFormData = null;
+    };
+  }, []);
+
 
   return (
     <Box>
