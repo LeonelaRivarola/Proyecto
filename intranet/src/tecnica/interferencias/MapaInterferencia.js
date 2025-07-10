@@ -259,11 +259,7 @@ const MapaInterferencia = ({ onData, initialPosition, geojsonData }) => {
           mapInstance.setCenter(userPos);
           mapInstance.setZoom(15);
 
-          new window.google.maps.Marker({
-            position: userPos,
-            map: mapInstance,
-            title: "Estás aquí",
-          });
+
 
         },
         () => {
