@@ -22,6 +22,7 @@ import NuevaInterferencia from "./tecnica/interferencias/NuevaInterferencia";
 import Presupuestar from "./tecnica/obrasElectricas/solicitudes/PresupuestarSolicitud";
 import DocumentarSolicitud from './tecnica/obrasElectricas/solicitudes/DocumentarSolicitud';
 import EditarInterferencia from "./tecnica/interferencias/EditarInterferencia";
+import Asignar from "./tecnica/interferencias/Asignar";
 
 const App = () => {
   return (
@@ -42,6 +43,7 @@ const App = () => {
           <Route path="interferencias" element={<SesionProtegida> <Interferencia /> </SesionProtegida>} />
           <Route path="nueva-interferencia" element={<SesionProtegida> <NuevaInterferencia /> </SesionProtegida>} />
           <Route path="editar-interferencia/:id" element={<SesionProtegida> <EditarInterferencia/> </SesionProtegida>}/>
+          <Route path="interferencia/asignar/:id" element={<SesionProtegida><Asignar/></SesionProtegida>} />
         </Route>
         <Route path="/" element={<Ingresar />}></Route>
       </Routes>
