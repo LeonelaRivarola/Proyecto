@@ -43,12 +43,6 @@ const EditarInterferencia = () => {
     path: ""
   });
 
-  const [initialPosition, setInitialPosition] = useState({
-    lat: -34.6037,
-    lng: -58.3816
-  });
-
-
   const localidades = [
     { LOC_ID: 9966, LOC_DESCRIPCION: "Dorila" },
     { LOC_ID: 10041, LOC_DESCRIPCION: "General Pico" },
@@ -90,18 +84,7 @@ const EditarInterferencia = () => {
 
         const localidadId = localidadEncontrada ? localidadEncontrada.LOC_ID : null;
 
-        let parsedGeoJson = '';
-        try {
-          parsedGeoJson = typeof data.Mapa === 'string' ? JSON.parse(data.Mapa) : data.Mapa;
-        } catch (e) {
-          console.warn('Mapa no es JSON válido:', data.Mapa);
-        }
-
-        setInitialPosition({
-          lat: isNaN(lat) ? -34.6037 : lat,
-          lng: isNaN(lng) ? -58.3816 : lng
-        });
-
+        console.log(data.Mapa);
 
         setFormData({
           cuit: data.CUIT_DNI || '',
@@ -121,7 +104,7 @@ const EditarInterferencia = () => {
           longitud: data.Longitud || '',
           desde: data.Desde ? data.Desde.split('T')[0] : '',
           hasta: data.Hasta ? data.Hasta.split('T')[0] : '',
-          mapa: parsedGeoJson,
+          mapa: data.Mapa || '',
           path: data.Path || ''
         });
       } catch (err) {
@@ -261,7 +244,7 @@ const EditarInterferencia = () => {
               </Typography>
               <Box sx={{ width: '900px', height: 400 }}>
                 <EditarGeoJson
-                  initialPosition={initialPosition}
+                  initialPosition={{ lat: parseFloat(formData.latitud), lng: parseFloat(formData.longitud) }}
                   geojsonData={formData.mapa}
                   onData={(geojson) => setFormData(prev => ({ ...prev, mapa: geojson }))}
                 />
