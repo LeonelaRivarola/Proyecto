@@ -1,4 +1,4 @@
-const bcrypt = require('bcrypt');
+// const bcrypt = require('bcrypt');
 const { connectToGeaSeguridad, sql } = require('../config/db');
 const jwt = require('jsonwebtoken');
 
