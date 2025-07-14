@@ -152,8 +152,11 @@ const Interferencias = () => {
                                     </TableCell>
                                 ))}
                             </TableRow>
+                            <TableRow>
+                                <TableCell colSpan={11} sx={{ height: 12, padding: 0 }} />
+                            </TableRow>
                         </TableHead>
-                        <Box sx={{ height: '12px' }} />
+                       
                         <TableBody>
                             {interferencias
                                 .map((interferencia) => (
