@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
-import PropTypes from 'prop-types';
 
 const EditarGeoJson = ({ onData, initialPosition, geojsonData }) => {
     const mapRef = useRef(null);
@@ -7,9 +6,10 @@ const EditarGeoJson = ({ onData, initialPosition, geojsonData }) => {
     const markerRef = useRef(null);
 
     const [map, setMap] = useState(null);
-    const [, setDrawingManager] = useState(null);
+    const [drawingManager, setDrawingManager] = useState(null);
     const [selectedOverlay, setSelectedOverlay] = useState(null);
     const overlaysRef = useRef(new Map());
+    const [overlays, setOverlays] = useState([]);
 
     let debounceTimer = useRef(null);
     const debounceUpdate = useCallback((callback, delay = 500) => {
@@ -431,13 +431,4 @@ const EditarGeoJson = ({ onData, initialPosition, geojsonData }) => {
     );
 };
 
-
-EditarGeoJson.propTypes = {
-  onData: PropTypes.func.isRequired,
-  initialPosition: PropTypes.shape({
-    lat: PropTypes.number.isRequired,
-    lng: PropTypes.number.isRequired,
-  }).isRequired,
-  geojsonData: PropTypes.string,
-};
 export default EditarGeoJson;
