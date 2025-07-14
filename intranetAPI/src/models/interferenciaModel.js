@@ -165,6 +165,7 @@ exports.getLocalidades = async () => {
   return result.recordset;
 };
 
+// Agregado en interferenciaModel.js
 exports.getById = async (id) => {
     const pool = await connectToGeaCorpico();
 

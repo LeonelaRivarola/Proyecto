@@ -6,7 +6,7 @@ const Asignar = () => {
   const navigate = useNavigate();
   return (
     <div>
-      asignarrr
+      asignarrr ${id}
     </div>
   )
 }

@@ -54,9 +54,9 @@ router.get('/tecnica/obrasElectricas/getPresupuestoPath/:usuario', verificarToke
 //interferencias
 router.get('/tecnica/interferencia/Interferencias', verificarToken, interferenciaController.index);
 //router.post('/tecnica/interferencia/nueva', verificarToken, interferenciaController.store);
-router.get('/tecnica/interferencia/interferenciaID/:id', verificarToken, interferenciaController.show);
+router.get('/tecnica/interferencia/interferenciaID/:id', interferenciaController.show);
 //para el path subir archivo pdf
-router.post('/tecnica/interferencia/nueva', verificarToken, upload.single('path'), async (req, res) => {
+router.post('/tecnica/interferencia/nueva', upload.single('path'), async (req, res) => {
     try {
         const filePath = req.file?.filename || null;
         req.body = {
@@ -72,7 +72,7 @@ router.post('/tecnica/interferencia/nueva', verificarToken, upload.single('path'
     }
 });
 
-router.put('/tecnica/interferencia/editar/:id', verificarToken, interferenciaController.update);
+router.put('/tecnica/interferencia/editar/:id', interferenciaController.update);
 router.delete('/tecnica/interferencia/eliminar/:id', verificarToken, interferenciaController.destroy);
 
 
@@ -92,8 +92,6 @@ router.get('tecnica/obrasElectricas/emails/mostrar/:id', verificarToken, emailCo
 // const sessionsController = require('../controllers/sessionsController');
 // const solicitudController = require('../controllers/solicitudController');
 // const presupuestoController = require('../controllers/presupuestoController');
-
-
 
 
 // router.get('/', authMiddleware, dashboardController);

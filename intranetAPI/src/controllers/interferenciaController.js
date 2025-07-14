@@ -11,6 +11,7 @@ module.exports = {
         }
     },
 
+    // Agregado 
     async show(req, res) {
         try {
             const { id } = req.params;
