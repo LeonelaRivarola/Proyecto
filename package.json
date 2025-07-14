@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@react-google-maps/api": "^2.20.7",
     "cors": "^2.8.5",
     "multer": "^2.0.1"
   },

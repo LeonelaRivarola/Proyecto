@@ -1,13 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
+import PropTypes from 'prop-types';
 
 const MapaInterferencia = ({ onData, initialPosition, geojsonData }) => {
   const mapRef = useRef(null);
   const deleteBtnRef = useRef(null);
-  const markerRef = useRef(null);
-  const [overlays, setOverlays] = useState([]);
+  // const markerRef = useRef(null);
 
   const [map, setMap] = useState(null);
-  const [drawingManager, setDrawingManager] = useState(null);
+  const [, setDrawingManager] = useState(null);
   const [selectedOverlay, setSelectedOverlay] = useState(null);
 
   const updateCircle = (circle) => {
@@ -249,57 +249,57 @@ const MapaInterferencia = ({ onData, initialPosition, geojsonData }) => {
     });
 
 
-    const setMarker = (pos) => {
+    // const setMarker = (pos) => {
 
-      if (!markerRef.current) {
-        markerRef.current = new window.google.maps.Marker({
-          position: defaultPos,
-          map: mapInstance,
-          title: "Marcador Único",
-          draggable: true,
-        });
+    //   if (!markerRef.current) {
+    //     markerRef.current = new window.google.maps.Marker({
+    //       position: defaultPos,
+    //       map: mapInstance,
+    //       title: "Marcador Único",
+    //       draggable: true,
+    //     });
 
-        markerRef.current.addListener("dragend", () => {
-          const pos = markerRef.current.getPosition();
-          const geojson = {
-            type: "Feature",
-            geometry: {
-              type: "Point",
-              coordinates: [pos.lng(), pos.lat()],
-            },
-            properties: {},
-          };
-          onData && onData(JSON.stringify(geojson));
-          window.setLatLngFormData?.(pos.lat(), pos.lng());
-        });
-      } else {
-        markerRef.current.setPosition(defaultPos);
-        markerRef.current.setMap(mapInstance);
-      }
+    //     markerRef.current.addListener("dragend", () => {
+    //       const pos = markerRef.current.getPosition();
+    //       const geojson = {
+    //         type: "Feature",
+    //         geometry: {
+    //           type: "Point",
+    //           coordinates: [pos.lng(), pos.lat()],
+    //         },
+    //         properties: {},
+    //       };
+    //       onData && onData(JSON.stringify(geojson));
+    //       window.setLatLngFormData?.(pos.lat(), pos.lng());
+    //     });
+    //   } else {
+    //     markerRef.current.setPosition(defaultPos);
+    //     markerRef.current.setMap(mapInstance);
+    //   }
 
-      if (!initialPosition && navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            const userPos = {
-              lat: position.coords.latitude,
-              lng: position.coords.longitude,
-            };
-            setMarker(userPos);
-          },
-          (error) => {
-            console.warn("No se pudo obtener la ubicación, usando posición por defecto:", error);
-            setMarker(defaultPos);
-          }
-        );
-      } else {
-        // Si ya hay initialPosition o no hay geolocalización, usar defaultPos
-        setMarker(defaultPos);
-      }
+    //   if (!initialPosition && navigator.geolocation) {
+    //     navigator.geolocation.getCurrentPosition(
+    //       (position) => {
+    //         const userPos = {
+    //           lat: position.coords.latitude,
+    //           lng: position.coords.longitude,
+    //         };
+    //         setMarker(userPos);
+    //       },
+    //       (error) => {
+    //         console.warn("No se pudo obtener la ubicación, usando posición por defecto:", error);
+    //         setMarker(defaultPos);
+    //       }
+    //     );
+    //   } else {
+    //     // Si ya hay initialPosition o no hay geolocalización, usar defaultPos
+    //     setMarker(defaultPos);
+    //   }
 
-      // Centrar y zoom en el marcador
-      mapInstance.setCenter(markerRef.current.getPosition());
-      mapInstance.setZoom(17);
-    };
+    //   // Centrar y zoom en el marcador
+    //   mapInstance.setCenter(markerRef.current.getPosition());
+    //   mapInstance.setZoom(17);
+    // };
 
     const drawingManagerInstance = new window.google.maps.drawing.DrawingManager({
       drawingMode: null,
@@ -469,4 +469,12 @@ const MapaInterferencia = ({ onData, initialPosition, geojsonData }) => {
   );
 }
 
+MapaInterferencia.propTypes = {
+  onData: PropTypes.func.isRequired,
+  initialPosition: PropTypes.shape({
+    lat: PropTypes.number.isRequired,
+    lng: PropTypes.number.isRequired,
+  }).isRequired,
+  geojsonData: PropTypes.string,
+};
 export default MapaInterferencia
