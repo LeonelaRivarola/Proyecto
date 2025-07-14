@@ -1,4 +1,6 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
+//define los tipos que debe tener las prop
+import PropTypes from 'prop-types';
 
 const EditarGeoJson = ({ onData, initialPosition, geojsonData }) => {
     const mapRef = useRef(null);
@@ -442,8 +444,7 @@ const EditarGeoJson = ({ onData, initialPosition, geojsonData }) => {
 
 };
 
-//define los tipos que debe tener las prop
-import PropTypes from 'prop-types';
+
 
 EditarGeoJson.propTypes = {
   onData: PropTypes.func.isRequired,
