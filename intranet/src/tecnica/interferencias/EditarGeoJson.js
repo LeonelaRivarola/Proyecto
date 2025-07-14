@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
-//define los tipos que debe tener las prop
 import PropTypes from 'prop-types';
 
 const EditarGeoJson = ({ onData, initialPosition, geojsonData }) => {
@@ -295,18 +294,7 @@ const EditarGeoJson = ({ onData, initialPosition, geojsonData }) => {
 
     const initMap = useCallback(() => {
         if (mapRef.current && !map) {
-            const initialPositionValid = (
-                initialPosition &&
-                typeof initialPosition.lat === "number" &&
-                typeof initialPosition.lng === "number" &&
-                !isNaN(initialPosition.lat) &&
-                !isNaN(initialPosition.lng)
-            );
-
-            const defaultPos = initialPositionValid
-                ? initialPosition
-                : { lat: -34.6037, lng: -58.3816 };
-
+            const defaultPos = initialPosition || { lat: -34.6037, lng: -58.3816 };
             const mapInstance = new window.google.maps.Map(mapRef.current, {
                 center: defaultPos,
                 zoom: 12,
@@ -441,9 +429,7 @@ const EditarGeoJson = ({ onData, initialPosition, geojsonData }) => {
             </button>
         </div>
     );
-
 };
-
 
 
 EditarGeoJson.propTypes = {
