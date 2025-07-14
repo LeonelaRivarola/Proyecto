@@ -1,5 +1,5 @@
 const { request } = require('express');
-const { connectToAlum, sql } = require('../config/db');
+const { connectToAlum, sql } = require('../../config/db');
 
 exports.getAll = async (estadoId) => { //obtiene la solicitud
     const pool = await connectToAlum();

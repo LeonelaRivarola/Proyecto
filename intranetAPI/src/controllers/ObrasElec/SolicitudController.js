@@ -1,4 +1,4 @@
-const solicitudModel = require('../models/solicitudModel');
+const solicitudModel = require('../../models/obrasElec/Solicitud');
 
 module.exports = {
     async index(req, res) {

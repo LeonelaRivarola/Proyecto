@@ -1,5 +1,5 @@
 const interfModel = require('../../models/interf/interferencia')
-const { enviarEmail } = require('../../services/emailService');
+const { enviarEmail } = require('../../services/emailServices');
 
 module.exports = {
     async index(req, res) {
@@ -31,7 +31,7 @@ module.exports = {
             const resultadoEnvio = await enviarEmail(email, 'Solicitud de interferencia en estado Pendiente', html);
 
             res.status(201).json({ 
-                message: 'Solicitud creada correctamente.' 
+                message: 'Solicitud creada correctamente.' ,
                 interfId,
                 emailEnviado: resultadoEnvio.success,
                 detalleEmail: resultadoEnvio.success ? resultadoEnvio.messageId: resultadoEnvio.error,
