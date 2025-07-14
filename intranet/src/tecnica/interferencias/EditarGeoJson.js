@@ -6,10 +6,9 @@ const EditarGeoJson = ({ onData, initialPosition, geojsonData }) => {
     const markerRef = useRef(null);
 
     const [map, setMap] = useState(null);
-    const [drawingManager, setDrawingManager] = useState(null);
+    const [, setDrawingManager] = useState(null);
     const [selectedOverlay, setSelectedOverlay] = useState(null);
     const overlaysRef = useRef(new Map());
-    const [overlays, setOverlays] = useState([]);
 
     let debounceTimer = useRef(null);
     const debounceUpdate = useCallback((callback, delay = 500) => {
@@ -294,7 +293,18 @@ const EditarGeoJson = ({ onData, initialPosition, geojsonData }) => {
 
     const initMap = useCallback(() => {
         if (mapRef.current && !map) {
-            const defaultPos = initialPosition || { lat: -34.6037, lng: -58.3816 };
+            const initialPositionValid = (
+                initialPosition &&
+                typeof initialPosition.lat === "number" &&
+                typeof initialPosition.lng === "number" &&
+                !isNaN(initialPosition.lat) &&
+                !isNaN(initialPosition.lng)
+            );
+
+            const defaultPos = initialPositionValid
+                ? initialPosition
+                : { lat: -34.6037, lng: -58.3816 };
+
             const mapInstance = new window.google.maps.Map(mapRef.current, {
                 center: defaultPos,
                 zoom: 12,
@@ -429,6 +439,18 @@ const EditarGeoJson = ({ onData, initialPosition, geojsonData }) => {
             </button>
         </div>
     );
+
 };
 
+//define los tipos que debe tener las prop
+import PropTypes from 'prop-types';
+
+EditarGeoJson.propTypes = {
+  onData: PropTypes.func.isRequired,
+  initialPosition: PropTypes.shape({
+    lat: PropTypes.number.isRequired,
+    lng: PropTypes.number.isRequired,
+  }).isRequired,
+  geojsonData: PropTypes.string,
+};
 export default EditarGeoJson;
