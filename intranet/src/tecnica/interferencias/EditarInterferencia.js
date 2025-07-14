@@ -43,6 +43,12 @@ const EditarInterferencia = () => {
     path: ""
   });
 
+  const [initialPosition, setInitialPosition] = useState({
+    lat: -34.6037,
+    lng: -58.3816
+  });
+
+
   const localidades = [
     { LOC_ID: 9966, LOC_DESCRIPCION: "Dorila" },
     { LOC_ID: 10041, LOC_DESCRIPCION: "General Pico" },
@@ -91,13 +97,11 @@ const EditarInterferencia = () => {
           console.warn('Mapa no es JSON válido:', data.Mapa);
         }
 
-        const lat = parseFloat(formData.latitud);
-        const lng = parseFloat(formData.longitud);
-
-        const initialPosition = {
+        setInitialPosition({
           lat: isNaN(lat) ? -34.6037 : lat,
           lng: isNaN(lng) ? -58.3816 : lng
-        };
+        });
+
 
         setFormData({
           cuit: data.CUIT_DNI || '',
