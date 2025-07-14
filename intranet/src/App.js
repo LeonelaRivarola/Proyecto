@@ -43,7 +43,7 @@ const App = () => {
           <Route path="interferencias" element={<SesionProtegida> <Interferencia /> </SesionProtegida>} />
           <Route path="nueva-interferencia" element={<SesionProtegida> <NuevaInterferencia /> </SesionProtegida>} />
           <Route path="editar-interferencia/:id" element={ <EditarInterferencia/> }/>
-          <Route path="interferencia/asignar/:id" element={<SesionProtegida><Asignar/></SesionProtegida>} />
+          <Route path="asignar/:id" element={<SesionProtegida><Asignar/></SesionProtegida>} />
         </Route>
         <Route path="/" element={<Ingresar />}></Route>
       </Routes>
