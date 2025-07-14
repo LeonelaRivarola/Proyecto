@@ -84,7 +84,20 @@ const EditarInterferencia = () => {
 
         const localidadId = localidadEncontrada ? localidadEncontrada.LOC_ID : null;
 
-        console.log(data.Mapa);
+        let parsedGeoJson = '';
+        try {
+          parsedGeoJson = typeof data.Mapa === 'string' ? JSON.parse(data.Mapa) : data.Mapa;
+        } catch (e) {
+          console.warn('Mapa no es JSON válido:', data.Mapa);
+        }
+
+        const lat = parseFloat(formData.latitud);
+        const lng = parseFloat(formData.longitud);
+
+        const initialPosition = {
+          lat: isNaN(lat) ? -34.6037 : lat,
+          lng: isNaN(lng) ? -58.3816 : lng
+        };
 
         setFormData({
           cuit: data.CUIT_DNI || '',
@@ -104,7 +117,7 @@ const EditarInterferencia = () => {
           longitud: data.Longitud || '',
           desde: data.Desde ? data.Desde.split('T')[0] : '',
           hasta: data.Hasta ? data.Hasta.split('T')[0] : '',
-          mapa: data.Mapa || '',
+          mapa: parsedGeoJson,
           path: data.Path || ''
         });
       } catch (err) {
@@ -244,7 +257,7 @@ const EditarInterferencia = () => {
               </Typography>
               <Box sx={{ width: '900px', height: 400 }}>
                 <EditarGeoJson
-                  initialPosition={{ lat: parseFloat(formData.latitud), lng: parseFloat(formData.longitud) }}
+                  initialPosition={initialPosition}
                   geojsonData={formData.mapa}
                   onData={(geojson) => setFormData(prev => ({ ...prev, mapa: geojson }))}
                 />
