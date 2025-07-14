@@ -88,6 +88,39 @@ exports.create = async (data) => {
     return solicitudId;
 };
 
+exports.getById = async (id) => {
+    const pool = await pool.request()
+    .input('id', sql.Int, id)
+    .query(`
+            SELECT 
+                SOI.SOI_ID as ID,
+                SOI.SOI_CUIT as CUIT_DNI,
+                SOI.SOI_NOMBRE as Nombre,
+                SOI.SOI_APELLIDO as Apellido,
+                SOI.SOI_PERSONA as Es_persona,
+                SOI.SOI_EMAIL as Email,
+                SOI.SOI_CALLE as Calle,
+                SOI.SOI_ALTURA as Altura,
+                SOI.SOI_PISO as Piso,
+                SOI.SOI_DPTO as Dpto,
+                SOI.SOI_VEREDA as Vereda,
+                SOI.SOI_ENTRE1 as Entre1,
+                SOI.SOI_ENTRE2 as Entre2,
+                LOC.LOC_DESCRIPCION as Localidad,
+                SOI.SOI_LATITUD as Latitud,
+                SOI.SOI_LONGITUD as Longitud,
+                SOI.SOI_DESDE as Desde,
+                SOI.SOI_HASTA as Hasta,
+                SOI.SOI_FECHA as Fecha_interf,
+                SOI.SOI_MAPA as Mapa,
+                SOI.SOI_PATH as Path
+            FROM SOLICITUD_INTERFERENCIA SOI
+            INNER JOIN LOCALIDAD LOC ON LOC.LOC_ID = SOI.SOI_LOCALIDAD_ID
+            WHERE SOI.SOI_ID = @id
+        `);
+
+        return result.recordset[0]; //si no existe el objeto devuelve unidefined
+}
 exports.remove = async (id) => {
     const pool = await connectToGeaCorpico();
     const result = await pool.request()

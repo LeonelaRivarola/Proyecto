@@ -7,7 +7,7 @@ class ProfileController {
       const user = req.user;
       res.json({ success: true, data: user });
     } catch (error) {
-      res.status(500).json({ success: false, message: 'Error al obtener perfil' });
+      res.status(500).json({ success: false, message: 'Error al obtener perfil: ', error });
     }
   }
 

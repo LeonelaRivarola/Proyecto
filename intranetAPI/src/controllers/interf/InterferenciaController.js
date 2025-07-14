@@ -43,6 +43,22 @@ module.exports = {
         }
     },
 
+    async show(req, res) {
+        try{
+            const { id } = req.params;
+            const interferencia = await interfModel.getById(id);
+
+            if(!interferencia){
+                return res.status(404).json({error:'Interferencia no encontrada.'});
+            }
+
+            res.json(interferencia);
+        } catch(error){
+            console.error('Error al obtener la interferencia:', error);
+            res.status(500).json({ error: 'Error al obtener la interferencia.'});
+        }  
+    },
+    
     async destroy(req, res) {
 
         try {
