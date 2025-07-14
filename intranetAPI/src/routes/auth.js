@@ -64,7 +64,7 @@ router.get('tecnica/obrasElectricas/emails/mostrar/:id', verificarToken, emailCo
 
 //interferencias
 router.get('/tecnica/interferencia/Interferencias', verificarToken, interferenciaController.index);
-router.get('/tecnica/interferencia/itnerferenciaID/:id', interferenciaController.show);
+router.get('/tecnica/interferencia/interferenciaID/:id', interferenciaController.show);
 
 //para el path subir archivo pdf
 router.post('/tecnica/interferencia/nueva', upload.single('path'), async (req, res) => { //el verificar lo saco porque lo puede usar cualquier usuario externo

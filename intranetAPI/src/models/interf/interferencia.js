@@ -1,8 +1,7 @@
-const { res } = require('express');
 const { connectToGeaCorpico, sql } = require('../../config/db');
 
 
-exports.getAll = async (res, req) => {
+exports.getAll = async () => {
     const pool = await connectToGeaCorpico();
 
     const request = pool.request();
@@ -41,7 +40,7 @@ exports.create = async (data) => {
     const {
         cuit, nombre, apellido, es_persona, email, calle, altura, piso, dpto, vereda,
         entre1, entre2, localidad, latitud, longitud, desde, hasta, //fecha_interf, 
-        mapa, path, estado
+        mapa, path//, estado
     } = data;
 
     const fechaActual = new Date();
@@ -89,7 +88,9 @@ exports.create = async (data) => {
 };
 
 exports.getById = async (id) => {
-    const pool = await pool.request()
+    const pool = await connectToGeaCorpico();
+
+    const result = await pool.request()
     .input('id', sql.Int, id)
     .query(`
             SELECT 

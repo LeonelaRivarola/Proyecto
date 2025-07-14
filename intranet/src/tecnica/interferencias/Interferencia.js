@@ -153,7 +153,7 @@ const Interferencias = () => {
                                 ))}
                             </TableRow>
                         </TableHead>
-                        <Box sx={{ height: '12px' }} />
+                         {/*<Box sx={{ height: '12px' }} />  no puede ir aca*/}
                         <TableBody>
                             {interferencias
                                 .map((interferencia) => (
@@ -236,6 +236,7 @@ const Interferencias = () => {
                         </TableBody>
                     </Table>
                 </TableContainer>
+                <Box sx={{ height: '12px' }} />{/*o lo reubicamos aca o lo eliminamos*/}
             </Box>
             <Dialog
                 open={dialogOpen}
