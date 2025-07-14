@@ -72,12 +72,10 @@ const NuevaInterferencia = () => {
       for (const key in formData) {
         dataToSend.append(key, formData[key]);
       }
-      console.log("TOKEN:", token);
 
       const response = await fetch(`${API_URL}/api/tecnica/interferencia/nueva`, {
         method: 'POST',
         headers: {
-          // 'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
         body: dataToSend,
@@ -98,7 +96,7 @@ const NuevaInterferencia = () => {
   useEffect(() => {
     setLocalidades([
       { LOC_ID: 9966, LOC_DESCRIPCION: "Dorila" },
-      { LOC_ID: 10041, LOC_DESCRIPCION: "Gral Pico" },
+      { LOC_ID: 10041, LOC_DESCRIPCION: "General Pico" },
       { LOC_ID: 10303, LOC_DESCRIPCION: "Metileo" },
       { LOC_ID: 10341, LOC_DESCRIPCION: "Speluzzi" },
       { LOC_ID: 10349, LOC_DESCRIPCION: "Trebolares" },
@@ -106,7 +104,21 @@ const NuevaInterferencia = () => {
     ]);
   }, []);
 
-  
+
+  useEffect(() => {
+   
+    window.setLatLngFormData = (lat, lng) => {
+      setFormData(prev => ({
+        ...prev,
+        latitud: lat.toString(),
+        longitud: lng.toString()
+      }));
+    };
+
+    return () => {
+      window.setLatLngFormData = null; 
+    };
+  }, []);
 
   return (
     <Container maxWidth="xl">
@@ -231,14 +243,14 @@ const NuevaInterferencia = () => {
                   <Typography variant="h6" gutterBottom>Mapa de Interferencia</Typography>
                   <Grid container spacing={2}>
                     <Grid item xs={12}>
-                      <Box sx={{ width: '1000px', height: 400 }}>
+                      <Box sx={{ width: '900px', height: 400 }}>
                         <MapaInterferencia
-                        onData={(data) => setFormData(prev => ({ ...prev, mapa: data }))}
-                        initialPosition={
-                          formData.latitud && formData.longitud
-                          ? {lat: parseFloat(formData.latitud), lng: parseFloat(formData.longitud)}
-                          : null
-                        }
+                          onData={(data) => setFormData(prev => ({ ...prev, mapa: data }))}
+                          initialPosition={
+                            formData.latitud && formData.longitud
+                              ? { lat: parseFloat(formData.latitud), lng: parseFloat(formData.longitud) }
+                              : null
+                          }
                         />
                       </Box>
                     </Grid>
@@ -254,7 +266,7 @@ const NuevaInterferencia = () => {
                           variant="outlined"
                           component="label"
                           startIcon={<AttachFileIcon />}
-                          sx={{ textTransform: 'none', mt: 1, color: 'green' }}
+                          sx={{ textTransform: 'none', mt: 1, color: 'black' }}
                         >
                           Seleccionar archivo
                           <input
@@ -281,7 +293,7 @@ const NuevaInterferencia = () => {
                     <Button type="submit" variant="contained" color="success" startIcon={<Send />}>Crear</Button>
                   </Grid>
                   <Grid item>
-                    <Button variant="outlined" color="error" startIcon={<Cancel />} onClick={() => navigate('/home/solicitudes')}>Cancelar</Button>
+                    <Button variant="outlined" color="error" startIcon={<Cancel />} onClick={() => navigate('/home/interferencias')}>Cancelar</Button>
                   </Grid>
                 </Grid>
               </Box>

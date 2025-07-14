@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { API_URL } from '../../config';
+import MapaInterferencia from './MapaInterferencia';
+import EditarGeoJson from './EditarGeoJson';
 import {
   TextField,
   FormControlLabel,
@@ -43,7 +45,7 @@ const EditarInterferencia = () => {
 
   const localidades = [
     { LOC_ID: 9966, LOC_DESCRIPCION: "Dorila" },
-    { LOC_ID: 10041, LOC_DESCRIPCION: "Gral Pico" },
+    { LOC_ID: 10041, LOC_DESCRIPCION: "General Pico" },
     { LOC_ID: 10303, LOC_DESCRIPCION: "Metileo" },
     { LOC_ID: 10341, LOC_DESCRIPCION: "Speluzzi" },
     { LOC_ID: 10349, LOC_DESCRIPCION: "Trebolares" },
@@ -72,6 +74,18 @@ const EditarInterferencia = () => {
           }
         });
         const data = await res.json();
+
+        const normalizar = (str) =>
+          str?.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
+
+        const localidadEncontrada = localidades.find(loc =>
+          normalizar(loc.LOC_DESCRIPCION) === normalizar(data.Localidad)
+        );
+
+        const localidadId = localidadEncontrada ? localidadEncontrada.LOC_ID : null;
+
+        console.log(data.Mapa);
+
         setFormData({
           cuit: data.CUIT_DNI || '',
           nombre: data.Nombre || '',
@@ -85,11 +99,11 @@ const EditarInterferencia = () => {
           vereda: data.Vereda || 'I',
           entre1: data.Entre1 || '',
           entre2: data.Entre2 || '',
-          localidad: data.Localidad,
-          latitud: data.Latitud !== null ? parseFloat(data.Latitud) : '',
-          longitud: data.Longitud !== null ? parseFloat(data.Longitud) : '',
-          desde: data.Desde || '',
-          hasta: data.Hasta || '',
+          localidad: localidadId,
+          latitud: data.Latitud || '',
+          longitud: data.Longitud || '',
+          desde: data.Desde ? data.Desde.split('T')[0] : '',
+          hasta: data.Hasta ? data.Hasta.split('T')[0] : '',
           mapa: data.Mapa || '',
           path: data.Path || ''
         });
@@ -120,6 +134,21 @@ const EditarInterferencia = () => {
     }
   };
 
+  useEffect(() => {
+
+    window.setLatLngFormData = (lat, lng) => {
+      setFormData(prev => ({
+        ...prev,
+        latitud: lat.toString(),
+        longitud: lng.toString()
+      }));
+    };
+
+    return () => {
+      window.setLatLngFormData = null;
+    };
+  }, []);
+
 
   return (
     <Box>
@@ -146,11 +175,12 @@ const EditarInterferencia = () => {
             {[
               "cuit", "nombre", "apellido", "email", "calle", "altura",
               "piso", "dpto", "entre1", "entre2",
-              "latitud", "longitud", "desde", "hasta", "mapa", "path"
+              "latitud", "longitud", "desde", "hasta", "path"
             ].map((field) => (
               <Grid item xs={12} sm={field.length > 5 ? 12 : 6} key={field}>
                 <TextField
                   fullWidth
+                  type={['desde', 'hasta'].includes(field) ? 'date' : 'text'}
                   name={field}
                   label={field.charAt(0).toUpperCase() + field.slice(1)}
                   value={formData[field]}
@@ -169,7 +199,6 @@ const EditarInterferencia = () => {
                   value={formData.localidad}
                   label="Localidad"
                   onChange={handleChange}
-                  defaultValue={formData.localidad}
                 >
                   {localidades.map((loc) => (
                     <MenuItem key={loc.LOC_ID} value={loc.LOC_ID}>
@@ -179,38 +208,57 @@ const EditarInterferencia = () => {
                 </Select>
               </FormControl>
             </Grid>
-
-            <Grid item xs={12} sm={6}>
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={formData.es_persona === 'S'}
-                    onChange={handleSwitchChange}
-                    name="es_persona"
-                  />
-                }
-                label={`${formData.es_persona === "S" ? "Personal" : "Empresa"}`}
-              />
-            </Grid>
-
-            <Grid item xs={12} sm={6}>
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={formData.vereda === "P"}
-                    onChange={(e) =>
-                      setFormData({ ...formData, vereda: e.target.checked ? "P" : "I" })
-                    }
-                    name="vereda"
-                  />
-                }
-                label={`Vereda: ${formData.vereda === "P" ? "Par" : "Impar"}`}
-              />
-            </Grid>
             <Grid item xs={12}>
-              <Button type="submit" variant="contained" color="primary">
-                Guardar Cambios
-              </Button>
+              <Grid container spacing={2}>
+                <Grid item>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.vereda === "P"}
+                        onChange={(e) =>
+                          setFormData({ ...formData, vereda: e.target.checked ? "P" : "I" })
+                        }
+                        name="vereda"
+                      />
+                    }
+                    label={`Vereda: ${formData.vereda === "P" ? "Par" : "Impar"}`}
+                  />
+                </Grid>
+                <Grid item>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.es_persona === 'S'}
+                        onChange={handleSwitchChange}
+                        name="es_persona"
+                      />
+                    }
+                    label={`${formData.es_persona === "S" ? "Personal" : "Empresa"}`}
+                  />
+                </Grid>
+              </Grid>
+            </Grid>
+            <Grid item xs={12} sx={{ mt: 4 }}>
+              <Typography variant="subtitle1" gutterBottom>
+                Vista del Mapa Guardado:
+              </Typography>
+              <Box sx={{ width: '900px', height: 400 }}>
+                <EditarGeoJson
+                  initialPosition={{ lat: parseFloat(formData.latitud), lng: parseFloat(formData.longitud) }}
+                  geojsonData={formData.mapa}
+                  onData={(geojson) => setFormData(prev => ({ ...prev, mapa: geojson }))}
+                />
+              </Box>
+            </Grid>
+            <Grid container justifyContent="center" spacing={2}>
+              <Grid item>
+                <Button type="submit" variant="contained" color="primary" >
+                  Guardar Cambios
+                </Button>
+              </Grid>
+              <Grid item>
+                <Button variant="outlined" color="error" onClick={() => navigate('/home/interferencias')}>Cancelar</Button>
+              </Grid>
             </Grid>
           </Grid>
         </Box>
