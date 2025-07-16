@@ -141,7 +141,7 @@ const Interferencias = () => {
                                             overflow: 'hidden',
                                             textOverflow: 'ellipsis',
                                             fontWeight: 'bold',
-                                            backgroundColor: '#91d386ff',
+                                            backgroundColor: '#9aef8bff',
                                             padding: '6px 8px'
                                         }}
                                     >
