@@ -4,13 +4,13 @@ const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
         user: 'leonelajob1@gmail.com',//debe estar el mail de la empresa
-        pass: 'clave123456789',
+        pass: 'ikwb vwqg pylh yhta', //cambiar por la clave de ellos creada
     },
 });
 
 async function enviarEmail(to, subject, html) {
     try {
-        const info = await transporter.sendMail({
+        const info = await transporter.sendMail({//Cambiar aca con el mail que se va a mandar cada mail
             from: '"Interferencias" <leonelajob1@gmail.com>',
             to,
             subject,
