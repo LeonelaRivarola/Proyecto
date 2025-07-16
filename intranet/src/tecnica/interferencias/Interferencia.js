@@ -152,13 +152,23 @@ const Interferencias = () => {
                                 ))}
                             </TableRow>
                         </TableHead>
-                        {/*<Box sx={{ height: '12px' }} />  no puede ir aca*/}
+                        
                         <TableBody>
                             {interferencias
                                 .map((interferencia) => (
                                     <TableRow
-                                    onClick={() => handleAsignar(interferencia)}
-                                    key={interferencia.ID}>
+                                        onClick={() => handleAsignar(interferencia)}
+                                        sx={{
+                                            cursor: "pointer",
+                                            transition: 'transform 0.2s, background-color 0.2s',
+                                            '&:hover': {
+                                                backgroundColor: '#c2e29eff', 
+                                            },
+                                            '&:active': {
+                                                transform: 'scale(1.02)',
+                                            },
+                                        }}
+                                        key={interferencia.ID}>
                                         <TableCell>{interferencia.ID}</TableCell>
                                         <TableCell>{interferencia.Nombre}</TableCell>
                                         <TableCell> {interferencia.Calle} <strong>,</strong> {interferencia.Dpto} <strong>Entre </strong>{interferencia.Entre1} <strong>y</strong> {interferencia.Entre2}</TableCell>
@@ -253,7 +263,7 @@ const Interferencias = () => {
                     </Button>
                     <Button onClick={confirmarEliminacion} color="error" variant="contained">
                         Eliminar
-                    </Button>   
+                    </Button>
                 </DialogActions>
             </Dialog>
             <Outlet />
