@@ -173,6 +173,7 @@ const Asignar = () => {
                         checked={formData.vereda === "P"}
                         name="vereda"
                         readOnly
+                        disabled
                       />
                     }
                     label={`Vereda: ${formData.vereda === "P" ? "Par" : "Impar"}`}
