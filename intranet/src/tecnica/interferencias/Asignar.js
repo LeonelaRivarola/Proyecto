@@ -140,6 +140,7 @@ const Asignar = () => {
                   label={field.charAt(0).toUpperCase() + field.slice(1)}
                   value={formData[field]}
                   readOnly
+                  disabled
                 />
               </Grid>
             ))}
@@ -154,6 +155,7 @@ const Asignar = () => {
                   value={formData.localidad}
                   label="Localidad"
                   readOnly
+                  disabled
                 >
                   {localidades.map((loc) => (
                     <MenuItem key={loc.LOC_ID} value={loc.LOC_ID}>
@@ -187,6 +189,7 @@ const Asignar = () => {
                         checked={formData.es_persona === 'S'}
                         name="es_persona"
                         readOnly
+                        disabled
                       />
                     }
                     label={`${formData.es_persona === "S" ? "Personal" : "Empresa"}`}
@@ -201,7 +204,7 @@ const Asignar = () => {
               </Typography>
               <Box sx={{ width: '900px', height: 400 }}>
                 <p>Mapita</p>
-              </Box>4
+              </Box>
             </Grid>
 
           </Grid>
