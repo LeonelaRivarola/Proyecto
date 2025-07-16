@@ -14,6 +14,7 @@ import {
   Select,
   MenuItem
 } from '@mui/material';
+import { API_URL } from '../../config';
 
 const Asignar = () => {
   const { id } = useParams();
@@ -48,6 +49,11 @@ const Asignar = () => {
     { LOC_ID: 10349, LOC_DESCRIPCION: "Trebolares" },
     { LOC_ID: 10366, LOC_DESCRIPCION: "Vertiz" },
   ];
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+  };
 
   useEffect(() => {
     const fetchDatos = async () => {
