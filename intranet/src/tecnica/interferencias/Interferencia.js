@@ -57,7 +57,7 @@ const Interferencias = () => {
     };
 
     const handleAsignar = (interferencia) => {
-        navigate(`/home/asignar/${interferencia.ID}`);
+        navigate(`/home/interferencia/asignar/${interferencia.ID}`);
     };
 
     const confirmarEliminacion = async () => {
