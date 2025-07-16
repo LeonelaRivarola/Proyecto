@@ -10,6 +10,54 @@ const MapaInterferencia = ({ onData, initialPosition, geojsonData }) => {
   const [drawingManager, setDrawingManager] = useState(null);
   const [selectedOverlay, setSelectedOverlay] = useState(null);
 
+  const moveMarkerTo = (lat, lng) => {
+    const newPos = { lat, lng };
+
+    if (!markerRef.current) {
+      markerRef.current = new window.google.maps.Marker({
+        position: newPos,
+        map: map,
+        title: "Ubicacion",
+        draggable: true,
+      });
+
+      markerRef.current.addListener("dragend", () => {
+        const pos = markerRef.current.getPosition();
+        const geojson = {
+          type: "Feature",
+          geometry: {
+            type: "Point",
+            coordinates: [pos.lng(), pos.lat()],
+          },
+          properties: {},
+        };
+        onData && onData(JSON.stringify(geojson));
+        window.setLatLngFormData?.(pos.lat(), pos.lng());
+      });
+
+    } else {
+      markerRef.current.setPosition(newPos);
+      markerRef.current.setMap(map);
+    }
+
+    // Centrar el mapa y emitir los datos
+    map.setCenter(newPos);
+    map.setZoom(17);
+
+    const geojson = {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [lng, lat],
+      },
+      properties: {},
+    };
+    onData && onData(JSON.stringify(geojson));
+    window.setLatLngFormData?.(lat, lng);
+
+  };
+
+
   const updateCircle = (circle) => {
     const center = circle.getCenter();
     const radius = circle.getRadius();

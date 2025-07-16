@@ -84,8 +84,6 @@ const EditarInterferencia = () => {
 
         const localidadId = localidadEncontrada ? localidadEncontrada.LOC_ID : null;
 
-        console.log(data.Mapa);
-
         setFormData({
           cuit: data.CUIT_DNI || '',
           nombre: data.Nombre || '',
@@ -208,6 +206,7 @@ const EditarInterferencia = () => {
                 </Select>
               </FormControl>
             </Grid>
+
             <Grid item xs={12}>
               <Grid container spacing={2}>
                 <Grid item>
@@ -224,6 +223,7 @@ const EditarInterferencia = () => {
                     label={`Vereda: ${formData.vereda === "P" ? "Par" : "Impar"}`}
                   />
                 </Grid>
+
                 <Grid item>
                   <FormControlLabel
                     control={
@@ -238,6 +238,7 @@ const EditarInterferencia = () => {
                 </Grid>
               </Grid>
             </Grid>
+
             <Grid item xs={12} sx={{ mt: 4 }}>
               <Typography variant="subtitle1" gutterBottom>
                 Vista del Mapa Guardado:
@@ -250,6 +251,7 @@ const EditarInterferencia = () => {
                 />
               </Box>
             </Grid>
+
             <Grid container justifyContent="center" spacing={2}>
               <Grid item>
                 <Button type="submit" variant="contained" color="primary" >
@@ -260,6 +262,7 @@ const EditarInterferencia = () => {
                 <Button variant="outlined" color="error" onClick={() => navigate('/home/interferencias')}>Cancelar</Button>
               </Grid>
             </Grid>
+            
           </Grid>
         </Box>
       </Paper>
