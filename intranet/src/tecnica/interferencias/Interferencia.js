@@ -27,7 +27,6 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 const Interferencias = () => {
     const navigate = useNavigate();
-    const [error, setError] = useState(false);
     const [interferencias, setInterferencias] = useState([]);
     const [dialogOpen, setDialogOpen] = useState(false);
     const [interferenciaAEliminar, setInterferenciaAEliminar] = useState(null);
@@ -44,7 +43,7 @@ const Interferencias = () => {
             const data = await respuesta.json();
             setInterferencias(data);
         } catch (err) {
-
+            console.error('Error al traer interferencias:', err);
         }
     };
 
@@ -58,7 +57,7 @@ const Interferencias = () => {
     };
 
     const handleAsignar = (interferencia) => {
-        navigate(`/home/asignar/${interferencia.ID}`);
+        navigate(`home/interferencia/asignar/${interferencia.ID}`);
     };
 
     const confirmarEliminacion = async () => {
@@ -152,11 +151,8 @@ const Interferencias = () => {
                                     </TableCell>
                                 ))}
                             </TableRow>
-                            <TableRow>
-                                <TableCell colSpan={11} sx={{ height: 12, padding: 0 }} />
-                            </TableRow>
                         </TableHead>
-                       
+                        {/*<Box sx={{ height: '12px' }} />  no puede ir aca*/}
                         <TableBody>
                             {interferencias
                                 .map((interferencia) => (
@@ -239,6 +235,7 @@ const Interferencias = () => {
                         </TableBody>
                     </Table>
                 </TableContainer>
+                <Box sx={{ height: '12px' }} />{/*o lo reubicamos aca o lo eliminamos*/}
             </Box>
             <Dialog
                 open={dialogOpen}
