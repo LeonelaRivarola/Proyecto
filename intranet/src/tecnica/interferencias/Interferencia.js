@@ -254,7 +254,7 @@ const Interferencias = () => {
                     </Button>
                     <Button onClick={confirmarEliminacion} color="error" variant="contained">
                         Eliminar
-                    </Button>
+                    </Button>   
                 </DialogActions>
             </Dialog>
             <Outlet />

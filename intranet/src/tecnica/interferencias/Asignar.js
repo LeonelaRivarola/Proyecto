@@ -109,9 +109,9 @@ const Asignar = () => {
 
 
   return (
-    <div>
-      asignarrr {id}
-    </div>
+    <Box>
+      
+    </Box>
   )
 }
 
