@@ -124,7 +124,7 @@ const Asignar = () => {
           Asignar Interferencia N° {id}
         </Typography>
       </Paper>
-      <Paper elevation={3} sx={{ padding: 4, maxWidth: fullWidth, margin: 'auto', marginTop: 6 }}>
+      <Paper elevation={3} sx={{ padding: 4, maxWidth: '100%', margin: 'auto', marginTop: 6 }}>
         <Box component="form" onSubmit={handleSubmit}>
           <Grid container spacing={2}>
             {[
