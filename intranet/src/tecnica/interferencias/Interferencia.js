@@ -156,7 +156,9 @@ const Interferencias = () => {
                         <TableBody>
                             {interferencias
                                 .map((interferencia) => (
-                                    <TableRow key={interferencia.ID}>
+                                    <TableRow
+                                    onClick={() => handleAsignar(interferencia)}
+                                    key={interferencia.ID}>
                                         <TableCell>{interferencia.ID}</TableCell>
                                         <TableCell>{interferencia.Nombre}</TableCell>
                                         <TableCell> {interferencia.Calle} <strong>,</strong> {interferencia.Dpto} <strong>Entre </strong>{interferencia.Entre1} <strong>y</strong> {interferencia.Entre2}</TableCell>
