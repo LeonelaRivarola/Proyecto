@@ -102,7 +102,6 @@ const EditarInterferencia = () => {
           longitud: data.Longitud || '',
           desde: data.Desde ? data.Desde.split('T')[0] : '',
           hasta: data.Hasta ? data.Hasta.split('T')[0] : '',
-          mapa: data.Mapa || '',
           path: data.Path || ''
         });
       } catch (err) {
@@ -244,11 +243,13 @@ const EditarInterferencia = () => {
                 Vista del Mapa Guardado:
               </Typography>
               <Box sx={{ width: '900px', height: 400 }}>
+                {/* 
                 <EditarGeoJson
                   initialPosition={{ lat: parseFloat(formData.latitud), lng: parseFloat(formData.longitud) }}
                   geojsonData={formData.mapa}
                   onData={(geojson) => setFormData(prev => ({ ...prev, mapa: geojson }))}
                 />
+                */}
               </Box>
             </Grid>
 

@@ -53,7 +53,6 @@ router.get('/tecnica/obrasElectricas/getPresupuestoPath/:usuario', verificarToke
 
 //interferencias
 router.get('/tecnica/interferencia/Interferencias', verificarToken, interferenciaController.index);
-//router.post('/tecnica/interferencia/nueva', verificarToken, interferenciaController.store);
 router.get('/tecnica/interferencia/interferenciaID/:id', interferenciaController.show);
 //para el path subir archivo pdf
 router.post('/tecnica/interferencia/nueva', upload.single('path'), async (req, res) => {

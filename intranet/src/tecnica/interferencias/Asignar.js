@@ -37,7 +37,6 @@ const Asignar = () => {
     longitud: "",
     desde: "",
     hasta: "",
-    mapa: "",
     path: ""
   });
 
@@ -94,7 +93,6 @@ const Asignar = () => {
           longitud: data.Longitud || '',
           desde: data.Desde ? data.Desde.split('T')[0] : '',
           hasta: data.Hasta ? data.Hasta.split('T')[0] : '',
-          mapa: data.Mapa || '',
           path: data.Path || ''
         });
       } catch (err) {

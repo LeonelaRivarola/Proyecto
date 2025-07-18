@@ -172,7 +172,7 @@ const Interferencias = () => {
                                         <TableCell>{interferencia.ID}</TableCell>
                                         <TableCell>{interferencia.Nombre}</TableCell>
                                         <TableCell> {interferencia.Calle} <strong>,</strong> {interferencia.Dpto} <strong>Entre </strong>{interferencia.Entre1} <strong>y</strong> {interferencia.Entre2}</TableCell>
-                                        <TableCell>{interferencia.Estado}</TableCell>
+                                        <TableCell>Estado...</TableCell>
                                         <TableCell>{dayjs(interferencia.Fecha_interf).format('YYYY-MM-DD')}</TableCell>
                                         <TableCell>{dayjs(interferencia.Desde).format('YYYY-MM-DD')}</TableCell>
                                         <TableCell>{dayjs(interferencia.Hasta).format('YYYY-MM-DD')}</TableCell>
@@ -247,7 +247,6 @@ const Interferencias = () => {
                         </TableBody>
                     </Table>
                 </TableContainer>
-                <Box sx={{ height: '12px' }} />{/*o lo reubicamos aca o lo eliminamos*/}
             </Box>
             <Dialog
                 open={dialogOpen}
