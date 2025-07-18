@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { API_URL } from '../../config';
-import MapaInterferencia from './MapaInterferencia';
 import EditarGeoJson from './EditarGeoJson';
 import {
   TextField,
