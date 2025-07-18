@@ -161,11 +161,8 @@ const Interferencias = () => {
                                         sx={{
                                             cursor: "pointer",
                                             transition: 'transform 0.2s, background-color 0.2s',
-                                            '&:hover': {
-                                                backgroundColor: '#b9ffb1ff', 
-                                            },
                                             '&:active': {
-                                                transform: 'scale(1.01)',
+                                                transform: 'scale(1.02)',
                                             },
                                         }}
                                         key={interferencia.ID}>
