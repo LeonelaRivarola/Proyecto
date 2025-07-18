@@ -1,8 +1,6 @@
-const { request } = require('express');
-const { connectToGeaCorpico, sql } = require('../config/db');
+const { connectToGeaCorpico, sql } = require('../../config/db');
 
-
-exports.getAll = async (res, req) => {
+exports.getAll = async () => {
     const pool = await connectToGeaCorpico();
 
     const request = pool.request();
@@ -27,7 +25,7 @@ exports.getAll = async (res, req) => {
             SOI.SOI_DESDE as Desde,
             SOI.SOI_HASTA as Hasta,
             SOI.SOI_FECHA as Fecha_interf,
-            SOI.SOI_PATH as Path,
+            SOI.SOI_PATH as Path
         FROM SOLICITUD_INTERFERENCIA SOI
         INNER JOIN LOCALIDAD LOC ON LOC.LOC_ID = SOI.SOI_LOCALIDAD_ID;
 
@@ -38,7 +36,8 @@ exports.getAll = async (res, req) => {
 exports.create = async (data) => {
     const {
         cuit, nombre, apellido, es_persona, email, calle, altura, piso, dpto, vereda,
-        entre1, entre2, localidad, latitud, longitud, desde, hasta, path
+        entre1, entre2, localidad, latitud, longitud, desde, hasta, //fecha_interf, 
+        path
     } = data;
 
     const fechaActual = new Date();
@@ -68,7 +67,7 @@ exports.create = async (data) => {
             INSERT INTO SOLICITUD_INTERFERENCIA (
                 SOI_CUIT, SOI_NOMBRE, SOI_APELLIDO, SOI_PERSONA, SOI_EMAIL, SOI_CALLE,
                 SOI_ALTURA, SOI_PISO, SOI_DPTO, SOI_VEREDA, SOI_ENTRE1, SOI_ENTRE2, SOI_LOCALIDAD_ID, 
-                SOI_LATITUD, SOI_LONGITUD, SOI_DESDE, SOI_HASTA, SOI_FECHA, SOI_MAPA, SOI_PATH, SOI_ESTADO
+                SOI_LATITUD, SOI_LONGITUD, SOI_DESDE, SOI_HASTA, SOI_FECHA, SOI_PATH
             )
             OUTPUT INSERTED.SOI_ID
             VALUES (
@@ -83,6 +82,40 @@ exports.create = async (data) => {
     return solicitudId;
 };
 
+exports.getById = async (id) => {
+    const pool = await connectToGeaCorpico();
+
+    const result = await pool.request()
+    .input('id', sql.Int, id)
+    .query(`
+            SELECT 
+                SOI.SOI_ID as ID,
+                SOI.SOI_CUIT as CUIT_DNI,
+                SOI.SOI_NOMBRE as Nombre,
+                SOI.SOI_APELLIDO as Apellido,
+                SOI.SOI_PERSONA as Es_persona,
+                SOI.SOI_EMAIL as Email,
+                SOI.SOI_CALLE as Calle,
+                SOI.SOI_ALTURA as Altura,
+                SOI.SOI_PISO as Piso,
+                SOI.SOI_DPTO as Dpto,
+                SOI.SOI_VEREDA as Vereda,
+                SOI.SOI_ENTRE1 as Entre1,
+                SOI.SOI_ENTRE2 as Entre2,
+                LOC.LOC_DESCRIPCION as Localidad,
+                SOI.SOI_LATITUD as Latitud,
+                SOI.SOI_LONGITUD as Longitud,
+                SOI.SOI_DESDE as Desde,
+                SOI.SOI_HASTA as Hasta,
+                SOI.SOI_FECHA as Fecha_interf,
+                SOI.SOI_PATH as Path
+            FROM SOLICITUD_INTERFERENCIA SOI
+            INNER JOIN LOCALIDAD LOC ON LOC.LOC_ID = SOI.SOI_LOCALIDAD_ID
+            WHERE SOI.SOI_ID = @id
+        `);
+
+        return result.recordset[0]; //si no existe el objeto devuelve unidefined
+}
 exports.remove = async (id) => {
     const pool = await connectToGeaCorpico();
     const result = await pool.request()
@@ -95,7 +128,8 @@ exports.remove = async (id) => {
 exports.update = async (id, data) => {
     const {
         cuit, nombre, apellido, es_persona, email, calle, altura, piso, dpto, vereda,
-        entre1, entre2, localidad, latitud, longitud, desde, hasta, path
+        entre1, entre2, localidad, latitud, longitud, desde, hasta,
+        path
     } = data;
 
     const fechaActual = new Date();
@@ -155,40 +189,4 @@ exports.getLocalidades = async () => {
         SELECT LOC_ID, LOC_DESCRIPCION FROM LOCALIDAD ORDER BY LOC_DESCRIPCION
   `);
   return result.recordset;
-};
-
-// Agregado en interferenciaModel.js
-exports.getById = async (id) => {
-    const pool = await connectToGeaCorpico();
-
-    const result = await pool.request()
-        .input('id', sql.Int, id)
-        .query(`
-            SELECT 
-                SOI.SOI_ID as ID,
-                SOI.SOI_CUIT as CUIT_DNI,
-                SOI.SOI_NOMBRE as Nombre,
-                SOI.SOI_APELLIDO as Apellido,
-                SOI.SOI_PERSONA as Es_persona,
-                SOI.SOI_EMAIL as Email,
-                SOI.SOI_CALLE as Calle,
-                SOI.SOI_ALTURA as Altura,
-                SOI.SOI_PISO as Piso,
-                SOI.SOI_DPTO as Dpto,
-                SOI.SOI_VEREDA as Vereda,
-                SOI.SOI_ENTRE1 as Entre1,
-                SOI.SOI_ENTRE2 as Entre2,
-                LOC.LOC_DESCRIPCION as Localidad,
-                SOI.SOI_LATITUD as Latitud,
-                SOI.SOI_LONGITUD as Longitud,
-                SOI.SOI_DESDE as Desde,
-                SOI.SOI_HASTA as Hasta,
-                SOI.SOI_FECHA as Fecha_interf,
-                SOI.SOI_PATH as Path
-            FROM SOLICITUD_INTERFERENCIA SOI
-            INNER JOIN LOCALIDAD LOC ON LOC.LOC_ID = SOI.SOI_LOCALIDAD_ID
-            WHERE SOI.SOI_ID = @id
-        `);
-
-    return result.recordset[0]; // Devuelve un solo objeto (o undefined si no existe)
 };
