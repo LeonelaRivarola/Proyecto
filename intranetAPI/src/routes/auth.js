@@ -75,7 +75,7 @@ router.post('/tecnica/interferencia/nueva', upload.single('path'), async (req, r
             path: filePath
         };
 
-        await interferenciaController.store(req, res); // ⬅️ el controlador responde
+        await interferenciaController.store(req, res); //el controlador responde
 
     } catch (err) {
         console.error(err);
