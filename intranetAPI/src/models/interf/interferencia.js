@@ -26,9 +26,7 @@ exports.getAll = async () => {
             SOI.SOI_DESDE as Desde,
             SOI.SOI_HASTA as Hasta,
             SOI.SOI_FECHA as Fecha_interf,
-            SOI.SOI_MAPA as Mapa,
-            SOI.SOI_PATH as Path,
-            SOI_ESTADO as Estado
+            SOI.SOI_PATH as Path
         FROM SOLICITUD_INTERFERENCIA SOI
         INNER JOIN LOCALIDAD LOC ON LOC.LOC_ID = SOI.SOI_LOCALIDAD_ID;
 
@@ -40,7 +38,7 @@ exports.create = async (data) => {
     const {
         cuit, nombre, apellido, es_persona, email, calle, altura, piso, dpto, vereda,
         entre1, entre2, localidad, latitud, longitud, desde, hasta, //fecha_interf, 
-        mapa, path//, estado
+        path
     } = data;
 
     const fechaActual = new Date();
@@ -65,20 +63,18 @@ exports.create = async (data) => {
         .input('desde', sql.Date, desde)
         .input('hasta', sql.Date, hasta)
         .input('fecha', sql.DateTime, fechaActual)
-        .input('mapa', sql.VarChar, mapa)
         .input('path', sql.VarChar, path)
-        .input('estado', sql.VarChar,'Pendiente')
         .query(`
             INSERT INTO SOLICITUD_INTERFERENCIA (
                 SOI_CUIT, SOI_NOMBRE, SOI_APELLIDO, SOI_PERSONA, SOI_EMAIL, SOI_CALLE,
                 SOI_ALTURA, SOI_PISO, SOI_DPTO, SOI_VEREDA, SOI_ENTRE1, SOI_ENTRE2, SOI_LOCALIDAD_ID, 
-                SOI_LATITUD, SOI_LONGITUD, SOI_DESDE, SOI_HASTA, SOI_FECHA, SOI_MAPA, SOI_PATH, SOI_ESTADO
+                SOI_LATITUD, SOI_LONGITUD, SOI_DESDE, SOI_HASTA, SOI_FECHA, SOI_PATH
             )
             OUTPUT INSERTED.SOI_ID
             VALUES (
                 @cuit, @nombre, @apellido, @es_persona, @email, @calle, @altura,
                 @piso, @dpto, @vereda, @entre1, @entre2, @localidad, @latitud, @longitud,
-                @desde, @hasta, @fecha, @mapa, @path, @estado
+                @desde, @hasta, @fecha, @path
             )
         `);
 
@@ -113,7 +109,6 @@ exports.getById = async (id) => {
                 SOI.SOI_DESDE as Desde,
                 SOI.SOI_HASTA as Hasta,
                 SOI.SOI_FECHA as Fecha_interf,
-                SOI.SOI_MAPA as Mapa,
                 SOI.SOI_PATH as Path
             FROM SOLICITUD_INTERFERENCIA SOI
             INNER JOIN LOCALIDAD LOC ON LOC.LOC_ID = SOI.SOI_LOCALIDAD_ID
@@ -135,7 +130,7 @@ exports.update = async (id, data) => {
     const {
         cuit, nombre, apellido, es_persona, email, calle, altura, piso, dpto, vereda,
         entre1, entre2, localidad, latitud, longitud, desde, hasta,
-        mapa, path
+        path
     } = data;
 
     const fechaActual = new Date();
@@ -161,7 +156,6 @@ exports.update = async (id, data) => {
         .input('desde', sql.Date, desde)
         .input('hasta', sql.Date, hasta)
         .input('fecha', sql.DateTime, fechaActual)
-        .input('mapa', sql.VarChar, mapa)
         .input('path', sql.VarChar, path)
         .query(`
             UPDATE SOLICITUD_INTERFERENCIA SET
@@ -183,7 +177,6 @@ exports.update = async (id, data) => {
                 SOI_DESDE = @desde,
                 SOI_HASTA = @hasta,
                 SOI_FECHA = @fecha,
-                SOI_MAPA = @mapa,
                 SOI_PATH = @path
             WHERE SOI_ID = @id
         `);
