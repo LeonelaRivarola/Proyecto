@@ -111,6 +111,8 @@ const Interferencias = () => {
                 <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
                     Listado de Interferencias
                 </Typography>
+
+                {/* 
                 <Button
                     variant="contained"
                     sx={{
@@ -127,6 +129,8 @@ const Interferencias = () => {
                 >
                     NUEVA INTERFERENCIA
                 </Button>
+                */}
+                
             </Paper>
             <Box sx={{ maxWidth: '100%', mx: 'auto', mt: 4 }}>
                 <TableContainer component={Paper} elevation={2} sx={{ overflow: 'hidden' }}>

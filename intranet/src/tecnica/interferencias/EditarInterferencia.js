@@ -39,7 +39,6 @@ const EditarInterferencia = () => {
     longitud: "",
     desde: "",
     hasta: "",
-    mapa: "",
     path: ""
   });
 

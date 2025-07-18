@@ -149,6 +149,7 @@ const SideBar = () => {
                   <ListItemText primary="Lista" />
                 </ListItemButton>
 
+                {/* 
                 <ListItemButton
                   component={Link}
                   to="/home/nueva-interferencia"
@@ -157,6 +158,7 @@ const SideBar = () => {
                 >
                   <ListItemText primary="Nueva interferencia" />
                 </ListItemButton>
+                */}
 
               </List>
             </Collapse>
