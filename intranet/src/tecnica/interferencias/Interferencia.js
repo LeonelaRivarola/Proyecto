@@ -162,10 +162,10 @@ const Interferencias = () => {
                                             cursor: "pointer",
                                             transition: 'transform 0.2s, background-color 0.2s',
                                             '&:hover': {
-                                                backgroundColor: '#c2e29eff', 
+                                                backgroundColor: '#fff8afff', 
                                             },
                                             '&:active': {
-                                                transform: 'scale(1.02)',
+                                                transform: 'scale(1.01)',
                                             },
                                         }}
                                         key={interferencia.ID}>
@@ -183,7 +183,10 @@ const Interferencias = () => {
                                             <Box display="flex" gap={1.5}>
                                                 <Tooltip title="Editar" arrow>
                                                     <IconButton
-                                                        onClick={() => handleEditar(interferencia)}
+                                                        onClick={(event) => {
+                                                            event.stopPropagation();
+                                                            handleEditar(interferencia);
+                                                        }}
                                                         size="xl"
                                                         sx={{
                                                             backgroundColor: '#1565c0',
@@ -204,7 +207,10 @@ const Interferencias = () => {
                                             <Box display="flex" gap={1.5}>
                                                 <Tooltip title="Eliminar" arrow>
                                                     <IconButton
-                                                        onClick={() => handleEliminar(interferencia)}
+                                                        onClick={(event) => {
+                                                            event.stopPropagation();
+                                                            handleEliminar(interferencia);
+                                                        }}
                                                         size="xl"
                                                         sx={{
                                                             backgroundColor: '#e53935',
@@ -225,7 +231,10 @@ const Interferencias = () => {
                                             <Box display="flex" gap={1.5}>
                                                 <Tooltip title="Asignar" arrow>
                                                     <IconButton
-                                                        onClick={() => handleAsignar(interferencia)}
+                                                        onClick={(event) => {
+                                                            event.stopPropagation();
+                                                            handleAsignar(interferencia);
+                                                        }}
                                                         size="xl"
                                                         sx={{
                                                             backgroundColor: '#43a047',
