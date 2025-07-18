@@ -162,7 +162,7 @@ const Interferencias = () => {
                                             cursor: "pointer",
                                             transition: 'transform 0.2s, background-color 0.2s',
                                             '&:hover': {
-                                                backgroundColor: '#fff8afff', 
+                                                backgroundColor: '#b9ffb1ff', 
                                             },
                                             '&:active': {
                                                 transform: 'scale(1.01)',
